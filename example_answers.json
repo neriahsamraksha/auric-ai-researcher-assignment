@@ -1,0 +1,82 @@
+{
+  "_readme": [
+    "Format only. These ids and names are invented and appear in no item set.",
+    "Your answers.json maps each item id to one of the three forms below.",
+    "Every assignment must name every person on that item's rota.",
+    "Where an item puts only some of the staff on a station, give \"station\"",
+    "only for those people -- see EXAMPLE-004. A station for someone the notes",
+    "put on no station is ignored; a missing person is still wrong.",
+    "An ambiguous item has 2 to 4 consistent assignments and you must give ALL",
+    "of them -- EXAMPLE-001 has two, EXAMPLE-005 has three. Order does not",
+    "matter; the count does.",
+    "For an inconsistent item, cite a set of statements that cannot all hold at",
+    "once and where dropping any one of them leaves a set that can -- see",
+    "EXAMPLE-002. Adding a further true statement to a set like that makes it",
+    "wrong, not safer."
+  ],
+  "EXAMPLE-000": {
+    "case": "unique",
+    "assignment": {
+      "Alice": {"block": "07:00", "station": "intake"},
+      "Bob": {"block": "09:00", "station": "packing"},
+      "Carla": {"block": "11:00", "station": "calibration"}
+    }
+  },
+  "EXAMPLE-001": {
+    "case": "ambiguous",
+    "assignments": [
+      {
+        "Alice": {"block": "07:00", "station": "intake"},
+        "Bob": {"block": "09:00", "station": "packing"},
+        "Carla": {"block": "11:00", "station": "calibration"}
+      },
+      {
+        "Alice": {"block": "07:00", "station": "packing"},
+        "Bob": {"block": "09:00", "station": "intake"},
+        "Carla": {"block": "11:00", "station": "calibration"}
+      }
+    ]
+  },
+  "EXAMPLE-002": {
+    "case": "inconsistent",
+    "conflicts": [
+      "Alice is on the 07:00 block.",
+      "Bob is on the block immediately after Alice.",
+      "Carla works earlier in the day than Bob."
+    ]
+  },
+  "EXAMPLE-003": {
+    "Alice": {"block": "07:00", "station": "intake"},
+    "Bob": {"block": "09:00", "station": "packing"},
+    "Carla": {"block": "11:00", "station": "calibration"}
+  },
+  "EXAMPLE-004": {
+    "case": "unique",
+    "assignment": {
+      "Alice": {"block": "07:00", "station": "intake"},
+      "Bob": {"block": "09:00"},
+      "Carla": {"block": "11:00", "station": "packing"},
+      "Dev": {"block": "13:00"}
+    }
+  },
+  "EXAMPLE-005": {
+    "case": "ambiguous",
+    "assignments": [
+      {
+        "Alice": {"block": "07:00", "station": "intake"},
+        "Bob": {"block": "09:00", "station": "packing"},
+        "Carla": {"block": "11:00", "station": "calibration"}
+      },
+      {
+        "Alice": {"block": "07:00", "station": "packing"},
+        "Bob": {"block": "09:00", "station": "calibration"},
+        "Carla": {"block": "11:00", "station": "intake"}
+      },
+      {
+        "Alice": {"block": "07:00", "station": "calibration"},
+        "Bob": {"block": "09:00", "station": "intake"},
+        "Carla": {"block": "11:00", "station": "packing"}
+      }
+    ]
+  }
+}

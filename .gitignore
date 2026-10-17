@@ -1,0 +1,20 @@
+.env
+visible_key.json
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+.DS_Store
+*.tmp
+
+# Private assignment materials
+CANDIDATE_BRIEF.md
+
+# Local experiment outputs
+results/*.status.json
+results/one_item*.json
+results/run1_*.json
+results/run2_*.json
+results/test_*.json
+results/samples_*.jsonl
+
