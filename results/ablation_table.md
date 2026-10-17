@@ -2,11 +2,11 @@
 
 Recorded samples: arm E: 2 run(s), arm N: 1 run(s), arm D: 1 run(s). Prompt versions: E=8a2b92491001, N=028640b01747, D=87b6dde1abdb.
 Budget k replays the first k recorded samples of each item. Each cell: mean macro exact match on all items [value per run], mean model calls per item.
-Selected policy: 3x = trigger, 10x = trigger (a policy using more calls replaces a cheaper one only if its dev-half macro score is higher in every recorded run; dev half = first 30 items of items.json).
+Shipped policy: 3x = trigger, 10x = trigger. Rule selects: 3x = trigger, 10x = trigger (a policy using more calls replaces a cheaper one only if its dev-half macro score is higher in every recorded run; dev half = first 30 items of items.json).
 
 | Condition | 1x | 3x | 10x |
 |---|---|---|---|
-| Full system (selected policy) | 0.583 [0.517, 0.650], 1.0 calls | 0.617 [0.550, 0.683], 1.5 calls | 0.642 [0.567, 0.717], 2.0 calls |
+| Full system (shipped policy) | 0.583 [0.517, 0.650], 1.0 calls | 0.617 [0.550, 0.683], 1.5 calls | 0.642 [0.567, 0.717], 2.0 calls |
 | Multi-call off: one call | 0.583 [0.517, 0.650], 1.0 calls | 0.583 [0.517, 0.650], 1.0 calls | 0.583 [0.517, 0.650], 1.0 calls |
 | Line vote over all calls | 0.583 [0.517, 0.650], 1.0 calls | 0.625 [0.583, 0.667], 3.0 calls | 0.667 [0.650, 0.683], 10.0 calls |
 | Answer vote over all calls | 0.583 [0.517, 0.650], 1.0 calls | 0.600 [0.533, 0.667], 3.0 calls | 0.617 [0.600, 0.633], 10.0 calls |

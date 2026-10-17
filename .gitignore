@@ -9,12 +9,13 @@ venv/
 
 # Private assignment materials
 CANDIDATE_BRIEF.md
-
+q
 # Local experiment outputs
 results/*.status.json
 results/one_item*.json
 results/run1_*.json
 results/run2_*.json
 results/test_*.json
-results/samples_*.jsonl
-
+!results/run3_1x.json.status.json
+!results/run4_3x.json.status.json
+!results/run5_10x.json.status.json

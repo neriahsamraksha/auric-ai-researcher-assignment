@@ -20,7 +20,7 @@ For inconsistent items, the program searches for a smallest unsatisfiable subset
 
 ## Working within the call budget
 
-The entry point is `run`. The `1x` budget makes exactly one model call per item. Under `3x` and `10x`, the pipeline can collect additional extractions when the current voted result still contains unusable lines or leaves more than four possible assignments. The same prompt is used for every call; later calls do not depend on the wording of earlier responses.
+The entry point is `run`. The `1x` budget makes exactly one model call per item. Under `3x` and `10x`, the pipeline can collect additional extractions when the current voted result still contains unusable lines or leaves more than four possible assignments. A contradictory result (no possible assignment) counts as settled and is not re-sampled, and a tie between samples keeps the earlier reading. The same prompt is used for every call; later calls do not depend on the wording of earlier responses.
 
 For each line, the aggregation step selects the interpretation supported by the most samples, with unusable outputs abstaining. The solver then evaluates the combined constraints. Calls are counted per item, client retries are disabled, and the program enforces the specified budget.
 
@@ -92,8 +92,7 @@ python3 ablation.py evaluate --key <key.json>
 
 Arm `E` uses the shipped extraction prompt, `N` removes the distractor guidance, and `D` asks the model to answer directly without the solver. Collection makes ten calls per item and can resume after interruption. Evaluation reuses the recorded samples and makes no API calls.
 
-
-The repository includes the recorded samples behind the reported ablation table (`results/samples_*.jsonl`), so `evaluate` can be re-run without any API calls. `collect` skips items already recorded under the same arm and run number, and `evaluate` uses every recorded run in `results/`. To re-collect from scratch, first move the existing `results/samples_*.jsonl` files out of `results/`, or use new run numbers.
+The recorded samples behind the reported ablation table (`results/samples_*.jsonl`) are included, so `evaluate` can be re-run without API calls. It scores against the visible answer key, which is not distributed with this repository; pass your own copy with `--key`. `collect` skips items already recorded under the same arm and run number, and `evaluate` uses every recorded run in `results/`. To re-collect from scratch, first move the existing `results/samples_*.jsonl` files out of `results/`, or use new run numbers.
 
 ## Repository contents
 
@@ -101,9 +100,9 @@ The repository includes the recorded samples behind the reported ablation table 
 - `ablation.py` records model outputs and evaluates the ablation conditions.
 - `test_main.py` contains the offline tests.
 - `run` is the command-line entry point.
-- `results/` contains selected benchmark outputs and experiment summaries.
-- `items.json`, `example_answers.json`, `score.py` and `CANDIDATE_BRIEF.md` are supplied assignment files.
+- - `results/` contains the answers and per-call status files of the reported live runs (`run3_1x`, `run4_3x`, `run5_10x`), the recorded ablation samples, and the ablation summary.
+- - `items.json`, `example_answers.json` and `score.py` are supplied assignment files; the assignment brief is not redistributed.
 
 The API key and `visible_key.json` are intentionally excluded from version control.
 
-The accompanying two-page report discusses the quantitative results, the main failure modes and the limits of the evaluation.
+The two-page report, submitted separately, discusses the quantitative results, the main failure modes and the limits of the evaluation.

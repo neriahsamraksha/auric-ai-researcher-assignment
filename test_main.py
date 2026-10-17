@@ -73,6 +73,14 @@ class SolverTests(unittest.TestCase):
             masks, _ = main.line_vote([main.analyse_sample(ctx, CYCLE)], ctx)
             self.assertTrue(main.is_minimal_conflict(masks, [0, 1, 2], ctx["full"]))
 
+    def test_two_line_conflict_is_cited_exactly_without_padding(self):
+        text = "L1: at(Ann, 07:00)\nL2: not_at(Ann, 07:00)\nL3: before(Ben, Cat)\nL4: at(Dan, 13:00)"
+        for rule in ("smallest", "deletion"):
+            result, ctx = answer_for(SYNTHETIC, text, rule)
+            self.assertEqual(result["answer"]["conflicts"], ["First line.", "Second line."])
+            masks, _ = main.line_vote([main.analyse_sample(ctx, text)], ctx)
+            self.assertTrue(main.is_minimal_conflict(masks, [0, 1], ctx["full"]))
+
     def test_model_output_changes_answer(self):
         first, _ = answer_for(SYNTHETIC, "L1: before(Ann, Ben)\nL2: before(Ben, Cat)\nL3: before(Cat, Dan)\nL4: none")
         second, _ = answer_for(SYNTHETIC, "L1: before(Ben, Ann)\nL2: before(Ann, Cat)\nL3: before(Cat, Dan)\nL4: none")
@@ -150,6 +158,17 @@ class BudgetTests(unittest.TestCase):
             client = FakeClient("L1: none")
             main.process_item(client, ITEMS["B2-001"], budget, policy)
             self.assertTrue(low <= len(client.calls) <= high, (budget, policy, len(client.calls)))
+
+    def test_every_call_carries_item_header_and_settings(self):
+        for budget, policy in (("3x", "fixed_vote"), ("10x", "fixed_vote"), ("10x", "trigger")):
+            client = FakeClient("L1: none")
+            main.process_item(client, ITEMS["B2-001"], budget, policy)
+            self.assertTrue(client.calls)
+            for call in client.calls:
+                self.assertEqual(call["extra_headers"], {"X-Item-Id": "B2-001"})
+                self.assertEqual(call["model"], "ibm-granite/granite-4.2-8b")
+                self.assertEqual((call["temperature"], call["top_p"]), (1.0, 0.95))
+                self.assertEqual(call["extra_body"], {"reasoning": {"enabled": False}})
 
 
 class PromptTests(unittest.TestCase):

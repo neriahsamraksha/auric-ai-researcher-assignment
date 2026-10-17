@@ -27,7 +27,7 @@ Decide which case applies and answer with one JSON object and nothing else:
 Name every person on the rota and give "station" only for station holders. Copy names, times, stations and statements exactly."""
 
 CONDITIONS = (
-    ("full", "Full system (selected policy)", "E", "selected", "smallest", True),
+    ("full", "Full system (shipped policy)", "E", "selected", "smallest", True),
     ("single", "Multi-call off: one call", "E", "single", "smallest", True),
     ("fixed_vote", "Line vote over all calls", "E", "fixed_vote", "smallest", True),
     ("answer_vote", "Answer vote over all calls", "E", "answer_vote", "smallest", True),
@@ -230,7 +230,7 @@ def evaluate(args):
     rows = []
     for name, label, arm, policy, core_rule, normalise in CONDITIONS:
         for budget, cap in BUDGETS:
-            chosen = selected[budget] if policy == "selected" else policy
+            chosen = main.SHIPPED_POLICY[budget] if policy == "selected" else policy
             row = {"condition": name, "label": label, "arm": arm, "budget": budget, "policy": chosen,
                    "core_rule": core_rule, "normalise": normalise, "runs": []}
             for run in sorted(runs[arm]):
@@ -243,7 +243,7 @@ def evaluate(args):
              + ", ".join(f"{arm}={prompt_hash_for(arm)}" for arm in ARMS) + ".",
              "Budget k replays the first k recorded samples of each item. Each cell: mean macro exact match on all "
              "items [value per run], mean model calls per item.",
-             f"Selected policy: 3x = {selected['3x']}, 10x = {selected['10x']} ({SELECTION_RULE}; dev half = first "
+             f"Shipped policy: 3x = {main.SHIPPED_POLICY['3x']}, 10x = {main.SHIPPED_POLICY['10x']}. Rule selects: 3x = {selected['3x']}, 10x = {selected['10x']} ({SELECTION_RULE}; dev half = first "
              f"{len(halves['dev'])} items of items.json).", "",
              "| Condition | 1x | 3x | 10x |", "|---|---|---|---|"]
     for name, label, *_ in CONDITIONS:
@@ -256,7 +256,7 @@ def evaluate(args):
                      f"{', '.join(f'{v:.3f}' for v in p['dev_macro_per_run'])} | {p['all_macro_mean']:.3f} |")
     table = "\n".join(lines) + "\n"
     main.write_json_atomic(RESULTS / "ablation.json", {
-        "selected": selected, "selection_rule": SELECTION_RULE, "halves": halves,
+        "shipped": main.SHIPPED_POLICY, "selected": selected, "selection_rule": SELECTION_RULE, "halves": halves,
         "runs": {arm: sorted(runs[arm]) for arm in ARMS},
         "prompt_hashes": {arm: prompt_hash_for(arm) for arm in ARMS},
         "policy_selection": policy_rows, "rows": rows})

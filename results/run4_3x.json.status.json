@@ -1,0 +1,3745 @@
+{
+  "budget": "3x",
+  "policy": "trigger",
+  "model": "ibm-granite/granite-4.2-8b",
+  "prompt_hash": "8a2b92491001",
+  "items": 60,
+  "answered": 60,
+  "degraded": 4,
+  "failed": 0,
+  "calls": 84,
+  "results": [
+    {
+      "id": "B2-000",
+      "policy": "trigger",
+      "calls": 1,
+      "call_errors": [],
+      "raw_outputs": [
+        {
+          "sample": 0,
+          "text": "L1: none\nL2: none\nL3: none\nL4: not_station(Ayesha, packing)\nL5: none\nL6: not_station(Ayesha, calibration)\nL7: none\nL8: none\nL9: none\nL10: next(Samuel, Meera)\nL11: none\nL12: between(Meera, Tomas, Rohan)\nL13: not_station(Meera, packing)\nL14: none\nL15: none\nL16: between(Meera, Tomas, Rohan)\nL17: not_station(Meera, calibration)\nL18: none\nL19: not_at(Rohan, 07:00)\nL20: later(Rohan, Ayesha)",
+          "error": null,
+          "finish_reason": "stop",
+          "model": "ibm-granite/granite-4.2-8b",
+          "latency_s": 2.8
+        }
+      ],
+      "failed_calls": 0,
+      "line_status_counts": {
+        "none": 11,
+        "ok": 9
+      },
+      "line_statuses": [
+        [
+          "none",
+          "none",
+          "none",
+          "ok",
+          "none",
+          "ok",
+          "none",
+          "none",
+          "none",
+          "ok",
+          "none",
+          "ok",
+          "ok",
+          "none",
+          "none",
+          "ok",
+          "ok",
+          "none",
+          "ok",
+          "ok"
+        ]
+      ],
+      "declared": "inconsistent",
+      "solutions": 0,
+      "core_size": 4,
+      "unusable_lines": [],
+      "outcome": "answered",
+      "category": "ok"
+    },
+    {
+      "id": "B2-001",
+      "policy": "trigger",
+      "calls": 1,
+      "call_errors": [],
+      "raw_outputs": [
+        {
+          "sample": 0,
+          "text": "L1: none\nL2: later(Tomas, packing)\nL3: none\nL4: none\nL5: none\nL6: station(Daniel, calibration)\nL7: none\nL8: station(Tomas, intake)\nL9: at(Rohan, 13:00)\nL10: none\nL11: none\nL12: none\nL13: at(Daniel, 09:00)\nL14: between(Rohan, Ayesha, Tomas)\nL15: later(Tomas, calibration)\nL16: none\nL17: none\nL18: before(calibration, Tomas)",
+          "error": null,
+          "finish_reason": "stop",
+          "model": "ibm-granite/granite-4.2-8b",
+          "latency_s": 3.19
+        }
+      ],
+      "failed_calls": 0,
+      "line_status_counts": {
+        "none": 10,
+        "ok": 8
+      },
+      "line_statuses": [
+        [
+          "none",
+          "ok",
+          "none",
+          "none",
+          "none",
+          "ok",
+          "none",
+          "ok",
+          "ok",
+          "none",
+          "none",
+          "none",
+          "ok",
+          "ok",
+          "ok",
+          "none",
+          "none",
+          "ok"
+        ]
+      ],
+      "declared": "ambiguous",
+      "solutions": 3,
+      "core_size": null,
+      "unusable_lines": [],
+      "outcome": "answered",
+      "category": "ok"
+    },
+    {
+      "id": "B2-002",
+      "policy": "trigger",
+      "calls": 2,
+      "call_errors": [],
+      "raw_outputs": [
+        {
+          "sample": 0,
+          "text": "L1: none\nL2: between(Nadia, Priya, Rohan) ; next(Priya, Nadia)\nL3: next(Meera, Rohan)\nL4: none\nL5: earlier(calibration, Rohan)  // Note: The relation \"earlier in the day\" suggests calibration station covered earlier than Rohan's block, but \"at\" or \"before\" cannot be directly inferred without exact times. However, we must use only given relation names. Since \"covered earlier\" means station holder works earlier block than Rohan's block? But we don't know who holds calibration. The line says \"the calibration station is covered earlier...\", so calibration (station) is covered earlier than Rohan's block. But we cannot say station(?, calibration) because unknown person. Thus cannot use station or at directly. Must use between/before? But we don't have person for station. The relation names require persons or stations as arguments. station(P,S) uses person P; at(X,T) uses person X. We cannot refer to station alone in ordering. The example used \"before(testing, Dev)\" where testing is a station. Yes, in example L6: \"Whoever runs testing clocks in ahead of Dev.\" → before(testing, Dev). So stations can be arguments of before/after. Similarly L8: \"The sorting desk is staffed before Erin arrives.\" → before(sorting, Erin). So we can use station names as arguments. Thus \"calibration station is covered earlier in the day than Rohan's block\" → calibration (station) is earlier than Rohan's block, i.e., calibration station holder works in a block earlier than Rohan's block. So we can say before(calibration, Rohan). But \"covered earlier\" might mean the station is occupied earlier, which aligns with station holder working earlier block. So L5: before(calibration, Rohan)\nL6: none\nL7: before(packing, Daniel)\nL8: none\nL9: none  // hypothetical \"would have been\", not current\nL10: next(Meera, Rohan)\nL11: not_at(Daniel, 15:00)\nL12: none  // lobbying without success, no current assignment\nL13: none  // refers to old arrangement, not current\nL14: not_station(Meera, packing)\nL15: none\nL16: none\nL17: before(calibration, Priya)\nL18: between(Rohan, Meera, Nadia)\nL19: later(Daniel, calibration)  // \"Daniel is on later than whoever has calibration\" → Daniel's block is later than calibration station's block → later(Daniel, calibration) [since \"later than whoever has calibration\" means Daniel starts later than calibration holder]\nL20: none\n\nBut need to check each for correctness per rules.\n\nLet's parse carefully each line, using only what the line states about current rota (ignoring past, hypothetical, wishes).\n\nL1: \"My recollection is that Rohan has been chasing the maintenance ticket for the printer.\" → no current rota fact; it's recollection about past action, not assignment. So none.\n\nL2: \"Nadia then Priya, back to back.\" → \"Nadia then Priya, back to back.\" Likely means Nadia works then Priya, consecutively (back to back). So Priya works immediately after Nadia? \"Nadia then Priya\" suggests Nadia first, then Priya, consecutively. So next(Nadia, Priya). But it says \"Nadia then Priya, back to back.\" Could be interpreted as Nadia and Priya work back-to-back in that order. So yes, next(Nadia, Priya). However, the phrase \"Nadia then Priya\" indicates order, so next(Nadia, Priya). But also could imply they are adjacent without gap. So next(Nadia, Priya). However, the line might not specify that no one else is between, but \"back to back\" implies immediate succession. So we can say next(Nadia, Priya). But it says \"Nadia then Priya, back to back.\" Might be ambiguous if Nadia is first then Priya second, consecutive. So relation: next(Nadia, Priya). But also it mentions \"Nadia then Priya\" without mentioning Rohan etc., so only that order. However, L2 might be part of a sequence? It says \"Nadia then Priya, back to back.\" Likely meaning Nadia works a block, then immediately Priya works the next block. So we can output next(Nadia, Priya). But earlier in L2 we thought \"between(Nadia, Priya, Rohan)\" from \"Nadia then Priya, back to back.\" That would be wrong because \"back to back\" suggests consecutive, not between. Let's read L2 exactly: \"Nadia then Priya, back to back.\" Probably means Nadia's block is immediately followed by Priya's block. So it's a statement about Nadia and Priya being consecutive in that order. It doesn't mention Rohan at all. My earlier thought added Rohan; that was incorrect. L2 only mentions Nadia then Priya. So only next(Nadia, Priya). However, it might be part of a list: \"Nadia then Priya, back to back.\" without more context, so it's just that. So output: next(Nadia, Priya). But wait, the phrase \"Nadia then Priya\" could be describing order of people in some activity, but in rota context, likely means their shift blocks are back-to-back in that order. So yes.\n\nThus L2: next(Nadia, Priya). But is there any possibility of between? \"Back to back\" implies no gap, so next is correct. So L2 should be next(Nadia, Priya), not between. However, the instruction says \"A line that says the two blocks are consecutive, with nothing in between, use next\". So L2 says \"back to back\", so consecutive. So next(Nadia, Priya).\n\nBut the user wrote: \"L2: Nadia then Priya, back to back.\" It might be that Nadia then Priya are doing something back to back, but still could be consecutive blocks. So use next(Nadia, Priya).\n\nThus L2: next(Nadia, Priya).\n\nL3: \"Rohan is on the block directly after Meera.\" → directly after = immediately after, so next(Meera, Rohan).\n\nL4: \"Priya and Daniel car-share when their shifts allow.\" → no rota assignment fact about station or block order; just car-share possibility, not current assignment. So none.\n\nL5: \"I'm fairly sure the calibration station is covered earlier in the day than Rohan's block.\" → \"covered earlier\" means the station is occupied earlier than Rohan's block. Since station holders are Daniel, Rohan, Meera (only these three hold stations), calibration station must be held by one of them earlier than Rohan's block. So we can say before(calibration, Rohan). Because calibration station (as a station) works earlier than Rohan's block. In example, they used before(testing, Dev) for station vs person. So yes, before(calibration, Rohan). Note: \"earlier in the day\" relative to Rohan's block, not necessarily immediately. So before(calibration, Rohan).\n\nL6: \"Rohan sat on the interview panel in February.\" → past, not current rota assignment. none.\n\nL7: \"My recollection is that whoever has packing is done before Daniel starts.\" → \"whoever has packing\" (i.e., the station holder for packing) is done before Daniel starts. So packing station holder works earlier block than Daniel's block. So before(packing, Daniel).\n\nL8: \"The visitor log was moved to the front desk in March.\" → no current rota, none.\n\nL9: \"Rohan would have been a better fit for the 07:00 block.\" → hypothetical, not current. none.\n\nL10: \"Worth restating, since it came up twice in handover: As far as I know, Meera hands straight over to Rohan.\" → \"hands straight over\" suggests immediate handover, i.e., Meera's block is directly followed by Rohan's block. So next(Meera, Rohan). However, note L3 already says Rohan is directly after Meera, consistent. So next(Meera, Rohan). But L10 says \"As far as I know\", but we must not weaken; still a statement that Meera hands straight over to Rohan, which implies consecutiveness. So next(Meera, Rohan). However, must check if it could be between? \"straight over\" means no gap, so next.\n\nL11: \"Speaking from memory, you will not find Daniel on the 15:00 block.\" → not_at(Daniel, 15:00)\n\nL12: \"Rohan lobbied for ",
+          "error": null,
+          "finish_reason": "length",
+          "model": "ibm-granite/granite-4.2-8b",
+          "latency_s": 20.89
+        },
+        {
+          "sample": 1,
+          "text": "L1: none\nL2: next(Nadia, Priya)\nL3: next(Meera, Rohan)\nL4: none\nL5: later(Rohan, calibration)\nL6: none\nL7: before(packing, Daniel)\nL8: none\nL9: none\nL10: next(Meera, Rohan)\nL11: not_at(Daniel, 15:00)\nL12: none\nL13: none\nL14: none\nL15: none\nL16: none\nL17: later(Priya, calibration)\nL18: between(Rohan, Meera, Nadia)\nL19: later(Daniel, calibration)\nL20: none",
+          "error": null,
+          "finish_reason": "stop",
+          "model": "ibm-granite/granite-4.2-8b",
+          "latency_s": 2.49
+        }
+      ],
+      "failed_calls": 0,
+      "line_status_counts": {
+        "none": 21,
+        "ok": 17,
+        "invalid": 2
+      },
+      "line_statuses": [
+        [
+          "none",
+          "ok",
+          "ok",
+          "none",
+          "invalid",
+          "none",
+          "ok",
+          "none",
+          "none",
+          "ok",
+          "ok",
+          "none",
+          "none",
+          "ok",
+          "none",
+          "none",
+          "ok",
+          "ok",
+          "invalid",
+          "none"
+        ],
+        [
+          "none",
+          "ok",
+          "ok",
+          "none",
+          "ok",
+          "none",
+          "ok",
+          "none",
+          "none",
+          "ok",
+          "ok",
+          "none",
+          "none",
+          "none",
+          "none",
+          "none",
+          "ok",
+          "ok",
+          "ok",
+          "none"
+        ]
+      ],
+      "declared": "inconsistent",
+      "solutions": 0,
+      "core_size": 3,
+      "unusable_lines": [],
+      "outcome": "answered",
+      "category": "ok"
+    },
+    {
+      "id": "B2-003",
+      "policy": "trigger",
+      "calls": 1,
+      "call_errors": [],
+      "raw_outputs": [
+        {
+          "sample": 0,
+          "text": "L1: none\nL2: none\nL3: none\nL4: before(intake, Priya)\nL5: none\nL6: none\nL7: between(Nadia, Meera, Tomas)\nL8: not_station(Priya, calibration)\nL9: none\nL10: before(packing, Ingrid)\nL11: between(Nadia, Priya, Tomas)\nL12: none\nL13: none\nL14: later(Ingrid, Priya)\nL15: between(Nadia, Priya, Tomas)\nL16: none\nL17: between(Ingrid, Nadia, Meera)\nL18: none\nL19: not_at(Priya, 13:00)",
+          "error": null,
+          "finish_reason": "stop",
+          "model": "ibm-granite/granite-4.2-8b",
+          "latency_s": 2.76
+        }
+      ],
+      "failed_calls": 0,
+      "line_status_counts": {
+        "none": 10,
+        "ok": 9
+      },
+      "line_statuses": [
+        [
+          "none",
+          "none",
+          "none",
+          "ok",
+          "none",
+          "none",
+          "ok",
+          "ok",
+          "none",
+          "ok",
+          "ok",
+          "none",
+          "none",
+          "ok",
+          "ok",
+          "none",
+          "ok",
+          "none",
+          "ok"
+        ]
+      ],
+      "declared": "ambiguous",
+      "solutions": 2,
+      "core_size": null,
+      "unusable_lines": [],
+      "outcome": "answered",
+      "category": "ok"
+    },
+    {
+      "id": "B2-004",
+      "policy": "trigger",
+      "calls": 2,
+      "call_errors": [],
+      "raw_outputs": [
+        {
+          "sample": 0,
+          "text": "L1: none\nL2: before(intake, Nadia)\nL3: before(packing, Rohan)\nL4: none\nL5: none\nL6: none\nL7: unclear\nL8: between(Ingrid, Rohan, Nadia)\nL9: between(Rohan, Samuel, Priya)\nL10: at(Priya, 15:00)\nL11: none\nL12: none\nL13: later(Ingrid, calibration)\nL14: none\nL15: none\nL16: none\nL17: before(calibration, Ingrid)",
+          "error": null,
+          "finish_reason": "stop",
+          "model": "ibm-granite/granite-4.2-8b",
+          "latency_s": 1.6
+        },
+        {
+          "sample": 1,
+          "text": "L1: none\nL2: before(intake, Nadia)\nL3: before(packing, Rohan)\nL4: none\nL5: none\nL6: none\nL7: none\nL8: between(Ingrid, Rohan, Nadia)\nL9: between(Rohan, Samuel, Priya)\nL10: at(Priya, 15:00)\nL11: none\nL12: none\nL13: later(Ingrid, calibration)\nL14: none\nL15: none\nL16: none\nL17: before(calibration, Ingrid)",
+          "error": null,
+          "finish_reason": "stop",
+          "model": "ibm-granite/granite-4.2-8b",
+          "latency_s": 2.15
+        }
+      ],
+      "failed_calls": 0,
+      "line_status_counts": {
+        "none": 19,
+        "ok": 14,
+        "unclear": 1
+      },
+      "line_statuses": [
+        [
+          "none",
+          "ok",
+          "ok",
+          "none",
+          "none",
+          "none",
+          "unclear",
+          "ok",
+          "ok",
+          "ok",
+          "none",
+          "none",
+          "ok",
+          "none",
+          "none",
+          "none",
+          "ok"
+        ],
+        [
+          "none",
+          "ok",
+          "ok",
+          "none",
+          "none",
+          "none",
+          "none",
+          "ok",
+          "ok",
+          "ok",
+          "none",
+          "none",
+          "ok",
+          "none",
+          "none",
+          "none",
+          "ok"
+        ]
+      ],
+      "declared": "inconsistent",
+      "solutions": 0,
+      "core_size": 4,
+      "unusable_lines": [],
+      "outcome": "answered",
+      "category": "ok"
+    },
+    {
+      "id": "B2-005",
+      "policy": "trigger",
+      "calls": 1,
+      "call_errors": [],
+      "raw_outputs": [
+        {
+          "sample": 0,
+          "text": "L1: before(packing, Priya)\nL2: none\nL3: at(Tomas, 07:00)\nL4: not_at(Daniel, 11:00)\nL5: not_at(Nadia, 09:00)\nL6: none\nL7: none\nL8: not_station(Lukas, calibration)\nL9: before(packing, Priya)\nL10: none\nL11: next(Tomas, Nadia)\nL12: none\nL13: none\nL14: none\nL15: none\nL16: none\nL17: next(Priya, Lukas)\nL18: none\nL19: at(Lukas, 15:00)",
+          "error": null,
+          "finish_reason": "stop",
+          "model": "ibm-granite/granite-4.2-8b",
+          "latency_s": 3.3
+        }
+      ],
+      "failed_calls": 0,
+      "line_status_counts": {
+        "ok": 9,
+        "none": 10
+      },
+      "line_statuses": [
+        [
+          "ok",
+          "none",
+          "ok",
+          "ok",
+          "ok",
+          "none",
+          "none",
+          "ok",
+          "ok",
+          "none",
+          "ok",
+          "none",
+          "none",
+          "none",
+          "none",
+          "none",
+          "ok",
+          "none",
+          "ok"
+        ]
+      ],
+      "declared": "inconsistent",
+      "solutions": 0,
+      "core_size": 3,
+      "unusable_lines": [],
+      "outcome": "answered",
+      "category": "ok"
+    },
+    {
+      "id": "B2-006",
+      "policy": "trigger",
+      "calls": 1,
+      "call_errors": [],
+      "raw_outputs": [
+        {
+          "sample": 0,
+          "text": "L1: none\nL2: none\nL3: not_at(Priya, 15:00)\nL4: not_at(Priya, 11:00)\nL5: none\nL6: none\nL7: none\nL8: none\nL9: not_at(Priya, 09:00)\nL10: station(Tomas, intake)\nL11: at(Samuel, 13:00)\nL12: before(packing, Nadia)\nL13: before(packing, Daniel)\nL14: between(Daniel, Nadia, Tomas)\nL15: before(packing, Tomas)\nL16: none\nL17: none\nL18: none\nL19: between(Daniel, Nadia, Tomas)",
+          "error": null,
+          "finish_reason": "stop",
+          "model": "ibm-granite/granite-4.2-8b",
+          "latency_s": 2.41
+        }
+      ],
+      "failed_calls": 0,
+      "line_status_counts": {
+        "none": 9,
+        "ok": 10
+      },
+      "line_statuses": [
+        [
+          "none",
+          "none",
+          "ok",
+          "ok",
+          "none",
+          "none",
+          "none",
+          "none",
+          "ok",
+          "ok",
+          "ok",
+          "ok",
+          "ok",
+          "ok",
+          "ok",
+          "none",
+          "none",
+          "none",
+          "ok"
+        ]
+      ],
+      "declared": "ambiguous",
+      "solutions": 2,
+      "core_size": null,
+      "unusable_lines": [],
+      "outcome": "answered",
+      "category": "ok"
+    },
+    {
+      "id": "B2-007",
+      "policy": "trigger",
+      "calls": 2,
+      "call_errors": [],
+      "raw_outputs": [
+        {
+          "sample": 0,
+          "text": "L1: none\nL2: none\nL3: between(Nadia, Ingrid, Samuel)\nL4: before(packing, Ayesha)\nL5: earlier than(Ingrid, calibration)  # but cannot use \"earlier than\"; must use before/later with correct args. However, rule: \"The calibration station is covered earlier in the day than Ingrid's block.\" This means the block covering calibration station occurs earlier than Ingrid's block. But we don't know who holds calibration; we only know that calibration station is covered earlier. However, we have station holders: Nadia, Samuel, Ingrid. Calibration is a station. So the person who holds calibration works earlier than Ingrid's block. We cannot specify which person; only that the station calibration is earlier than Ingrid's block. But relation must involve a person or station? We have station(P, S) and at(P, T). We cannot say station calibration earlier than Ingrid? The relation types are about persons: at(X,T), not_at, station(P,S), not_station, before(X,Y), later(X,Y), next(X,Y), between(X,A,B). X, Y, A, B are persons or stations? In description: \"X, Y, A and B are a person or a station.\" So we can use stations in before/later/next/between? Yes, the description says X, Y, A and B are a person or a station. So we can say before(calibration, Ingrid) meaning the block where calibration station is held is earlier than Ingrid's block. But careful: before(X,Y) means X works an earlier block than Y. If X is a station, that would be ambiguous: station doesn't work a block; a person works a block and holds a station. However, the definition says \"X works an earlier block than Y\". But a station does not work a block; only persons work blocks. However, the description explicitly says X, Y, A, B are a person or a station. In the examples, they used station names in before/later/next? Let's check examples: In example input L6: \"Whoever runs testing clocks in ahead of Dev.\" Output: before(testing, Dev). Yes, they used station testing as first argument to before. So stations can be used in before/later/next/between. Good. So L5: \"The calibration station is covered earlier in the day than Ingrid's block.\" Means the block where calibration station is held is earlier than Ingrid's block. So we can write before(calibration, Ingrid). But careful: Ingrid is a person; calibration is a station. So before(calibration, Ingrid) is valid. Similarly L4: \"The person on packing precedes Ayesha.\" That is: the person who holds packing station works before Ayesha. So we need to relate packing station to Ayesha. Since \"person on packing\" refers to the station holder of packing. So we can write before(packing, Ayesha). In example, L4: \"Alice won't be on loading.\" gave not_station(Alice, loading). And L3: \"Sorting falls to Bob.\" gave station(Bob, sorting). So yes, stations used in station/not_station; and for temporal relations, we can use station names as X or Y. So L4: before(packing, Ayesha). L5: before(calibration, Ingrid). L6: \"As far as I know, Ayesha sits between Nadia and Ingrid on the rota.\" -> between(Ayesha, Nadia, Ingrid). L7: \"Speaking from memory, put Nadia between Tomas and Samuel, though not necessarily next to either.\" -> between(Nadia, Tomas, Samuel). L8: \"My recollection is that Ingrid is on after one of Tomas and Samuel and before the other.\" This is ambiguous: Ingrid is after one of them and before the other. That means among Tomas and Samuel, one is before Ingrid and the other after Ingrid. So Ingrid is between Tomas and Samuel (i.e., Ingrid sits between them). So between(Ingrid, Tomas, Samuel). L9: \"Speaking from memory, had the rota gone the other way, Ingrid would be on 09:00.\" This is hypothetical and about a different rota; thus none. L10: none (statement about joining site walkaround). L11: none. L12: \"The recycling collection has moved...\" none. L13: \"On the previous cycle packing was Nadia's.\" previous cycle, not current rota -> none. L14: \"You can rule Nadia out for packing.\" -> not_station(Nadia, packing). L15: \"Nobody could remember whether Samuel was down for the 15:00 block.\" uncertain -> none? Actually it's a doubt, not settled -> none. L16: \"The intake station is covered earlier in the day than Tomas's block.\" -> before(intake, Tomas). L17: none. L18: none. L19: \"Going off the roster, whoever has intake is done before Tomas starts.\" -> before(intake, Tomas). But note L16 already says intake earlier than Tomas; L19 repeats with \"whoever has intake\". That's consistent, but we just output relation for L19.\n\nNow need to check for conflicts with \"only statements about the current rota count\". L1: car-share mentions shift allowance; not about roster assignment -> none. L2: jacket claim -> none. L3: \"Going off the roster, Nadia sits between Ingrid and Samuel on the rota.\" \"Going off the roster\" might indicate off-roster speculation, but the phrase \"Nadia sits between Ingrid and Samuel on the rota\" could be interpreted as a statement about the current rota? However, it says \"Going off the roster\", which suggests it's not according to the roster. In example, L3: \"Going off the roster, Nadia sits between Ingrid and Samuel on the rota.\" In example input L3: \"Going off the roster, Nadia sits between Ingrid and Samuel on the rota.\" They output between(Nadia, Ingrid, Samuel) for L3. Yes, in the example they did output between for \"Going off the roster, Nadia sits between Ingrid and Samuel on the rota.\" So we follow that: go along with the statement even if \"going off the roster\" phrase is present, because the line states a fact about the current rota? In example, they output between for L3 despite \"Going off the roster\". So we do same. So L3: between(Nadia, Ingrid, Samuel). Similarly L6, L7, L8, L19 are about rota positions; they are statements about \"on the rota\" or \"whereas\". They are not hypotheticals; they are recollections/statements that may be uncertain but still are facts claimed. The rules say: \"A line that says nothing about which block someone works or which station someone holds is none.\" Also \"Unclear - the line states a fact about the current rota that no relation above can express.\" But if the line states a fact that can be expressed with before/later/next/between/station etc., we should express it. Even if uncertain (\"as far as I know\", \"speaking from memory\"), we still translate the stated relation, as seen in examples: L6: \"Whoever runs testing clocks in ahead of Dev.\" gave before(testing, Dev) even though it says \"whoever runs testing\", which is a reference to the holder. That's acceptable. Similarly L2: \"Dev can't do the 08:00 slot.\" gave not_at(Dev, 08:00) even though \"can't\" expresses ability but still a constraint. So we follow.\n\nThus translations:\n\nL1: none (car-share talk)\nL2: none\nL3: between(Nadia, Ingrid, Samuel)   (order: \"Nadia sits between Ingrid and Samuel\" -> between(Nadia, Ingrid, Samuel))\nL4: before(packing, Ayesha)\nL5: before(calibration, Ingrid)\nL6: between(Ayesha, Nadia, Ingrid)  (\"Ayesha sits between Nadia and Ingrid\")\nL7: between(Nadia, Tomas, Samuel)  (\"put Nadia between Tomas and Samuel\")\nL8: between(Ingrid, Tomas, Samuel)  (\"Ingrid is on after one of Tomas and Samuel and before the other\" -> Ingrid between Tomas and Samuel)\nL9: none (hypothetical)\nL10: none\nL11: none\nL12: none\nL13: none (previous cycle)\nL14: not_station(Nadia, packing)\nL15: none (uncertain)\nL16: before(intake, Tomas)\nL17: none\nL18: none\nL19: before(intake, Tomas)  (\"whoever has intake is done before Tomas starts\") -> before(intake, Tomas)\n\nBut check L5: \"The calibration station is covered earlier in the day than Ingrid's block.\" \"Earlier",
+          "error": null,
+          "finish_reason": "length",
+          "model": "ibm-granite/granite-4.2-8b",
+          "latency_s": 18.66
+        },
+        {
+          "sample": 1,
+          "text": "L1: none\nL2: none\nL3: between(Nadia, Ingrid, Samuel)\nL4: before(packing, Ayesha)\nL5: earlier(calibration, Ingrid)\nL6: between(Ayesha, Nadia, Ingrid)\nL7: between(Nadia, Tomas, Samuel)\nL8: between(Ingrid, Tomas, Samuel)\nL9: none\nL10: none\nL11: none\nL12: none\nL13: none\nL14: not_station(Nadia, packing)\nL15: none\nL16: earlier(intake, Tomas)\nL17: none\nL18: none\nL19: before(intake, Tomas)",
+          "error": null,
+          "finish_reason": "stop",
+          "model": "ibm-granite/granite-4.2-8b",
+          "latency_s": 2.38
+        }
+      ],
+      "failed_calls": 0,
+      "line_status_counts": {
+        "none": 20,
+        "ok": 15,
+        "invalid": 3
+      },
+      "line_statuses": [
+        [
+          "none",
+          "none",
+          "ok",
+          "ok",
+          "ok",
+          "ok",
+          "ok",
+          "invalid",
+          "none",
+          "none",
+          "none",
+          "none",
+          "none",
+          "ok",
+          "none",
+          "ok",
+          "none",
+          "none",
+          "ok"
+        ],
+        [
+          "none",
+          "none",
+          "ok",
+          "ok",
+          "invalid",
+          "ok",
+          "ok",
+          "ok",
+          "none",
+          "none",
+          "none",
+          "none",
+          "none",
+          "ok",
+          "none",
+          "invalid",
+          "none",
+          "none",
+          "ok"
+        ]
+      ],
+      "declared": "unique",
+      "solutions": 1,
+      "core_size": null,
+      "unusable_lines": [],
+      "outcome": "answered",
+      "category": "ok"
+    },
+    {
+      "id": "B2-008",
+      "policy": "trigger",
+      "calls": 3,
+      "call_errors": [],
+      "raw_outputs": [
+        {
+          "sample": 0,
+          "text": "L1: between(Priya, Ingrid, Rohan)\nL2: none\nL3: none\nL4: none\nL5: between(Rohan, Ingrid, Nadia)\nL6: between(Priya, Ingrid, Rohan)\nL7: none\nL8: none\nL9: between(Rohan, Nadia, Ingrid)\nL10: later(Nadia, Ingrid)\nL11: not_station(Priya, calibration)\nL12: none\nL13: between(Rohan, Nadia, Ingrid)\nL14: before(intake, Rohan)\nL15: none\nL16: before(intake, Ingrid)\nL17: none\nL18: earlier(Ingrid, Rohan)\nL19: none",
+          "error": null,
+          "finish_reason": "stop",
+          "model": "ibm-granite/granite-4.2-8b",
+          "latency_s": 1.94
+        },
+        {
+          "sample": 1,
+          "text": "L1: between(Priya, Ingrid, Rohan)\nL2: none\nL3: none\nL4: none\nL5: between(Rohan, Ingrid, Nadia)\nL6: between(Priya, Ingrid, Rohan)\nL7: none\nL8: none\nL9: between(Rohan, Nadia, Ingrid)\nL10: not_at(Nadia, 11:00)\nL11: not_station(Priya, calibration)\nL12: none\nL13: between(Rohan, Nadia, Ingrid)\nL14: before(intake, Rohan)\nL15: none\nL16: before(intake, Ingrid)\nL17: none\nL18: earlier(Ingrid, Rohan)\nL19: none",
+          "error": null,
+          "finish_reason": "stop",
+          "model": "ibm-granite/granite-4.2-8b",
+          "latency_s": 2.45
+        },
+        {
+          "sample": 2,
+          "text": "L1: between(Priya, Ingrid, Rohan)\nL2: none\nL3: none\nL4: none\nL5: between(Rohan, Ingrid, Nadia)\nL6: between(Priya, Ingrid, Rohan)\nL7: none\nL8: none\nL9: between(Rohan, Nadia, Ingrid)\nL10: later(Nadia, Ingrid)\nL11: not_station(Priya, calibration)\nL12: none\nL13: between(Rohan, Nadia, Ingrid)\nL14: before(calibration, Rohan)\nL15: none\nL16: before(intake, Ingrid)\nL17: none\nL18: earlier(Ingrid, Rohan)\nL19: none",
+          "error": null,
+          "finish_reason": "stop",
+          "model": "ibm-granite/granite-4.2-8b",
+          "latency_s": 2.7
+        }
+      ],
+      "failed_calls": 0,
+      "line_status_counts": {
+        "ok": 27,
+        "none": 27,
+        "invalid": 3
+      },
+      "line_statuses": [
+        [
+          "ok",
+          "none",
+          "none",
+          "none",
+          "ok",
+          "ok",
+          "none",
+          "none",
+          "ok",
+          "ok",
+          "ok",
+          "none",
+          "ok",
+          "ok",
+          "none",
+          "ok",
+          "none",
+          "invalid",
+          "none"
+        ],
+        [
+          "ok",
+          "none",
+          "none",
+          "none",
+          "ok",
+          "ok",
+          "none",
+          "none",
+          "ok",
+          "ok",
+          "ok",
+          "none",
+          "ok",
+          "ok",
+          "none",
+          "ok",
+          "none",
+          "invalid",
+          "none"
+        ],
+        [
+          "ok",
+          "none",
+          "none",
+          "none",
+          "ok",
+          "ok",
+          "none",
+          "none",
+          "ok",
+          "ok",
+          "ok",
+          "none",
+          "ok",
+          "ok",
+          "none",
+          "ok",
+          "none",
+          "invalid",
+          "none"
+        ]
+      ],
+      "declared": "unique",
+      "solutions": 1,
+      "core_size": null,
+      "unusable_lines": [
+        18
+      ],
+      "outcome": "answered",
+      "category": "degraded"
+    },
+    {
+      "id": "B2-009",
+      "policy": "trigger",
+      "calls": 3,
+      "call_errors": [],
+      "raw_outputs": [
+        {
+          "sample": 0,
+          "text": "L1: none\nL2: none\nL3: none\nL4: at(Rohan, 09:00)\nL5: none\nL6: none\nL7: none\nL8: none\nL9: at(Rohan, 09:00)\nL10: none\nL11: not_at(Priya, 13:00)\nL12: earlier(Meera, Daniel)\nL13: none\nL14: none\nL15: later(Priya, intake)\nL16: none\nL17: not_at(Priya, 13:00)\nL18: not_station(Daniel, packing) ; not_station(Meera, packing) ; not_station(Rohan, packing) ; not_station(Ingrid, packing)",
+          "error": null,
+          "finish_reason": "stop",
+          "model": "ibm-granite/granite-4.2-8b",
+          "latency_s": 1.9
+        },
+        {
+          "sample": 1,
+          "text": "L1: none\nL2: none\nL3: none\nL4: at(Rohan, 09:00)\nL5: none\nL6: none\nL7: none\nL8: none\nL9: earlier(Meera, Priya)\nL10: none\nL11: not_at(Priya, 13:00)\nL12: earlier(Meera, Daniel)\nL13: none\nL14: unclear\nL15: later(Priya, intake)\nL16: none\nL17: not_at(Priya, 13:00)\nL18: not_station(Daniel, packing) ; not_station(Meera, packing) ; not_station(Ingrid, packing) ; not_station(Rohan, packing) ; not_station(Priya, packing)",
+          "error": null,
+          "finish_reason": "stop",
+          "model": "ibm-granite/granite-4.2-8b",
+          "latency_s": 1.93
+        },
+        {
+          "sample": 2,
+          "text": "L1: none\nL2: none\nL3: none\nL4: at(Rohan, 09:00)\nL5: none\nL6: none\nL7: none\nL8: none\nL9: not_station(Meera, intake) ; station(Rohan, calibration) ; at(Rohan, 09:00)\nL10: none\nL11: not_at(Priya, 13:00)\nL12: before(Meera, Daniel)\nL13: not_at(Daniel, 15:00)\nL14: unclear\nL15: later(Priya, intake)\nL16: none\nL17: not_at(Priya, 13:00)\nL18: not_station(Daniel, packing) ; not_station(Meera, packing) ; not_station(Rohan, packing) ; not_station(Priya, packing)",
+          "error": null,
+          "finish_reason": "stop",
+          "model": "ibm-granite/granite-4.2-8b",
+          "latency_s": 2.23
+        }
+      ],
+      "failed_calls": 0,
+      "line_status_counts": {
+        "none": 30,
+        "ok": 17,
+        "invalid": 3,
+        "unclear": 2,
+        "contradictory": 2
+      },
+      "line_statuses": [
+        [
+          "none",
+          "none",
+          "none",
+          "ok",
+          "none",
+          "none",
+          "none",
+          "none",
+          "ok",
+          "none",
+          "ok",
+          "invalid",
+          "none",
+          "none",
+          "ok",
+          "none",
+          "ok",
+          "ok"
+        ],
+        [
+          "none",
+          "none",
+          "none",
+          "ok",
+          "none",
+          "none",
+          "none",
+          "none",
+          "invalid",
+          "none",
+          "ok",
+          "invalid",
+          "none",
+          "unclear",
+          "ok",
+          "none",
+          "ok",
+          "contradictory"
+        ],
+        [
+          "none",
+          "none",
+          "none",
+          "ok",
+          "none",
+          "none",
+          "none",
+          "none",
+          "ok",
+          "none",
+          "ok",
+          "ok",
+          "ok",
+          "unclear",
+          "ok",
+          "none",
+          "ok",
+          "contradictory"
+        ]
+      ],
+      "declared": "ambiguous",
+      "solutions": 11,
+      "core_size": null,
+      "unusable_lines": [],
+      "outcome": "answered",
+      "category": "ok"
+    },
+    {
+      "id": "B2-010",
+      "policy": "trigger",
+      "calls": 1,
+      "call_errors": [],
+      "raw_outputs": [
+        {
+          "sample": 0,
+          "text": "L1: not_station(Ingrid, calibration)\nL2: between(Meera, Ayesha, Lukas)\nL3: none\nL4: not_station(Meera, intake)\nL5: none\nL6: none\nL7: not_station(Meera, calibration)\nL8: not_station(Ingrid, calibration)\nL9: not_station(Meera, packing)\nL10: none\nL11: between(Lukas, Ayesha, Ingrid)\nL12: before(calibration, Ingrid)\nL13: none\nL14: none\nL15: none\nL16: not_at(Ayesha, 07:00)\nL17: none\nL18: none\nL19: none",
+          "error": null,
+          "finish_reason": "stop",
+          "model": "ibm-granite/granite-4.2-8b",
+          "latency_s": 2.09
+        }
+      ],
+      "failed_calls": 0,
+      "line_status_counts": {
+        "ok": 9,
+        "none": 10
+      },
+      "line_statuses": [
+        [
+          "ok",
+          "ok",
+          "none",
+          "ok",
+          "none",
+          "none",
+          "ok",
+          "ok",
+          "ok",
+          "none",
+          "ok",
+          "ok",
+          "none",
+          "none",
+          "none",
+          "ok",
+          "none",
+          "none",
+          "none"
+        ]
+      ],
+      "declared": "inconsistent",
+      "solutions": 0,
+      "core_size": 3,
+      "unusable_lines": [],
+      "outcome": "answered",
+      "category": "ok"
+    },
+    {
+      "id": "B2-011",
+      "policy": "trigger",
+      "calls": 1,
+      "call_errors": [],
+      "raw_outputs": [
+        {
+          "sample": 0,
+          "text": "L1: none\nL2: none\nL3: next(Nadia, Meera)\nL4: at(Ayesha, 11:00)\nL5: between(Meera, Ayesha, Nadia)\nL6: between(Daniel, Nadia, Tomas)\nL7: next(Ayesha, Meera)\nL8: between(Daniel, Meera, Tomas)\nL9: none\nL10: none\nL11: none\nL12: none\nL13: none\nL14: none\nL15: none\nL16: at(Ayesha, 11:00)\nL17: station(Ayesha, calibration)\nL18: station(Daniel, intake)\nL19: none",
+          "error": null,
+          "finish_reason": "stop",
+          "model": "ibm-granite/granite-4.2-8b",
+          "latency_s": 2.71
+        }
+      ],
+      "failed_calls": 0,
+      "line_status_counts": {
+        "none": 10,
+        "ok": 9
+      },
+      "line_statuses": [
+        [
+          "none",
+          "none",
+          "ok",
+          "ok",
+          "ok",
+          "ok",
+          "ok",
+          "ok",
+          "none",
+          "none",
+          "none",
+          "none",
+          "none",
+          "none",
+          "none",
+          "ok",
+          "ok",
+          "ok",
+          "none"
+        ]
+      ],
+      "declared": "inconsistent",
+      "solutions": 0,
+      "core_size": 2,
+      "unusable_lines": [],
+      "outcome": "answered",
+      "category": "ok"
+    },
+    {
+      "id": "B2-012",
+      "policy": "trigger",
+      "calls": 1,
+      "call_errors": [],
+      "raw_outputs": [
+        {
+          "sample": 0,
+          "text": "L1: none\nL2: none\nL3: not_station(Ayesha, calibration)\nL4: at(Daniel, 15:00)\nL5: not_station(Daniel, packing)\nL6: not_at(Meera, 15:00)\nL7: none\nL8: none\nL9: none\nL10: none\nL11: none\nL12: none\nL13: next(Nadia, Meera)\nL14: between(Meera, Nadia, Ayesha)\nL15: before(Nadia, calibration)\nL16: none\nL17: none\nL18: later(Nadia, calibration)",
+          "error": null,
+          "finish_reason": "stop",
+          "model": "ibm-granite/granite-4.2-8b",
+          "latency_s": 1.92
+        }
+      ],
+      "failed_calls": 0,
+      "line_status_counts": {
+        "none": 10,
+        "ok": 8
+      },
+      "line_statuses": [
+        [
+          "none",
+          "none",
+          "ok",
+          "ok",
+          "ok",
+          "ok",
+          "none",
+          "none",
+          "none",
+          "none",
+          "none",
+          "none",
+          "ok",
+          "ok",
+          "ok",
+          "none",
+          "none",
+          "ok"
+        ]
+      ],
+      "declared": "inconsistent",
+      "solutions": 0,
+      "core_size": 2,
+      "unusable_lines": [],
+      "outcome": "answered",
+      "category": "ok"
+    },
+    {
+      "id": "B2-013",
+      "policy": "trigger",
+      "calls": 1,
+      "call_errors": [],
+      "raw_outputs": [
+        {
+          "sample": 0,
+          "text": "L1: station(Tomas, intake)\nL2: not_at(Tomas, 09:00)\nL3: none\nL4: none\nL5: none\nL6: none\nL7: none\nL8: at(Nadia, 11:00)\nL9: none\nL10: between(Nadia, Ayesha, Daniel)\nL11: next(Nadia, Rohan)\nL12: none\nL13: none\nL14: none\nL15: next(Nadia, Rohan)\nL16: none\nL17: station(Daniel, packing)\nL18: at(Daniel, 15:00)\nL19: between(Rohan, Daniel, Tomas)",
+          "error": null,
+          "finish_reason": "stop",
+          "model": "ibm-granite/granite-4.2-8b",
+          "latency_s": 2.3
+        }
+      ],
+      "failed_calls": 0,
+      "line_status_counts": {
+        "ok": 9,
+        "none": 10
+      },
+      "line_statuses": [
+        [
+          "ok",
+          "ok",
+          "none",
+          "none",
+          "none",
+          "none",
+          "none",
+          "ok",
+          "none",
+          "ok",
+          "ok",
+          "none",
+          "none",
+          "none",
+          "ok",
+          "none",
+          "ok",
+          "ok",
+          "ok"
+        ]
+      ],
+      "declared": "unique",
+      "solutions": 1,
+      "core_size": null,
+      "unusable_lines": [],
+      "outcome": "answered",
+      "category": "ok"
+    },
+    {
+      "id": "B2-014",
+      "policy": "trigger",
+      "calls": 1,
+      "call_errors": [],
+      "raw_outputs": [
+        {
+          "sample": 0,
+          "text": "L1: none\nL2: none\nL3: none\nL4: before(calibration, Ayesha)\nL5: none\nL6: none\nL7: none\nL8: none\nL9: none\nL10: between(Priya, Samuel, Daniel)\nL11: between(Samuel, Priya, Meera)\nL12: between(Samuel, Meera, Priya)\nL13: between(Daniel, Meera, Ayesha)\nL14: before(calibration, Daniel)\nL15: none\nL16: before(intake, Ayesha)\nL17: before(packing, Priya)\nL18: none\nL19: before(intake, Ayesha)",
+          "error": null,
+          "finish_reason": "stop",
+          "model": "ibm-granite/granite-4.2-8b",
+          "latency_s": 2.19
+        }
+      ],
+      "failed_calls": 0,
+      "line_status_counts": {
+        "none": 10,
+        "ok": 9
+      },
+      "line_statuses": [
+        [
+          "none",
+          "none",
+          "none",
+          "ok",
+          "none",
+          "none",
+          "none",
+          "none",
+          "none",
+          "ok",
+          "ok",
+          "ok",
+          "ok",
+          "ok",
+          "none",
+          "ok",
+          "ok",
+          "none",
+          "ok"
+        ]
+      ],
+      "declared": "ambiguous",
+      "solutions": 4,
+      "core_size": null,
+      "unusable_lines": [],
+      "outcome": "answered",
+      "category": "ok"
+    },
+    {
+      "id": "B2-015",
+      "policy": "trigger",
+      "calls": 1,
+      "call_errors": [],
+      "raw_outputs": [
+        {
+          "sample": 0,
+          "text": "L1: between(Samuel, Daniel, Meera)\nL2: none\nL3: none\nL4: not_station(Samuel, intake)\nL5: none\nL6: none\nL7: none\nL8: not_station(Samuel, calibration)\nL9: not_station(Lukas, packing)\nL10: before(calibration, Priya)\nL11: none\nL12: not_station(Samuel, calibration)\nL13: not_at(Meera, 07:00)\nL14: none\nL15: none\nL16: between(Lukas, Daniel, Samuel)\nL17: not_station(Meera, packing)\nL18: none\nL19: none",
+          "error": null,
+          "finish_reason": "stop",
+          "model": "ibm-granite/granite-4.2-8b",
+          "latency_s": 3.43
+        }
+      ],
+      "failed_calls": 0,
+      "line_status_counts": {
+        "ok": 9,
+        "none": 10
+      },
+      "line_statuses": [
+        [
+          "ok",
+          "none",
+          "none",
+          "ok",
+          "none",
+          "none",
+          "none",
+          "ok",
+          "ok",
+          "ok",
+          "none",
+          "ok",
+          "ok",
+          "none",
+          "none",
+          "ok",
+          "ok",
+          "none",
+          "none"
+        ]
+      ],
+      "declared": "ambiguous",
+      "solutions": 4,
+      "core_size": null,
+      "unusable_lines": [],
+      "outcome": "answered",
+      "category": "ok"
+    },
+    {
+      "id": "B2-016",
+      "policy": "trigger",
+      "calls": 1,
+      "call_errors": [],
+      "raw_outputs": [
+        {
+          "sample": 0,
+          "text": "L1: next(Daniel, Nadia)\nL2: none\nL3: none\nL4: later(Lukas, Ayesha)\nL5: none\nL6: next(Lukas, Daniel)\nL7: not_station(Tomas, calibration)\nL8: not_at(Lukas, 13:00)\nL9: none\nL10: none\nL11: before(Tomas, Ayesha)\nL12: none\nL13: none\nL14: before(intake, Lukas)\nL15: none\nL16: at(Tomas, 13:00)\nL17: none\nL18: next(Daniel, Nadia)",
+          "error": null,
+          "finish_reason": "stop",
+          "model": "ibm-granite/granite-4.2-8b",
+          "latency_s": 2.46
+        }
+      ],
+      "failed_calls": 0,
+      "line_status_counts": {
+        "ok": 9,
+        "none": 9
+      },
+      "line_statuses": [
+        [
+          "ok",
+          "none",
+          "none",
+          "ok",
+          "none",
+          "ok",
+          "ok",
+          "ok",
+          "none",
+          "none",
+          "ok",
+          "none",
+          "none",
+          "ok",
+          "none",
+          "ok",
+          "none",
+          "ok"
+        ]
+      ],
+      "declared": "inconsistent",
+      "solutions": 0,
+      "core_size": 3,
+      "unusable_lines": [],
+      "outcome": "answered",
+      "category": "ok"
+    },
+    {
+      "id": "B2-017",
+      "policy": "trigger",
+      "calls": 2,
+      "call_errors": [],
+      "raw_outputs": [
+        {
+          "sample": 0,
+          "text": "L1: station(Ingrid, intake)\nL2: none\nL3: none\nL4: between(Priya, Nadia, Meera)\nL5: none\nL6: before(calibration, Nadia)\nL7: between(Ingrid, Priya, Nadia)\nL8: between(Priya, Meera, Nadia)\nL9: later(Nadia, Samuel) ; later(Nadia, Ingrid) ; before(Nadia, Samuel) ; before(Nadia, Ingrid)\nL10: none\nL11: not_at(Nadia, 09:00)\nL12: not_at(Ingrid, 09:00)\nL13: none\nL14: none\nL15: station(Ingrid, intake)\nL16: not_at(Meera, 09:00)\nL17: none\nL18: none\nL19: none\nL20: later(Ingrid, Meera) ; later(Ingrid, Samuel) ; before(Ingrid, Meera) ; before(Ingrid, Samuel)",
+          "error": null,
+          "finish_reason": "stop",
+          "model": "ibm-granite/granite-4.2-8b",
+          "latency_s": 2.78
+        },
+        {
+          "sample": 1,
+          "text": "L1: station(Ingrid, intake)\nL2: none\nL3: none\nL4: between(Priya, Nadia, Meera)\nL5: none\nL6: before(Nadia, calibration)\nL7: between(Ingrid, Priya, Nadia)\nL8: between(Priya, Meera, Nadia)\nL9: later(Nadia, Samuel) ; later(Nadia, Ingrid)\nL10: none\nL11: not_at(Nadia, 09:00)\nL12: not_at(Ingrid, 09:00)\nL13: none\nL14: none\nL15: station(Ingrid, intake)\nL16: not_at(Meera, 09:00)\nL17: none\nL18: none\nL19: none\nL20: later(Ingrid, Samuel) ; later(Ingrid, Meera)",
+          "error": null,
+          "finish_reason": "stop",
+          "model": "ibm-granite/granite-4.2-8b",
+          "latency_s": 2.36
+        }
+      ],
+      "failed_calls": 0,
+      "line_status_counts": {
+        "ok": 20,
+        "none": 18,
+        "contradictory": 2
+      },
+      "line_statuses": [
+        [
+          "ok",
+          "none",
+          "none",
+          "ok",
+          "none",
+          "ok",
+          "ok",
+          "ok",
+          "contradictory",
+          "none",
+          "ok",
+          "ok",
+          "none",
+          "none",
+          "ok",
+          "ok",
+          "none",
+          "none",
+          "none",
+          "contradictory"
+        ],
+        [
+          "ok",
+          "none",
+          "none",
+          "ok",
+          "none",
+          "ok",
+          "ok",
+          "ok",
+          "ok",
+          "none",
+          "ok",
+          "ok",
+          "none",
+          "none",
+          "ok",
+          "ok",
+          "none",
+          "none",
+          "none",
+          "ok"
+        ]
+      ],
+      "declared": "ambiguous",
+      "solutions": 2,
+      "core_size": null,
+      "unusable_lines": [],
+      "outcome": "answered",
+      "category": "ok"
+    },
+    {
+      "id": "B2-018",
+      "policy": "trigger",
+      "calls": 1,
+      "call_errors": [],
+      "raw_outputs": [
+        {
+          "sample": 0,
+          "text": "L1: before(calibration, Daniel)\nL2: at(Nadia, 13:00)\nL3: at(Tomas, 09:00)\nL4: none\nL5: none\nL6: not_at(Tomas, 09:00)\nL7: none\nL8: before(intake, Tomas)\nL9: between(Nadia, Daniel, Tomas)\nL10: none\nL11: none\nL12: none\nL13: not_station(Priya, calibration)\nL14: none\nL15: between(Daniel, Ayesha, Tomas)\nL16: none\nL17: none\nL18: next(Ayesha, Daniel)\nL19: between(Nadia, Daniel, Tomas)\nL20: none",
+          "error": null,
+          "finish_reason": "stop",
+          "model": "ibm-granite/granite-4.2-8b",
+          "latency_s": 2.91
+        }
+      ],
+      "failed_calls": 0,
+      "line_status_counts": {
+        "ok": 10,
+        "none": 10
+      },
+      "line_statuses": [
+        [
+          "ok",
+          "ok",
+          "ok",
+          "none",
+          "none",
+          "ok",
+          "none",
+          "ok",
+          "ok",
+          "none",
+          "none",
+          "none",
+          "ok",
+          "none",
+          "ok",
+          "none",
+          "none",
+          "ok",
+          "ok",
+          "none"
+        ]
+      ],
+      "declared": "inconsistent",
+      "solutions": 0,
+      "core_size": 2,
+      "unusable_lines": [],
+      "outcome": "answered",
+      "category": "ok"
+    },
+    {
+      "id": "B2-019",
+      "policy": "trigger",
+      "calls": 1,
+      "call_errors": [],
+      "raw_outputs": [
+        {
+          "sample": 0,
+          "text": "L1: none\nL2: none\nL3: not_station(Rohan, packing)\nL4: between(Samuel, Rohan, Nadia)\nL5: none\nL6: none\nL7: none\nL8: none\nL9: station(Nadia, calibration)\nL10: none\nL11: next(Priya, Rohan)\nL12: between(Nadia, Daniel, Samuel)\nL13: none\nL14: between(Samuel, Daniel, Priya)\nL15: between(Samuel, Rohan, Nadia)\nL16: none\nL17: at(Daniel, 07:00)\nL18: none",
+          "error": null,
+          "finish_reason": "stop",
+          "model": "ibm-granite/granite-4.2-8b",
+          "latency_s": 2.34
+        }
+      ],
+      "failed_calls": 0,
+      "line_status_counts": {
+        "none": 10,
+        "ok": 8
+      },
+      "line_statuses": [
+        [
+          "none",
+          "none",
+          "ok",
+          "ok",
+          "none",
+          "none",
+          "none",
+          "none",
+          "ok",
+          "none",
+          "ok",
+          "ok",
+          "none",
+          "ok",
+          "ok",
+          "none",
+          "ok",
+          "none"
+        ]
+      ],
+      "declared": "unique",
+      "solutions": 1,
+      "core_size": null,
+      "unusable_lines": [],
+      "outcome": "answered",
+      "category": "ok"
+    },
+    {
+      "id": "B2-020",
+      "policy": "trigger",
+      "calls": 1,
+      "call_errors": [],
+      "raw_outputs": [
+        {
+          "sample": 0,
+          "text": "L1: none\nL2: none\nL3: none\nL4: later(Rohan, intake)\nL5: none\nL6: at(Rohan, 11:00)\nL7: station(Daniel, calibration)\nL8: station(Nadia, calibration)\nL9: none\nL10: none\nL11: none\nL12: before(Priya, Meera) ; later(Meera, Priya)\nL13: between(Daniel, Nadia, Priya)\nL14: at(Meera, 15:00)\nL15: none\nL16: none\nL17: station(Daniel, packing)\nL18: at(Meera, 15:00)",
+          "error": null,
+          "finish_reason": "stop",
+          "model": "ibm-granite/granite-4.2-8b",
+          "latency_s": 2.04
+        }
+      ],
+      "failed_calls": 0,
+      "line_status_counts": {
+        "none": 9,
+        "ok": 9
+      },
+      "line_statuses": [
+        [
+          "none",
+          "none",
+          "none",
+          "ok",
+          "none",
+          "ok",
+          "ok",
+          "ok",
+          "none",
+          "none",
+          "none",
+          "ok",
+          "ok",
+          "ok",
+          "none",
+          "none",
+          "ok",
+          "ok"
+        ]
+      ],
+      "declared": "inconsistent",
+      "solutions": 0,
+      "core_size": 2,
+      "unusable_lines": [],
+      "outcome": "answered",
+      "category": "ok"
+    },
+    {
+      "id": "B2-021",
+      "policy": "trigger",
+      "calls": 3,
+      "call_errors": [],
+      "raw_outputs": [
+        {
+          "sample": 0,
+          "text": "L1: none\nL2: none\nL3: none\nL4: between(Daniel, Ingrid, Samuel)\nL5: at(Ayesha, 09:00)\nL6: none\nL7: station(Daniel, calibration)\nL8: none\nL9: none\nL10: later(Daniel, Lukas)\nL11: between(Daniel, Samuel, Ingrid)\nL12: between(Daniel, Ingrid, Samuel)\nL13: between(Ayesha, Lukas, Samuel)\nL14: earlier(Samuel, Ingrid)\nL15: not_at(Daniel, 11:00)\nL16: none\nL17: before(packing, Ingrid)\nL18: none\nL19: none",
+          "error": null,
+          "finish_reason": "stop",
+          "model": "ibm-granite/granite-4.2-8b",
+          "latency_s": 2.54
+        },
+        {
+          "sample": 1,
+          "text": "L1: none\nL2: none\nL3: none\nL4: between(Daniel, Ingrid, Samuel)\nL5: at(Ayesha, 09:00)\nL6: none\nL7: station(Daniel, calibration)\nL8: none\nL9: none\nL10: later(Daniel, Lukas)\nL11: between(Daniel, Samuel, Ingrid)\nL12: between(Daniel, Ingrid, Samuel)\nL13: between(Ayesha, Lukas, Samuel)\nL14: earlier(Samuel, Ingrid)\nL15: not_at(Daniel, 11:00)\nL16: none\nL17: before(packing, Ingrid)\nL18: none\nL19: none",
+          "error": null,
+          "finish_reason": "stop",
+          "model": "ibm-granite/granite-4.2-8b",
+          "latency_s": 1.89
+        },
+        {
+          "sample": 2,
+          "text": "L1: none\nL2: none\nL3: none\nL4: between(Daniel, Ingrid, Samuel)\nL5: at(Ayesha, 09:00)\nL6: none\nL7: station(Daniel, calibration)\nL8: none\nL9: none\nL10: later(Daniel, Lukas)\nL11: between(Daniel, Samuel, Ingrid)\nL12: between(Daniel, Ingrid, Samuel)\nL13: between(Ayesha, Lukas, Samuel)\nL14: earlier(Samuel, Ingrid)\nL15: not_at(Daniel, 11:00)\nL16: none\nL17: before(packing, Ingrid)\nL18: none\nL19: none",
+          "error": null,
+          "finish_reason": "stop",
+          "model": "ibm-granite/granite-4.2-8b",
+          "latency_s": 1.94
+        }
+      ],
+      "failed_calls": 0,
+      "line_status_counts": {
+        "none": 27,
+        "ok": 27,
+        "invalid": 3
+      },
+      "line_statuses": [
+        [
+          "none",
+          "none",
+          "none",
+          "ok",
+          "ok",
+          "none",
+          "ok",
+          "none",
+          "none",
+          "ok",
+          "ok",
+          "ok",
+          "ok",
+          "invalid",
+          "ok",
+          "none",
+          "ok",
+          "none",
+          "none"
+        ],
+        [
+          "none",
+          "none",
+          "none",
+          "ok",
+          "ok",
+          "none",
+          "ok",
+          "none",
+          "none",
+          "ok",
+          "ok",
+          "ok",
+          "ok",
+          "invalid",
+          "ok",
+          "none",
+          "ok",
+          "none",
+          "none"
+        ],
+        [
+          "none",
+          "none",
+          "none",
+          "ok",
+          "ok",
+          "none",
+          "ok",
+          "none",
+          "none",
+          "ok",
+          "ok",
+          "ok",
+          "ok",
+          "invalid",
+          "ok",
+          "none",
+          "ok",
+          "none",
+          "none"
+        ]
+      ],
+      "declared": "ambiguous",
+      "solutions": 2,
+      "core_size": null,
+      "unusable_lines": [
+        14
+      ],
+      "outcome": "answered",
+      "category": "degraded"
+    },
+    {
+      "id": "B2-022",
+      "policy": "trigger",
+      "calls": 2,
+      "call_errors": [],
+      "raw_outputs": [
+        {
+          "sample": 0,
+          "text": "L1: none\nL2: none\nL3: none\nL4: none\nL5: none\nL6: between(Tomas, Ingrid, Priya)\nL7: none\nL8: not_station(Priya, calibration)\nL9: none\nL10: none\nL11: station(intake, ?) none? but must be relation: \"Intake is covered before Samuel comes on.\" This means the station intake is held by someone, and that someone works before Samuel. However \"Intake is covered before Samuel comes on.\" We know who holds intake? Not specified directly. But we can deduce that the holder of intake works before Samuel. We have relation: before(intake_holder, Samuel) but we don't know who holds intake. The relation must be about persons or stations? The relation X, Y, A and B are a person or a station. So we can write before(intake, Samuel). That seems plausible: \"Intake is covered before Samuel comes on.\" Means the station intake (i.e., whoever holds intake) works an earlier block than Samuel. So we can write before(intake, Samuel). However \"intake\" is a station; \"Samuel\" is a person. The relation before(X, Y) where X and Y are persons or stations? The spec says X, Y, A and B are a person or a station. So yes, we can use station as first argument. So L11: before(intake, Samuel). Similarly L12: before(intake, Ayesha). L19: \"The person on intake precedes Ayesha.\" That is before(intake, Ayesha) as well? But careful: \"The person on intake precedes Ayesha.\" That means the person who holds intake works earlier than Ayesha. So before(intake, Ayesha). However L12 already says intake is covered before Ayesha comes on. That is same meaning. So L12 and L19 both say before(intake, Ayesha). That's consistent.\n\nThus L11: before(intake, Samuel). L12: before(intake, Ayesha). L19: before(intake, Ayesha) (maybe same). But we must not repeat? We just output the relation based on the line alone. So L11: before(intake, Samuel). L12: before(intake, Ayesha). L19: before(intake, Ayesha). However check L11: \"Intake is covered before Samuel comes on.\" Means the coverage (i.e., the station intake) occurs before Samuel starts his block. So indeed before(intake, Samuel). Similarly L12: before(intake, Ayesha). L19: \"The person on intake precedes Ayesha.\" So before(intake, Ayesha). Good.\n\nL13: between(Tomas, Ayesha, Ingrid) as per line.\n\nL14: at(Tomas, 13:00)\n\nL15: not_at(Ayesha, 09:00)\n\nL6 says: \"Tomas is on after one of Ingrid and Priya and before the other.\" Means Tomas works after one of Ingrid and Priya and before the other. So it's exactly that Tomas is between Ingrid and Priya? It says \"after one of Ingrid and Priya and before the other.\" That means Tomas works somewhere between Ingrid and Priya, with the order that one of them is before Tomas and the other after Tomas. That is exactly between(Tomas, Ingrid, Priya) (order doesn't matter which is before). So L6: between(Tomas, Ingrid, Priya). That's what we wrote.\n\nL4: \"Ingrid and Priya car-share when their shifts allow.\" That's about car-sharing, not a rota constraint about blocks or stations. So none.\n\nL2: \"in the spring Ingrid held intake for a while.\" That's about past; not current rota? It says \"in the spring\" which is past, but could be interpreted as current? The rule says only statements about the current rota count. \"in the spring\" is past tense, likely not current rota. So none.\n\nL3: \"Samuel and the 13:00 block came up, but nothing was minuted.\" Not a constraint.\n\nL5: panel mention.\n\nL7: emergency contact sheet, not rota.\n\nL8: calibration not Priya's station -> not_station(Priya, calibration) (but we already have that from L8). Wait L8 says \"Calibration is not Priya's station.\" That's directly not_station(Priya, calibration). So L8: not_station(Priya, calibration). However L4 says car-share, irrelevant. So L8: not_station(Priya, calibration). We must output that.\n\nBut we already wrote not_station(Priya, calibration) for L8? In my earlier list I wrote not_station(Priya, calibration) for L8. Good.\n\nL9: hypothetical \"would have been a better fit\" -> none.\n\nL10: \"I'm fairly sure Samuel is the point of contact for the fire drill.\" That's a statement about role, not necessarily station? Could be that Samuel is the point of contact for fire drill, might imply he holds some station? Not definite. So none.\n\nL16: filled equipment survey -> none.\n\nL17: \"I'm fairly sure the 07:00 block is Priya's.\" That's a statement that could be at(Priya, 07:00). However \"fairly sure\" indicates uncertainty. The rule says do not weaken; but we must translate only what the line itself states. The line says \"I'm fairly sure the 07:00 block is Priya's.\" This is a statement with uncertainty (fairly sure). The rule says do not explain and do not weaken? It says \"Hedges such as 'I think' or 'as far as I know', and lead-ins such as 'To repeat:', do not weaken a statement.\" Actually it says: \"Hedges such as 'I think' or 'as far as I know', and lead-ins such as 'To repeat:', do not weaken a statement.\" Wait reading: \"Hedges such as 'I think' or 'as far as I know', and lead-ins such as 'To repeat:', do not weaken a statement.\" That seems contradictory: they say do not weaken a statement? Possibly they mean do not treat them as weakening; i.e., still treat the statement as factual? But earlier they say: \"Only statements about the current rota count.\" And under \"Only statements about the current rota count.\" they list wishes, requests, etc. as not counting. \"I'm fairly sure\" is a hedge indicating uncertainty. Likely it should be considered as a claim that may not be definite, but the instruction says \"Translate lines of shift notes into formal constraints.\" And \"Do not explain, quote the input, add notes or reason aloud.\" I think we should treat \"I'm fairly sure\" as uncertain, thus not a definite constraint? However earlier example: L14 had \"To repeat: I think 16:00 belongs to Dev.\" They output at(Dev, 16:00) despite \"I think\". In the example, L14: \"To repeat: I think 16:00 belongs to Dev.\" They output L14: at(Dev, 16:00). So they ignored the hedge \"I think\". Similarly L6 had \"as far as I know\" and they output before(testing, Dev). So hedges like \"I think\", \"as far as I know\" do not prevent extracting the fact if it's stated as a fact (maybe the note-writer believes it). So we should extract the fact that 16:00 belongs to Dev. So \"I'm fairly sure the 07:00 block is Priya's.\" can be translated to at(Priya, 07:00). However careful: \"the 07:00 block is Priya's\" could mean Priya is rostered for that block. So yes, at(Priya, 07:00). So L17: at(Priya, 07:00). But note there may be conflict with other statements? However we only translate what the line states; we don't check consistency across lines. So L17: at(Priya, 07:00).\n\nL2 also mentions Ingrid held intake in spring; but that's past, not current, but maybe still a fact about current rota? It says \"in the spring Ingrid held intake for a while.\" That could be describing current? Might be past tense; but the note might be about current rota? However the rule says \"Only statements about the current rota count.\" Past statements like \"in the spring\" are not about current rota? Likely they are about past, so none. So L2: none.\n\nThus final list:\n\nL1: none\nL2: none\nL3: none\nL4: none\nL5: none\nL6: between(Tomas, Ingrid, Priya)\nL",
+          "error": null,
+          "finish_reason": "length",
+          "model": "ibm-granite/granite-4.2-8b",
+          "latency_s": 18.06
+        },
+        {
+          "sample": 1,
+          "text": "L1: none\nL2: none\nL3: none\nL4: none\nL5: none\nL6: next(Ingrid, Tomas) ; next(Priya, Tomas)\nL7: none\nL8: not_station(Priya, calibration)\nL9: none\nL10: none\nL11: before(intake, Samuel)\nL12: before(intake, Ayesha)\nL13: between(Tomas, Ayesha, Ingrid)\nL14: at(Tomas, 13:00)\nL15: none\nL16: none\nL17: at(Priya, 07:00)\nL18: none\nL19: before(intake, Ayesha)",
+          "error": null,
+          "finish_reason": "stop",
+          "model": "ibm-granite/granite-4.2-8b",
+          "latency_s": 2.38
+        }
+      ],
+      "failed_calls": 0,
+      "line_status_counts": {
+        "none": 20,
+        "ok": 11,
+        "invalid": 3,
+        "missing": 3,
+        "contradictory": 1
+      },
+      "line_statuses": [
+        [
+          "none",
+          "none",
+          "none",
+          "none",
+          "none",
+          "ok",
+          "none",
+          "ok",
+          "none",
+          "none",
+          "invalid",
+          "missing",
+          "invalid",
+          "ok",
+          "ok",
+          "none",
+          "invalid",
+          "missing",
+          "missing"
+        ],
+        [
+          "none",
+          "none",
+          "none",
+          "none",
+          "none",
+          "contradictory",
+          "none",
+          "ok",
+          "none",
+          "none",
+          "ok",
+          "ok",
+          "ok",
+          "ok",
+          "none",
+          "none",
+          "ok",
+          "none",
+          "ok"
+        ]
+      ],
+      "declared": "ambiguous",
+      "solutions": 2,
+      "core_size": null,
+      "unusable_lines": [],
+      "outcome": "answered",
+      "category": "ok"
+    },
+    {
+      "id": "B2-023",
+      "policy": "trigger",
+      "calls": 1,
+      "call_errors": [],
+      "raw_outputs": [
+        {
+          "sample": 0,
+          "text": "L1: none\nL2: between(Daniel, Lukas, Nadia)\nL3: none\nL4: before(Lukas, Rohan)\nL5: none\nL6: none\nL7: before(packing, Tomas)\nL8: not_at(Lukas, 09:00)\nL9: station(Lukas, packing)\nL10: before(calibration, Daniel)\nL11: none\nL12: none\nL13: before(Lukas, Rohan)\nL14: none\nL15: none\nL16: between(Rohan, Daniel, Tomas)\nL17: none\nL18: before(packing, Daniel)\nL19: none\nL20: station(Rohan, intake)",
+          "error": null,
+          "finish_reason": "stop",
+          "model": "ibm-granite/granite-4.2-8b",
+          "latency_s": 1.94
+        }
+      ],
+      "failed_calls": 0,
+      "line_status_counts": {
+        "none": 10,
+        "ok": 10
+      },
+      "line_statuses": [
+        [
+          "none",
+          "ok",
+          "none",
+          "ok",
+          "none",
+          "none",
+          "ok",
+          "ok",
+          "ok",
+          "ok",
+          "none",
+          "none",
+          "ok",
+          "none",
+          "none",
+          "ok",
+          "none",
+          "ok",
+          "none",
+          "ok"
+        ]
+      ],
+      "declared": "inconsistent",
+      "solutions": 0,
+      "core_size": 4,
+      "unusable_lines": [],
+      "outcome": "answered",
+      "category": "ok"
+    },
+    {
+      "id": "B2-024",
+      "policy": "trigger",
+      "calls": 3,
+      "call_errors": [],
+      "raw_outputs": [
+        {
+          "sample": 0,
+          "text": "L1: between(Ingrid, Meera, Rohan)\nL2: none\nL3: later(Rohan, Ingrid)\nL4: none\nL5: none\nL6: none\nL7: none\nL8: not_station(Priya, packing)\nL9: earlier(Priya, Nadia)\nL10: none\nL11: none\nL12: none\nL13: not_station(Ingrid, intake)\nL14: none\nL15: between(Nadia, Ingrid, Rohan)\nL15: between(Nadia, Meera, Rohan)\nL16: between(Rohan, Meera, Priya)\nL17: before(Meera, Nadia)\nL18: none\nL19: between(Rohan, Meera, Priya)\nL20: none\nL21: not_station(Ingrid, packing)",
+          "error": null,
+          "finish_reason": "stop",
+          "model": "ibm-granite/granite-4.2-8b",
+          "latency_s": 3.76
+        },
+        {
+          "sample": 1,
+          "text": "L1: between(Ingrid, Meera, Rohan)\nL2: none\nL3: later(Rohan, Ingrid)\nL4: none\nL5: none\nL6: none\nL7: none\nL8: not_station(Priya, packing)\nL9: earlier(Priya, Nadia)\nL10: none\nL11: none\nL12: none\nL13: not_station(Ingrid, intake)\nL14: none\nL15: between(Nadia, Ingrid, Rohan)\nL16: between(Rohan, Meera, Priya)\nL17: before(Meera, Nadia)\nL18: none\nL19: next(Meera, Rohan) ; next(Rohan, Priya)\nL20: none\nL21: none",
+          "error": null,
+          "finish_reason": "stop",
+          "model": "ibm-granite/granite-4.2-8b",
+          "latency_s": 2.09
+        },
+        {
+          "sample": 2,
+          "text": "L1: between(Ingrid, Meera, Rohan)\nL2: none\nL3: later(Rohan, Ingrid)\nL4: none\nL5: none\nL6: none\nL7: none\nL8: not_station(Priya, packing)\nL9: earlier(Priya, Nadia)\nL10: none\nL11: none\nL12: none\nL13: not_station(Ingrid, intake)\nL14: none\nL15: between(Nadia, Ingrid, Rohan)\nL15: between(Nadia, Meera, Rohan)\nL16: between(Rohan, Meera, Priya)\nL17: before(Meera, Nadia)\nL18: none\nL19: next(Meera, Rohan) ; next(Rohan, Priya)   # Note: \"sits between\" with no gap means consecutive? But \"between\" is defined as somewhere between, not necessarily consecutive. However \"sits between\" in a rota order typically implies they appear one after another with no one else in between? The line says \"Rohan sits between Meera and Priya on the rota.\" That means in the sequence of blocks, Rohan is between Meera and Priya, not necessarily adjacent. But the relation \"between(Rohan, Meera, Priya)\" would be accurate: Rohan works a block between Meera's and Priya's blocks. However we already have other relations that might conflict? We must only translate the line as stated: \"Rohan sits between Meera and Priya on the rota.\" That means Rohan's block is between Meera's and Priya's blocks. So between(Rohan, Meera, Priya). But we also have line 16: \"whichever way round Meera and Priya are, Rohan is between them.\" That also gives between(Rohan, Meera, Priya). And line 15 gives between(Nadia, Ingrid, Rohan). However we need to output per line only. So L19: between(Rohan, Meera, Priya). But careful: \"sits between\" means in the schedule order, Rohan is between Meera and Priya. That's exactly between(Rohan, Meera, Priya). So L19: between(Rohan, Meera, Priya).\nL20: none\nL21: none\n\nBut wait: we must output exactly one relation per line, possibly multiple with ; if the line states several separate facts. However some lines like L15: \"As far as I know, whichever way round Ingrid and Rohan are, Nadia is between them.\" That means regardless of order of Ingrid and Rohan, Nadia is between them. That is exactly between(Nadia, Ingrid, Rohan). Similarly L16: \"Whichever way round Meera and Priya are, Rohan is between them.\" -> between(Rohan, Meera, Priya). L1: \"Ingrid is on after one of Meera and Rohan and before the other.\" That means Ingrid is between Meera and Rohan (i.e., between Meera and Rohan, with Ingrid between them). That is between(Ingrid, Meera, Rohan). Good.\n\nL9: \"Priya's block falls somewhere earlier than Nadia's.\" That is earlier(Priya, Nadia). But our relation set includes before(X,Y) for X earlier than Y? Actually we have before(X,Y) - X works an earlier block than Y. So earlier(Priya, Nadia) should be before(Priya, Nadia). Similarly L17: \"Meera is done before Nadia starts.\" -> before(Meera, Nadia). L3: \"Rohan comes later in the day than Ingrid.\" -> later(Rohan, Ingrid). Good.\n\nNow we need to ensure consistency? We are only translating what the line states, not checking consistency. So for each line we output the relation(s) that directly capture the statement.\n\nLet's re-evaluate each line:\n\nL1: \"Ingrid is on after one of Meera and Rohan and before the other.\" Means Ingrid is after exactly one of {Meera, Rohan} and before the other. So Ingrid is between Meera and Rohan. Exactly between(Ingrid, Meera, Rohan). No extra conditions. So L1: between(Ingrid, Meera, Rohan).\n\nL2: \"The recycling collection has moved to Wednesdays.\" No info about people, blocks, stations -> none.\n\nL3: \"Rohan comes later in the day than Ingrid.\" -> later(Rohan, Ingrid).\n\nL4: \"The site coordinator noted that the car park resurfacing runs through the end of the month.\" none.\n\nL5: \"Nobody has claimed the jacket left in the break room.\" none.\n\nL6: \"Rohan completed the fire-safety refresher last quarter.\" none.\n\nL7: \"In the spring Priya held packing for a while.\" This is a past arrangement; not current rota -> none (since it's earlier or hypothetical? It says \"held packing for a while\" in the spring, which is past. So not current -> none).\n\nL8: \"Priya is not assigned to packing.\" -> not_station(Priya, packing).\n\nL9: \"Priya's block falls somewhere earlier than Nadia's.\" -> before(Priya, Nadia). (earlier means before)\n\nL10: \"Putting Rohan on the 09:00 block would have solved the parking problem.\" hypothetical -> none.\n\nL11: \"Deliveries continue to arrive through the north gate.\" none.\n\nL12: \"Meera lobbied for 09:00 without success.\" request not granted, earlier arrangement -> none.\n\nL13: \"Speaking from memory, Ingrid is not on intake.\" -> not_station(Ingrid, intake).\n\nL14: \"As far as I know, calibration is covered by someone other than Priya.\" This means calibration station is held by someone not Priya. But we don't know who; it's uncertain and \"as far as I know\". That is a statement of uncertainty? It says \"calibration is covered by someone other than Priya.\" Could be definite? It says \"someone other than Priya\". Since we know station holders are Nadia, Ingrid, Priya, and calibration station must be held by one of them. So it's a definite statement that calibration is not Priya. But \"someone other than Priya\" could be ambiguous if we don't know who, but it's a fact that calibration is not Priya. However the line includes \"as far as I know\", which indicates uncertainty? The rule: \"Hedges such as 'I think' or 'as far as I know', and lead-ins such as 'To repeat:', do not weaken a statement.\" Actually we must not weaken: we should take the statement as stated. The phrase \"as far as I know\" might imply uncertainty, but the instruction says: \"Do not weaken a statement.\" However we must translate only what the line itself states. The line says: \"As far as I know, calibration is covered by someone other than Priya.\" This includes the hedge \"as far as I know\". According to rules: \"Only statements about the current rota count.\" And \"Unclear - the line states a fact about the current rota that no relation above can express.\" But \"calibration is covered by someone other than Priya\" is a definite statement about the rota? It says \"someone other than Priya\". That could be considered a definite fact if we accept it. However because of \"as far as I know\", it might be uncertain. But the rule says: \"A line that puts X between A and B in either order, or after one of them and before the other, is exactly one relation: between(X, A, B). Being between two people never means being next to them.\" For uncertain statements like \"someone other than Priya\", we cannot assign a specific person. But we can say not_station(Priya, calibration). That is a definite relation that calibration station is not held by Priya. That is consistent and can be expressed as not_station(Priya, calibration). However the hedge \"as far as I know\" might make it uncertain, but the instruction says: \"Do not weaken a statement.\" That means we should not make it weaker than stated. The statement includes \"as far as I know\", which might mean it's not certain. But we are to output relations that are true according to the line. If the line says \"as far as I know, calibration is covered by someone other than Priya\", it might be stating a belief. The rules say: \"Only statements about the current rota count.\" And \"unclear - the line states a fact about the current rota that no relation above can express.\" Also \"A line that says nothing about which block someone works or which station someone holds is none.\" But here it does say something: calibration station is covered by someone other than Priya. That can be expressed as not_station(Priya, calibration).",
+          "error": null,
+          "finish_reason": "length",
+          "model": "ibm-granite/granite-4.2-8b",
+          "latency_s": 18.34
+        }
+      ],
+      "failed_calls": 0,
+      "line_status_counts": {
+        "ok": 26,
+        "none": 35,
+        "invalid": 2
+      },
+      "line_statuses": [
+        [
+          "ok",
+          "none",
+          "ok",
+          "none",
+          "none",
+          "none",
+          "none",
+          "ok",
+          "invalid",
+          "none",
+          "none",
+          "none",
+          "ok",
+          "none",
+          "ok",
+          "ok",
+          "ok",
+          "none",
+          "ok",
+          "none",
+          "ok"
+        ],
+        [
+          "ok",
+          "none",
+          "ok",
+          "none",
+          "none",
+          "none",
+          "none",
+          "ok",
+          "invalid",
+          "none",
+          "none",
+          "none",
+          "ok",
+          "none",
+          "ok",
+          "ok",
+          "ok",
+          "none",
+          "ok",
+          "none",
+          "none"
+        ],
+        [
+          "ok",
+          "none",
+          "ok",
+          "none",
+          "none",
+          "none",
+          "none",
+          "ok",
+          "ok",
+          "none",
+          "none",
+          "none",
+          "ok",
+          "none",
+          "ok",
+          "ok",
+          "ok",
+          "none",
+          "ok",
+          "none",
+          "none"
+        ]
+      ],
+      "declared": "inconsistent",
+      "solutions": 0,
+      "core_size": 2,
+      "unusable_lines": [],
+      "outcome": "answered",
+      "category": "ok"
+    },
+    {
+      "id": "B2-025",
+      "policy": "trigger",
+      "calls": 1,
+      "call_errors": [],
+      "raw_outputs": [
+        {
+          "sample": 0,
+          "text": "L1: none\nL2: station(Ayesha, packing)\nL3: none\nL4: between(Daniel, Ayesha, Lukas)\nL5: between(Ayesha, Ingrid, Nadia)\nL6: none\nL7: later(Nadia, Daniel)\nL8: before(intake, Nadia)\nL9: none\nL10: not_at(Nadia, 13:00)\nL11: none\nL12: none\nL13: none\nL14: before(intake, Daniel)\nL15: none\nL16: next(Ingrid, Ayesha)\nL17: before(packing, Daniel)\nL18: none\nL19: next(Ingrid, Ayesha)",
+          "error": null,
+          "finish_reason": "stop",
+          "model": "ibm-granite/granite-4.2-8b",
+          "latency_s": 3.23
+        }
+      ],
+      "failed_calls": 0,
+      "line_status_counts": {
+        "none": 9,
+        "ok": 10
+      },
+      "line_statuses": [
+        [
+          "none",
+          "ok",
+          "none",
+          "ok",
+          "ok",
+          "none",
+          "ok",
+          "ok",
+          "none",
+          "ok",
+          "none",
+          "none",
+          "none",
+          "ok",
+          "none",
+          "ok",
+          "ok",
+          "none",
+          "ok"
+        ]
+      ],
+      "declared": "unique",
+      "solutions": 1,
+      "core_size": null,
+      "unusable_lines": [],
+      "outcome": "answered",
+      "category": "ok"
+    },
+    {
+      "id": "B2-026",
+      "policy": "trigger",
+      "calls": 2,
+      "call_errors": [],
+      "raw_outputs": [
+        {
+          "sample": 0,
+          "text": "L1: unclear\nL2: station(Ayesha, packing)\nL3: none\nL4: none\nL5: station(Ayesha, packing)\nL6: none\nL7: none\nL8: next(Samuel, Tomas)\nL9: none\nL10: none\nL11: none\nL12: station(Meera, intake)\nL13: none\nL14: none\nL15: at(Nadia, 07:00)\nL16: none\nL17: between(Meera, Tomas, Ayesha)\nL18: before(packing, Tomas)",
+          "error": null,
+          "finish_reason": "stop",
+          "model": "ibm-granite/granite-4.2-8b",
+          "latency_s": 1.72
+        },
+        {
+          "sample": 1,
+          "text": "L1: between(Ayesha, Meera, Nadia)\nL2: station(Ayesha, packing)\nL3: none\nL4: none\nL5: station(Ayesha, packing)\nL6: none\nL7: none\nL8: next(Samuel, Tomas)\nL9: none\nL10: none\nL11: none\nL12: station(Meera, intake)\nL13: none\nL14: none\nL15: at(Nadia, 07:00)\nL16: none\nL17: between(Meera, Tomas, Ayesha)\nL18: before(packing, Tomas)",
+          "error": null,
+          "finish_reason": "stop",
+          "model": "ibm-granite/granite-4.2-8b",
+          "latency_s": 1.69
+        }
+      ],
+      "failed_calls": 0,
+      "line_status_counts": {
+        "unclear": 1,
+        "ok": 15,
+        "none": 20
+      },
+      "line_statuses": [
+        [
+          "unclear",
+          "ok",
+          "none",
+          "none",
+          "ok",
+          "none",
+          "none",
+          "ok",
+          "none",
+          "none",
+          "none",
+          "ok",
+          "none",
+          "none",
+          "ok",
+          "none",
+          "ok",
+          "ok"
+        ],
+        [
+          "ok",
+          "ok",
+          "none",
+          "none",
+          "ok",
+          "none",
+          "none",
+          "ok",
+          "none",
+          "none",
+          "none",
+          "ok",
+          "none",
+          "none",
+          "ok",
+          "none",
+          "ok",
+          "ok"
+        ]
+      ],
+      "declared": "unique",
+      "solutions": 1,
+      "core_size": null,
+      "unusable_lines": [],
+      "outcome": "answered",
+      "category": "ok"
+    },
+    {
+      "id": "B2-027",
+      "policy": "trigger",
+      "calls": 1,
+      "call_errors": [],
+      "raw_outputs": [
+        {
+          "sample": 0,
+          "text": "L1: none\nL2: none\nL3: before(calibration, Tomas)\nL4: none\nL5: at(Priya, 15:00)\nL6: station(Tomas, packing)\nL7: station(Meera, calibration)\nL8: none\nL9: none\nL10: station(Meera, calibration)\nL11: not_at(Tomas, 09:00)\nL12: none\nL13: none\nL14: none\nL15: none\nL16: before(Meera, Ayesha)\nL17: none\nL18: between(Nadia, Priya, Tomas)",
+          "error": null,
+          "finish_reason": "stop",
+          "model": "ibm-granite/granite-4.2-8b",
+          "latency_s": 2.22
+        }
+      ],
+      "failed_calls": 0,
+      "line_status_counts": {
+        "none": 10,
+        "ok": 8
+      },
+      "line_statuses": [
+        [
+          "none",
+          "none",
+          "ok",
+          "none",
+          "ok",
+          "ok",
+          "ok",
+          "none",
+          "none",
+          "ok",
+          "ok",
+          "none",
+          "none",
+          "none",
+          "none",
+          "ok",
+          "none",
+          "ok"
+        ]
+      ],
+      "declared": "unique",
+      "solutions": 1,
+      "core_size": null,
+      "unusable_lines": [],
+      "outcome": "answered",
+      "category": "ok"
+    },
+    {
+      "id": "B2-028",
+      "policy": "trigger",
+      "calls": 1,
+      "call_errors": [],
+      "raw_outputs": [
+        {
+          "sample": 0,
+          "text": "L1: none\nL2: between(Meera, Priya, Daniel)\nL3: none\nL4: between(Meera, Tomas, Lukas)\nL5: none\nL6: none\nL7: none\nL8: before(packing, Lukas)\nL9: none\nL10: not_at(Meera, 09:00)\nL11: not_at(Lukas, 15:00)\nL12: not_at(Lukas, 07:00)\nL13: none\nL14: none\nL15: none\nL16: none\nL17: between(Meera, Priya, Daniel)\nL18: later(Tomas, calibration)",
+          "error": null,
+          "finish_reason": "stop",
+          "model": "ibm-granite/granite-4.2-8b",
+          "latency_s": 2.7
+        }
+      ],
+      "failed_calls": 0,
+      "line_status_counts": {
+        "none": 10,
+        "ok": 8
+      },
+      "line_statuses": [
+        [
+          "none",
+          "ok",
+          "none",
+          "ok",
+          "none",
+          "none",
+          "none",
+          "ok",
+          "none",
+          "ok",
+          "ok",
+          "ok",
+          "none",
+          "none",
+          "none",
+          "none",
+          "ok",
+          "ok"
+        ]
+      ],
+      "declared": "ambiguous",
+      "solutions": 3,
+      "core_size": null,
+      "unusable_lines": [],
+      "outcome": "answered",
+      "category": "ok"
+    },
+    {
+      "id": "B2-029",
+      "policy": "trigger",
+      "calls": 2,
+      "call_errors": [],
+      "raw_outputs": [
+        {
+          "sample": 0,
+          "text": "L1: later(Nadia, packing)\nL2: later(Tomas, Daniel)\nL3: between(Tomas, Lukas, Rohan)\nL4: not_at(Tomas, 13:00)\nL5: none\nL6: earlier(Tomas, Nadia)\nL7: not_at(Tomas, 13:00)\nL8: none\nL9: between(Nadia, Lukas, Rohan)\nL10: later(Rohan, Nadia)\nL11: none\nL12: none\nL13: none\nL14: station(Tomas, intake)\nL15: none\nL15: not_station(Tomas, calibration)\nL16: none\nL17: none\nL18: none",
+          "error": null,
+          "finish_reason": "stop",
+          "model": "ibm-granite/granite-4.2-8b",
+          "latency_s": 1.98
+        },
+        {
+          "sample": 1,
+          "text": "L1: later(Nadia, packing)\nL2: later(Tomas, Daniel)\nL3: between(Tomas, Lukas, Rohan)\nL4: not_at(Tomas, 13:00)\nL5: none\nL6: before(Tomas, Nadia)\nL7: not_at(Tomas, 13:00)\nL8: none\nL9: between(Nadia, Lukas, Rohan)\nL10: later(Rohan, Nadia)\nL11: none\nL12: none\nL13: none\nL14: station(Tomas, intake)\nL15: none\nL16: none\nL17: none\nL18: none",
+          "error": null,
+          "finish_reason": "stop",
+          "model": "ibm-granite/granite-4.2-8b",
+          "latency_s": 1.89
+        }
+      ],
+      "failed_calls": 0,
+      "line_status_counts": {
+        "ok": 17,
+        "none": 18,
+        "invalid": 1
+      },
+      "line_statuses": [
+        [
+          "ok",
+          "ok",
+          "ok",
+          "ok",
+          "none",
+          "invalid",
+          "ok",
+          "none",
+          "ok",
+          "ok",
+          "none",
+          "none",
+          "none",
+          "ok",
+          "none",
+          "none",
+          "none",
+          "none"
+        ],
+        [
+          "ok",
+          "ok",
+          "ok",
+          "ok",
+          "none",
+          "ok",
+          "ok",
+          "none",
+          "ok",
+          "ok",
+          "none",
+          "none",
+          "none",
+          "ok",
+          "none",
+          "none",
+          "none",
+          "none"
+        ]
+      ],
+      "declared": "ambiguous",
+      "solutions": 4,
+      "core_size": null,
+      "unusable_lines": [],
+      "outcome": "answered",
+      "category": "ok"
+    },
+    {
+      "id": "B2-030",
+      "policy": "trigger",
+      "calls": 1,
+      "call_errors": [],
+      "raw_outputs": [
+        {
+          "sample": 0,
+          "text": "L1: none\nL2: between(Nadia, Rohan, Ingrid)\nL3: before(intake, Ingrid)\nL4: none\nL5: between(Rohan, Ingrid, Lukas)\nL6: between(Rohan, Samuel, Nadia)\nL7: none\nL8: none\nL9: next(Lukas, Rohan)\nL10: none\nL11: none\nL12: none\nL13: between(Lukas, Samuel, Ingrid)\nL14: between(Rohan, Ingrid, Lukas)\nL15: none\nL16: none\nL17: between(Nadia, Lukas, Ingrid)\nL18: none\nL19: station(Lukas, calibration)",
+          "error": null,
+          "finish_reason": "stop",
+          "model": "ibm-granite/granite-4.2-8b",
+          "latency_s": 2.48
+        }
+      ],
+      "failed_calls": 0,
+      "line_status_counts": {
+        "none": 10,
+        "ok": 9
+      },
+      "line_statuses": [
+        [
+          "none",
+          "ok",
+          "ok",
+          "none",
+          "ok",
+          "ok",
+          "none",
+          "none",
+          "ok",
+          "none",
+          "none",
+          "none",
+          "ok",
+          "ok",
+          "none",
+          "none",
+          "ok",
+          "none",
+          "ok"
+        ]
+      ],
+      "declared": "unique",
+      "solutions": 1,
+      "core_size": null,
+      "unusable_lines": [],
+      "outcome": "answered",
+      "category": "ok"
+    },
+    {
+      "id": "B2-031",
+      "policy": "trigger",
+      "calls": 2,
+      "call_errors": [],
+      "raw_outputs": [
+        {
+          "sample": 0,
+          "text": "L1: none\nL2: none\nL3: between(Priya, Rohan, Ayesha)\nL4: none\nL5: none\nL6: between(Priya, Rohan, Meera)\nL7: not_between(Meera, Ayesha)  ; but \"not between\" is not a relation — must use only defined relations.\nHowever, \"There is no block between Meera's and Ayesha's, in that order.\" means no block strictly between Meera's block and Ayesha's block when Meera comes before Ayesha? The phrase \"in that order\" suggests Meera before Ayesha. So if Meera's block is before Ayesha's, there is no block between them. This means they are consecutive (next to each other) if Meera is before Ayesha, or could Meera after Ayesha? \"in that order\" means Meera's then Ayesha's. So if we interpret \"Meera's and Ayesha's, in that order\", it means Meera's block precedes Ayesha's block, and there is no block strictly between them. That is exactly next(Meera, Ayesha) if Meera is before Ayesha, but we don't know which one is before. The phrase \"Meera's and Ayesha's, in that order\" indicates Meera first, then Ayesha. So it specifies the order: Meera before Ayesha, and no block between. Thus we can infer next(Meera, Ayesha). But the line says \"There is no block between Meera's and Ayesha's, in that order.\" — it states that in the order Meera then Ayesha, there is no block between. So if Meera is before Ayesha, they are consecutive. But we don't know if Meera is before Ayesha; however \"in that order\" tells us to consider Meera first, then Ayesha. So it asserts that when placed in that order (Meera before Ayesha), no block lies between. So effectively it says Meera and Ayesha are consecutive with Meera before Ayesha. Thus next(Meera, Ayesha). But we must use only relations from the list. We can write next(Meera, Ayesha) if we are sure Meera is before Ayesha. The phrase \"in that order\" tells us the order: Meera's then Ayesha's. So yes, we can infer next(Meera, Ayesha). However, is it necessarily that Meera is before Ayesha? The phrase \"in that order\" likely means as mentioned: \"Meera's and Ayesha's, in that order\" i.e., Meera first, then Ayesha. So it specifies the relative order. Thus we can say next(Meera, Ayesha). But we must check: \"There is no block between Meera's and Ayesha's, in that order.\" — if there is no block between them in that order, it means if Meera's block is immediately followed by Ayesha's block (with no block in between), so they are consecutive with Meera before Ayesha. So relation: next(Meera, Ayesha). But note: \"block\" refers to time blocks (07:00, 09:00, etc.). So yes, next(Meera, Ayesha) is valid.\n\nBut we must translate only what the line states. The line says: \"There is no block between Meera's and Ayesha's, in that order.\" It does not say \"Meera is before Ayesha\", but \"in that order\" indicates Meera first, Ayesha second. So it is stating that when ordered as Meera then Ayesha, there is no block between. That implies they are consecutive in that order. So we can write next(Meera, Ayesha). However, \"next\" requires that Y works the block immediately after X's block. So next(Meera, Ayesha) means Ayesha's block is immediately after Meera's block. That matches \"no block between\" in that order. So L7: next(Meera, Ayesha) ?\n\nBut caution: The line might allow that Meera could be after Ayesha? No, because it says \"in that order\", meaning Meera's then Ayesha's. So it fixes the order. So we can say next(Meera, Ayesha). However, is it possible that Meera's block equals Ayesha's block? No, each person works exactly one block, so blocks are distinct. So yes, consecutive.\n\nBut we must be precise: \"in that order\" likely means as mentioned: first Meera's block, then Ayesha's block. So yes.\n\nThus L7: next(Meera, Ayesha)\n\nL8: next(Priya, Rohan) since \"Rohan is on the block directly after Priya\" -> next(Priya, Rohan)\n\nL9: none\n\nL10: \"As far as I know, the question of Ayesha on 07:00 was left open\" — this is uncertain, a discussion not settled. So none.\n\nL11: \"Put Priya between Rohan and Ayesha, though not necessarily next to either.\" -> between(Priya, Rohan, Ayesha) — same as L3 essentially. But L3 already said \"Whichever way round Rohan and Ayesha are, Priya is between them.\" That's equivalent: between Priya and Rohan/Ayesha in either order. L11 says \"Put Priya between Rohan and Ayesha\", also not necessarily next to either. So relation: between(Priya, Rohan, Ayesha). But note L3 and L11 both say this; we only translate per line. So L11: between(Priya, Rohan, Ayesha)\n\nL12: none\n\nL13: \"Rohan is not on intake.\" -> not_station(Rohan, intake)\n\nL14: \"Priya comes later in the day than Tomas.\" -> later(Priya, Tomas)\n\nL15: none\n\nL16: \"Priya put in for the 15:00 block and was turned down.\" — this is a request that was refused, but \"nobody has claimed\" etc. This line states a fact about Priya wanting 15:00 but being turned down. However, \"put in for\" might mean requested, but since it was turned down, it means Priya does not work 15:00. So we can say not_at(Priya, 15:00). But is it definite? Yes, \"was turned down\" indicates it is not granted. So she does not work 15:00. So not_at(Priya, 15:00)\n\nL17: \"Meera has calibration this week.\" — station(Meera, calibration) since Meera is a station holder (station holders: Priya, Rohan, Meera). So yes, Meera holds calibration station. So station(Meera, calibration)\n\nL18: \"Ayesha is not on the 15:00 block.\" -> not_at(Ayesha, 15:00)\n\nL19: none (\"standing commitment that rules out the 13:00 block\" — hypothetical? \"rules out\" might be a certainty? But \"My recollection is that...\" introduces doubt? It says \"My recollection is that Tomas has a standing commitment that rules out the 13:00 block entirely.\" This is a statement of recollection, possibly uncertain. But since it says \"rules out\", it might be a fact. However, \"My recollection is that\" suggests it might be remembered incorrectly. The rules say: \"questions, doubts or discussions that were never settled\" are none. But \"rules out\" could be a definite constraint if it's a standing commitment. However, the phrase \"My recollection is that\" introduces potential uncertainty. The instruction: \"Never add facts from other lines, from the input lists or from guesses.\" And \"A line that says nothing about which block someone works or which station someone holds is none.\" Also: \"Do not weaken a statement.\" Here it's a recollection, so might be uncertain. Better to output none for L19 to be safe, because it's reported recollection. But the line states a fact as recalled: \"Tomas has a standing commitment that rules out the 13:00 block entirely.\" If it's a standing commitment, it might be true. However, since it's \"my recollection\", it could be wrong. The rules say: \"Never add facts... from guesses.\" This is not a guess but a recollection reported. However, the line itself says \"My recollection is that...\", which indicates uncertainty or possible error. The guidelines: \"Hedges such as 'I think' or 'as far as I know', and lead-ins such as 'To repeat:' do not weaken a statement.\" But here it's \"My recollection is that\", which is a hedge. So we should treat it as uncertain and output none. Similarly L10 had \"As far as I know\", output none. So",
+          "error": null,
+          "finish_reason": "length",
+          "model": "ibm-granite/granite-4.2-8b",
+          "latency_s": 18.21
+        },
+        {
+          "sample": 1,
+          "text": "L1: none\nL2: none\nL3: between(Priya, Rohan, Ayesha)\nL4: none\nL5: none\nL6: between(Priya, Rohan, Meera)\nL7: next(Meera, Ayesha)\nL8: next(Priya, Rohan)\nL9: none\nL10: none\nL11: between(Priya, Rohan, Ayesha)\nL12: none\nL13: not_station(Rohan, intake)\nL14: later(Priya, Tomas)\nL15: none\nL16: not_at(Priya, 15:00)\nL17: station(Meera, calibration)\nL18: not_at(Ayesha, 15:00)\nL19: none\nL20: between(Priya, Ayesha, Rohan)\nL21: not_at(Tomas, 13:00)",
+          "error": null,
+          "finish_reason": "stop",
+          "model": "ibm-granite/granite-4.2-8b",
+          "latency_s": 2.94
+        }
+      ],
+      "failed_calls": 0,
+      "line_status_counts": {
+        "none": 17,
+        "ok": 19,
+        "invalid": 4,
+        "missing": 2
+      },
+      "line_statuses": [
+        [
+          "none",
+          "none",
+          "ok",
+          "none",
+          "none",
+          "ok",
+          "invalid",
+          "ok",
+          "none",
+          "invalid",
+          "ok",
+          "none",
+          "ok",
+          "ok",
+          "none",
+          "invalid",
+          "invalid",
+          "ok",
+          "none",
+          "missing",
+          "missing"
+        ],
+        [
+          "none",
+          "none",
+          "ok",
+          "none",
+          "none",
+          "ok",
+          "ok",
+          "ok",
+          "none",
+          "none",
+          "ok",
+          "none",
+          "ok",
+          "ok",
+          "none",
+          "ok",
+          "ok",
+          "ok",
+          "none",
+          "ok",
+          "ok"
+        ]
+      ],
+      "declared": "ambiguous",
+      "solutions": 2,
+      "core_size": null,
+      "unusable_lines": [],
+      "outcome": "answered",
+      "category": "ok"
+    },
+    {
+      "id": "B2-032",
+      "policy": "trigger",
+      "calls": 1,
+      "call_errors": [],
+      "raw_outputs": [
+        {
+          "sample": 0,
+          "text": "L1: none\nL2: not_at(Ingrid, 09:00)\nL3: before(Meera, Ingrid)\nL4: none\nL5: before(packing, Ingrid)\nL6: none\nL7: none\nL8: none\nL9: station(Daniel, packing)\nL10: none\nL11: none\nL12: between(Meera, Daniel, Samuel)\nL13: at(Daniel, 11:00)\nL14: before(intake, Ingrid)\nL15: between(Meera, Daniel, Samuel)\nL16: none\nL17: none",
+          "error": null,
+          "finish_reason": "stop",
+          "model": "ibm-granite/granite-4.2-8b",
+          "latency_s": 2.63
+        }
+      ],
+      "failed_calls": 0,
+      "line_status_counts": {
+        "none": 9,
+        "ok": 8
+      },
+      "line_statuses": [
+        [
+          "none",
+          "ok",
+          "ok",
+          "none",
+          "ok",
+          "none",
+          "none",
+          "none",
+          "ok",
+          "none",
+          "none",
+          "ok",
+          "ok",
+          "ok",
+          "ok",
+          "none",
+          "none"
+        ]
+      ],
+      "declared": "unique",
+      "solutions": 1,
+      "core_size": null,
+      "unusable_lines": [],
+      "outcome": "answered",
+      "category": "ok"
+    },
+    {
+      "id": "B2-033",
+      "policy": "trigger",
+      "calls": 1,
+      "call_errors": [],
+      "raw_outputs": [
+        {
+          "sample": 0,
+          "text": "L1: none\nL2: between(Meera, Ingrid, Tomas)\nL3: none\nL4: not_at(Samuel, 13:00)\nL5: none\nL6: none\nL7: before(Ingrid, Samuel)\nL8: next(Lukas, Ingrid)\nL9: none\nL10: none\nL11: before(calibration, Tomas)\nL12: next(Meera, Samuel)\nL13: not_station(Meera, packing)\nL14: before(Meera, Tomas)\nL15: none\nL16: none\nL17: before(packing, Ingrid)\nL18: next(Ingrid, Samuel)\nL19: none",
+          "error": null,
+          "finish_reason": "stop",
+          "model": "ibm-granite/granite-4.2-8b",
+          "latency_s": 1.91
+        }
+      ],
+      "failed_calls": 0,
+      "line_status_counts": {
+        "none": 9,
+        "ok": 10
+      },
+      "line_statuses": [
+        [
+          "none",
+          "ok",
+          "none",
+          "ok",
+          "none",
+          "none",
+          "ok",
+          "ok",
+          "none",
+          "none",
+          "ok",
+          "ok",
+          "ok",
+          "ok",
+          "none",
+          "none",
+          "ok",
+          "ok",
+          "none"
+        ]
+      ],
+      "declared": "inconsistent",
+      "solutions": 0,
+      "core_size": 2,
+      "unusable_lines": [],
+      "outcome": "answered",
+      "category": "ok"
+    },
+    {
+      "id": "B2-034",
+      "policy": "trigger",
+      "calls": 1,
+      "call_errors": [],
+      "raw_outputs": [
+        {
+          "sample": 0,
+          "text": "L1: none\nL2: none\nL3: none\nL4: none\nL5: not_at(Tomas, 11:00)\nL6: none\nL7: between(Tomas, Rohan, Samuel)\nL8: none\nL9: later(Ingrid, Samuel)\nL10: before(calibration, Samuel)\nL11: none\nL12: none\nL13: not_station(Samuel, packing)\nL14: none\nL15: none\nL16: none\nL17: between(Tomas, Rohan, Samuel)\nL18: before(calibration, Rohan)",
+          "error": null,
+          "finish_reason": "stop",
+          "model": "ibm-granite/granite-4.2-8b",
+          "latency_s": 2.32
+        }
+      ],
+      "failed_calls": 0,
+      "line_status_counts": {
+        "none": 11,
+        "ok": 7
+      },
+      "line_statuses": [
+        [
+          "none",
+          "none",
+          "none",
+          "none",
+          "ok",
+          "none",
+          "ok",
+          "none",
+          "ok",
+          "ok",
+          "none",
+          "none",
+          "ok",
+          "none",
+          "none",
+          "none",
+          "ok",
+          "ok"
+        ]
+      ],
+      "declared": "unique",
+      "solutions": 1,
+      "core_size": null,
+      "unusable_lines": [],
+      "outcome": "answered",
+      "category": "ok"
+    },
+    {
+      "id": "B2-035",
+      "policy": "trigger",
+      "calls": 1,
+      "call_errors": [],
+      "raw_outputs": [
+        {
+          "sample": 0,
+          "text": "L1: none\nL2: none\nL3: none\nL4: none\nL5: not_at(Rohan, 15:00)\nL6: none\nL7: next(Rohan, Priya)\nL8: none\nL9: none\nL10: none\nL11: next(Tomas, Rohan)\nL12: later(Priya, calibration)\nL13: none\nL14: next(Daniel, Samuel)\nL15: not_station(Samuel, packing)\nL16: not_at(Daniel, 11:00)\nL17: before(Rohan, calibration)\nL18: next(Daniel, Samuel)\nL19: not_at(Tomas, 13:00)\nL20: not_station(Priya, calibration)",
+          "error": null,
+          "finish_reason": "stop",
+          "model": "ibm-granite/granite-4.2-8b",
+          "latency_s": 3.35
+        }
+      ],
+      "failed_calls": 0,
+      "line_status_counts": {
+        "none": 9,
+        "ok": 11
+      },
+      "line_statuses": [
+        [
+          "none",
+          "none",
+          "none",
+          "none",
+          "ok",
+          "none",
+          "ok",
+          "none",
+          "none",
+          "none",
+          "ok",
+          "ok",
+          "none",
+          "ok",
+          "ok",
+          "ok",
+          "ok",
+          "ok",
+          "ok",
+          "ok"
+        ]
+      ],
+      "declared": "inconsistent",
+      "solutions": 0,
+      "core_size": 3,
+      "unusable_lines": [],
+      "outcome": "answered",
+      "category": "ok"
+    },
+    {
+      "id": "B2-036",
+      "policy": "trigger",
+      "calls": 1,
+      "call_errors": [],
+      "raw_outputs": [
+        {
+          "sample": 0,
+          "text": "L1: none\nL2: between(Daniel, Samuel, Meera)\nL3: none\nL4: none\nL5: none\nL6: none\nL7: none\nL8: none\nL9: station(Meera, intake)\nL10: none\nL11: at(Nadia, 07:00)\nL12: next(Samuel, Rohan)\nL13: between(Daniel, Meera, Rohan)\nL14: station(Nadia, packing)\nL15: not_at(Daniel, 09:00)\nL16: none\nL17: between(Daniel, Samuel, Meera)\nL18: none\nL19: station(Samuel, calibration)",
+          "error": null,
+          "finish_reason": "stop",
+          "model": "ibm-granite/granite-4.2-8b",
+          "latency_s": 2.51
+        }
+      ],
+      "failed_calls": 0,
+      "line_status_counts": {
+        "none": 10,
+        "ok": 9
+      },
+      "line_statuses": [
+        [
+          "none",
+          "ok",
+          "none",
+          "none",
+          "none",
+          "none",
+          "none",
+          "none",
+          "ok",
+          "none",
+          "ok",
+          "ok",
+          "ok",
+          "ok",
+          "ok",
+          "none",
+          "ok",
+          "none",
+          "ok"
+        ]
+      ],
+      "declared": "ambiguous",
+      "solutions": 2,
+      "core_size": null,
+      "unusable_lines": [],
+      "outcome": "answered",
+      "category": "ok"
+    },
+    {
+      "id": "B2-037",
+      "policy": "trigger",
+      "calls": 1,
+      "call_errors": [],
+      "raw_outputs": [
+        {
+          "sample": 0,
+          "text": "L1: none\nL2: not_at(Ingrid, 11:00)\nL3: none\nL4: station(Lukas, calibration)\nL5: none\nL6: none\nL7: at(Meera, 13:00)\nL8: not_station(Nadia, packing)\nL9: none\nL10: none\nL11: none\nL12: before(intake, Lukas)\nL13: none\nL14: next(Priya, Lukas)\nL15: none\nL16: not_station(Priya, packing)\nL17: none\nL18: at(Lukas, 09:00)",
+          "error": null,
+          "finish_reason": "stop",
+          "model": "ibm-granite/granite-4.2-8b",
+          "latency_s": 1.9
+        }
+      ],
+      "failed_calls": 0,
+      "line_status_counts": {
+        "none": 10,
+        "ok": 8
+      },
+      "line_statuses": [
+        [
+          "none",
+          "ok",
+          "none",
+          "ok",
+          "none",
+          "none",
+          "ok",
+          "ok",
+          "none",
+          "none",
+          "none",
+          "ok",
+          "none",
+          "ok",
+          "none",
+          "ok",
+          "none",
+          "ok"
+        ]
+      ],
+      "declared": "inconsistent",
+      "solutions": 0,
+      "core_size": 3,
+      "unusable_lines": [],
+      "outcome": "answered",
+      "category": "ok"
+    },
+    {
+      "id": "B2-038",
+      "policy": "trigger",
+      "calls": 1,
+      "call_errors": [],
+      "raw_outputs": [
+        {
+          "sample": 0,
+          "text": "L1: none\nL2: none\nL3: next(Rohan, Ingrid)\nL4: none\nL5: none\nL6: before(packing, Ingrid)\nL7: before(intake, Daniel)\nL8: before(packing, Rohan)\nL9: none\nL10: none\nL11: none\nL12: not_at(Rohan, 09:00)\nL13: none\nL14: not_at(Nadia, 07:00)\nL15: before(intake, Ingrid)\nL16: none\nL17: not_at(Rohan, 09:00)\nL18: none\nL19: none",
+          "error": null,
+          "finish_reason": "stop",
+          "model": "ibm-granite/granite-4.2-8b",
+          "latency_s": 1.88
+        }
+      ],
+      "failed_calls": 0,
+      "line_status_counts": {
+        "none": 11,
+        "ok": 8
+      },
+      "line_statuses": [
+        [
+          "none",
+          "none",
+          "ok",
+          "none",
+          "none",
+          "ok",
+          "ok",
+          "ok",
+          "none",
+          "none",
+          "none",
+          "ok",
+          "none",
+          "ok",
+          "ok",
+          "none",
+          "ok",
+          "none",
+          "none"
+        ]
+      ],
+      "declared": "ambiguous",
+      "solutions": 2,
+      "core_size": null,
+      "unusable_lines": [],
+      "outcome": "answered",
+      "category": "ok"
+    },
+    {
+      "id": "B2-039",
+      "policy": "trigger",
+      "calls": 3,
+      "call_errors": [],
+      "raw_outputs": [
+        {
+          "sample": 0,
+          "text": "L1: none\nL2: none\nL3: not_station(Ayesha, calibration)\nL4: none\nL5: none\nL6: not_station(Ayesha, intake)\nL7: none\nL8: next(Ayesha, Tomas) ; next(Nadia, Tomas)\nL9: none\nL10: none\nL11: none\nL12: between(Tomas, Ayesha, Ingrid)\nL13: between(Nadia, Tomas, Ingrid)\nL14: none\nL15: before(intake, Priya)\nL16: none\nL17: between(Tomas, Nadia, Priya)\nL18: later(Ayesha, Priya)\nL19: not_station(Nadia, packing)\nL20: between(Tomas, Nadia, Priya)",
+          "error": null,
+          "finish_reason": "stop",
+          "model": "ibm-granite/granite-4.2-8b",
+          "latency_s": 3.26
+        },
+        {
+          "sample": 1,
+          "text": "L1: none\nL2: none\nL3: not_station(Ayesha, calibration)\nL4: none\nL5: none\nL6: not_station(Ayesha, intake)\nL7: none\nL8: next(Ayesha, Tomas) ; next(Nadia, Tomas)\nL9: none\nL10: none\nL11: none\nL12: next(Ayesha, Tomas) ; next(Ingrid, Tomas)\nL13: between(Nadia, Tomas, Ingrid)\nL14: none\nL15: before(intake, Priya)\nL16: none\nL17: next(Nadia, Tomas) ; next(Priya, Tomas)\nL18: later(Ayesha, Priya)\nL19: not_station(Nadia, packing)\nL20: between(Tomas, Nadia, Priya)",
+          "error": null,
+          "finish_reason": "stop",
+          "model": "ibm-granite/granite-4.2-8b",
+          "latency_s": 2.78
+        },
+        {
+          "sample": 2,
+          "text": "L1: none\nL2: none\nL3: not_station(Ayesha, calibration)\nL4: none\nL5: none\nL6: not_station(Ayesha, intake)\nL7: none\nL8: next(Ayesha, Tomas) ; next(Nadia, Tomas)\nL9: none\nL10: none\nL11: none\nL12: between(Tomas, Ayesha, Ingrid)\nL13: between(Nadia, Tomas, Ingrid)\nL14: none\nL15: before(intake, Priya)\nL16: none\nL17: between(Tomas, Nadia, Priya)\nL18: later(Ayesha, Priya)\nL19: not_station(Nadia, packing)\nL20: between(Tomas, Nadia, Priya)",
+          "error": null,
+          "finish_reason": "stop",
+          "model": "ibm-granite/granite-4.2-8b",
+          "latency_s": 2.17
+        }
+      ],
+      "failed_calls": 0,
+      "line_status_counts": {
+        "none": 30,
+        "ok": 25,
+        "contradictory": 5
+      },
+      "line_statuses": [
+        [
+          "none",
+          "none",
+          "ok",
+          "none",
+          "none",
+          "ok",
+          "none",
+          "contradictory",
+          "none",
+          "none",
+          "none",
+          "ok",
+          "ok",
+          "none",
+          "ok",
+          "none",
+          "ok",
+          "ok",
+          "ok",
+          "ok"
+        ],
+        [
+          "none",
+          "none",
+          "ok",
+          "none",
+          "none",
+          "ok",
+          "none",
+          "contradictory",
+          "none",
+          "none",
+          "none",
+          "contradictory",
+          "ok",
+          "none",
+          "ok",
+          "none",
+          "contradictory",
+          "ok",
+          "ok",
+          "ok"
+        ],
+        [
+          "none",
+          "none",
+          "ok",
+          "none",
+          "none",
+          "ok",
+          "none",
+          "contradictory",
+          "none",
+          "none",
+          "none",
+          "ok",
+          "ok",
+          "none",
+          "ok",
+          "none",
+          "ok",
+          "ok",
+          "ok",
+          "ok"
+        ]
+      ],
+      "declared": "ambiguous",
+      "solutions": 2,
+      "core_size": null,
+      "unusable_lines": [
+        8
+      ],
+      "outcome": "answered",
+      "category": "degraded"
+    },
+    {
+      "id": "B2-040",
+      "policy": "trigger",
+      "calls": 1,
+      "call_errors": [],
+      "raw_outputs": [
+        {
+          "sample": 0,
+          "text": "L1: none\nL2: between(Daniel, Meera, Ayesha)\nL3: not_station(Ayesha, intake)\nL4: none\nL5: none\nL6: not_at(Ayesha, 13:00)\nL7: before(Ayesha, Meera)\nL8: none\nL9: before(calibration, Daniel)\nL10: between(Ayesha, Nadia, Daniel)\nL11: between(Daniel, Nadia, Samuel)\nL12: none\nL13: none\nL14: next(Nadia, Daniel) ; next(Daniel, Meera)\nL15: none\nL16: next(Daniel, Samuel) ; next(Samuel, Meera)\nL17: none\nL18: next(Ayesha, Daniel)\nL19: next(Daniel, Samuel) ; next(Samuel, Meera)\nL20: none",
+          "error": null,
+          "finish_reason": "stop",
+          "model": "ibm-granite/granite-4.2-8b",
+          "latency_s": 2.37
+        }
+      ],
+      "failed_calls": 0,
+      "line_status_counts": {
+        "none": 9,
+        "ok": 11
+      },
+      "line_statuses": [
+        [
+          "none",
+          "ok",
+          "ok",
+          "none",
+          "none",
+          "ok",
+          "ok",
+          "none",
+          "ok",
+          "ok",
+          "ok",
+          "none",
+          "none",
+          "ok",
+          "none",
+          "ok",
+          "none",
+          "ok",
+          "ok",
+          "none"
+        ]
+      ],
+      "declared": "inconsistent",
+      "solutions": 0,
+      "core_size": 2,
+      "unusable_lines": [],
+      "outcome": "answered",
+      "category": "ok"
+    },
+    {
+      "id": "B2-041",
+      "policy": "trigger",
+      "calls": 1,
+      "call_errors": [],
+      "raw_outputs": [
+        {
+          "sample": 0,
+          "text": "L1: none\nL2: none\nL3: not_station(Lukas, calibration)\nL4: at(Samuel, 07:00)\nL5: none\nL6: none\nL7: between(Ingrid, Nadia, Meera)\nL8: between(Nadia, Samuel, Lukas)\nL9: between(Nadia, Ingrid, Samuel)\nL10: none\nL11: not_at(Ingrid, 13:00)\nL12: none\nL13: not_station(Nadia, packing)\nL14: none\nL15: not_station(Lukas, intake)\nL16: none\nL17: none\nL18: next(Ingrid, Meera)\nL19: none\nL20: none",
+          "error": null,
+          "finish_reason": "stop",
+          "model": "ibm-granite/granite-4.2-8b",
+          "latency_s": 2.03
+        }
+      ],
+      "failed_calls": 0,
+      "line_status_counts": {
+        "none": 11,
+        "ok": 9
+      },
+      "line_statuses": [
+        [
+          "none",
+          "none",
+          "ok",
+          "ok",
+          "none",
+          "none",
+          "ok",
+          "ok",
+          "ok",
+          "none",
+          "ok",
+          "none",
+          "ok",
+          "none",
+          "ok",
+          "none",
+          "none",
+          "ok",
+          "none",
+          "none"
+        ]
+      ],
+      "declared": "ambiguous",
+      "solutions": 2,
+      "core_size": null,
+      "unusable_lines": [],
+      "outcome": "answered",
+      "category": "ok"
+    },
+    {
+      "id": "B2-042",
+      "policy": "trigger",
+      "calls": 1,
+      "call_errors": [],
+      "raw_outputs": [
+        {
+          "sample": 0,
+          "text": "L1: at(Ayesha, 07:00)\nL2: none\nL3: none\nL4: none\nL5: at(Ingrid, 11:00)\nL6: between(Lukas, Ingrid, Ayesha)\nL7: none\nL8: not_station(Tomas, intake)\nL9: none\nL10: none\nL11: not_at(Tomas, 07:00)\nL12: not_at(Tomas, 13:00)\nL13: none\nL14: before(calibration, Ingrid)\nL15: between(Lukas, Tomas, Meera)\nL16: none\nL17: before(calibration, Tomas)\nL18: none\nL19: none",
+          "error": null,
+          "finish_reason": "stop",
+          "model": "ibm-granite/granite-4.2-8b",
+          "latency_s": 1.84
+        }
+      ],
+      "failed_calls": 0,
+      "line_status_counts": {
+        "ok": 9,
+        "none": 10
+      },
+      "line_statuses": [
+        [
+          "ok",
+          "none",
+          "none",
+          "none",
+          "ok",
+          "ok",
+          "none",
+          "ok",
+          "none",
+          "none",
+          "ok",
+          "ok",
+          "none",
+          "ok",
+          "ok",
+          "none",
+          "ok",
+          "none",
+          "none"
+        ]
+      ],
+      "declared": "inconsistent",
+      "solutions": 0,
+      "core_size": 3,
+      "unusable_lines": [],
+      "outcome": "answered",
+      "category": "ok"
+    },
+    {
+      "id": "B2-043",
+      "policy": "trigger",
+      "calls": 2,
+      "call_errors": [],
+      "raw_outputs": [
+        {
+          "sample": 0,
+          "text": "L1: none\nL2: none\nL3: not_at(Rohan, 11:00)\nL4: none\nL5: none\nL6: before(calibration, Meera)\nL7: later(Ingrid, Meera)\nL8: earlier(Daniel, Ingrid)\nL9: none\nL10: station(Rohan, packing)\nL11: between(Meera, Daniel, Ingrid)\nL12: none\nL13: none\nL14: between(Ingrid, Ayesha, Daniel)\nL15: not_at(Ingrid, 07:00)\nL16: none\nL17: none\nL18: between(Ingrid, Ayesha, Meera)\nL19: between(Ingrid, Ayesha, Daniel)",
+          "error": null,
+          "finish_reason": "stop",
+          "model": "ibm-granite/granite-4.2-8b",
+          "latency_s": 1.89
+        },
+        {
+          "sample": 1,
+          "text": "L1: none\nL2: none\nL3: not_at(Rohan, 11:00)\nL4: none\nL5: none\nL6: before(calibration, Meera)\nL7: later(Ingrid, Meera)\nL8: before(Daniel, Ingrid)\nL9: none\nL10: station(Rohan, packing)\nL11: between(Ingrid, Daniel, Meera)\nL12: none\nL13: none\nL14: between(Ingrid, Ayesha, Daniel)\nL15: not_at(Ingrid, 07:00)\nL16: none\nL17: none\nL18: between(Ingrid, Ayesha, Meera)\nL19: between(Ingrid, Ayesha, Daniel)",
+          "error": null,
+          "finish_reason": "stop",
+          "model": "ibm-granite/granite-4.2-8b",
+          "latency_s": 2.71
+        }
+      ],
+      "failed_calls": 0,
+      "line_status_counts": {
+        "none": 18,
+        "ok": 19,
+        "invalid": 1
+      },
+      "line_statuses": [
+        [
+          "none",
+          "none",
+          "ok",
+          "none",
+          "none",
+          "ok",
+          "ok",
+          "invalid",
+          "none",
+          "ok",
+          "ok",
+          "none",
+          "none",
+          "ok",
+          "ok",
+          "none",
+          "none",
+          "ok",
+          "ok"
+        ],
+        [
+          "none",
+          "none",
+          "ok",
+          "none",
+          "none",
+          "ok",
+          "ok",
+          "ok",
+          "none",
+          "ok",
+          "ok",
+          "none",
+          "none",
+          "ok",
+          "ok",
+          "none",
+          "none",
+          "ok",
+          "ok"
+        ]
+      ],
+      "declared": "ambiguous",
+      "solutions": 4,
+      "core_size": null,
+      "unusable_lines": [],
+      "outcome": "answered",
+      "category": "ok"
+    },
+    {
+      "id": "B2-044",
+      "policy": "trigger",
+      "calls": 1,
+      "call_errors": [],
+      "raw_outputs": [
+        {
+          "sample": 0,
+          "text": "L1: none\nL2: between(Priya, Ingrid, Ayesha)\nL3: none\nL4: at(Daniel, 07:00)\nL5: none\nL6: between(Ingrid, Rohan, Priya)\nL7: not_station(Ingrid, intake)\nL8: none\nL9: not_station(Rohan, intake)\nL10: none\nL11: between(Ayesha, Priya, Daniel)\nL12: none\nL13: none\nL14: between(Ingrid, Ayesha, Daniel)\nL15: none\nL16: not_station(Ingrid, packing)\nL17: none\nL18: between(Ingrid, Ayesha, Daniel)\nL19: none\nL20: between(Ingrid, Daniel, Ayesha)",
+          "error": null,
+          "finish_reason": "stop",
+          "model": "ibm-granite/granite-4.2-8b",
+          "latency_s": 2.15
+        }
+      ],
+      "failed_calls": 0,
+      "line_status_counts": {
+        "none": 10,
+        "ok": 10
+      },
+      "line_statuses": [
+        [
+          "none",
+          "ok",
+          "none",
+          "ok",
+          "none",
+          "ok",
+          "ok",
+          "none",
+          "ok",
+          "none",
+          "ok",
+          "none",
+          "none",
+          "ok",
+          "none",
+          "ok",
+          "none",
+          "ok",
+          "none",
+          "ok"
+        ]
+      ],
+      "declared": "inconsistent",
+      "solutions": 0,
+      "core_size": 3,
+      "unusable_lines": [],
+      "outcome": "answered",
+      "category": "ok"
+    },
+    {
+      "id": "B2-045",
+      "policy": "trigger",
+      "calls": 2,
+      "call_errors": [],
+      "raw_outputs": [
+        {
+          "sample": 0,
+          "text": "L1: none\nL2: station(Samuel, packing)\nL3: none\nL4: between(Ayesha, Samuel, Nadia)\nL5: not_station(Lukas, intake)\nL6: none\nL7: none\nL8: next(Ayesha, Meera)\nL9: at(Samuel, 15:00)\nL10: not_at(Ayesha, 11:00)\nL11: none\nL12: none\nL13: station(Nadia, packing)\nL14: none\nL15: not_at(Nadia, 09:00)\nL16: not_at(Ayesha, 11:00)\nL17: none\nL18: none",
+          "error": null,
+          "finish_reason": "stop",
+          "model": "ibm-granite/granite-4.2-8b",
+          "latency_s": 1.96
+        },
+        {
+          "sample": 1,
+          "text": "L1: none\nL2: station(Samuel, packing)\nL3: none\nL4: between(Ayesha, Samuel, Nadia)\nL5: not_station(Lukas, intake)\nL6: none\nL7: none\nL8: next(Ayesha, Meera)\nL9: at(Samuel, 15:00)\nL10: not_at(Ayesha, 11:00)\nL11: none\nL12: none\nL13: none\nL14: none\nL15: not_at(Nadia, 09:00)\nL16: not_at(Ayesha, 11:00)\nL17: none\nL18: none",
+          "error": null,
+          "finish_reason": "stop",
+          "model": "ibm-granite/granite-4.2-8b",
+          "latency_s": 1.89
+        }
+      ],
+      "failed_calls": 0,
+      "line_status_counts": {
+        "none": 19,
+        "ok": 16,
+        "contradictory": 1
+      },
+      "line_statuses": [
+        [
+          "none",
+          "ok",
+          "none",
+          "ok",
+          "ok",
+          "none",
+          "none",
+          "ok",
+          "ok",
+          "ok",
+          "none",
+          "none",
+          "contradictory",
+          "none",
+          "ok",
+          "ok",
+          "none",
+          "none"
+        ],
+        [
+          "none",
+          "ok",
+          "none",
+          "ok",
+          "ok",
+          "none",
+          "none",
+          "ok",
+          "ok",
+          "ok",
+          "none",
+          "none",
+          "none",
+          "none",
+          "ok",
+          "ok",
+          "none",
+          "none"
+        ]
+      ],
+      "declared": "unique",
+      "solutions": 1,
+      "core_size": null,
+      "unusable_lines": [],
+      "outcome": "answered",
+      "category": "ok"
+    },
+    {
+      "id": "B2-046",
+      "policy": "trigger",
+      "calls": 1,
+      "call_errors": [],
+      "raw_outputs": [
+        {
+          "sample": 0,
+          "text": "L1: between(Nadia, Daniel, Lukas)\nL2: before(calibration, Nadia)\nL3: at(Samuel, 07:00)\nL4: later(Ayesha, Daniel)\nL5: none\nL6: none\nL7: between(Daniel, Samuel, Nadia)\nL8: none\nL9: none\nL10: before(Lukas, intake)\nL11: none\nL12: none\nL13: at(Samuel, 09:00)\nL14: none\nL15: none\nL16: later(Ayesha, Daniel)\nL17: none",
+          "error": null,
+          "finish_reason": "stop",
+          "model": "ibm-granite/granite-4.2-8b",
+          "latency_s": 2.17
+        }
+      ],
+      "failed_calls": 0,
+      "line_status_counts": {
+        "ok": 8,
+        "none": 9
+      },
+      "line_statuses": [
+        [
+          "ok",
+          "ok",
+          "ok",
+          "ok",
+          "none",
+          "none",
+          "ok",
+          "none",
+          "none",
+          "ok",
+          "none",
+          "none",
+          "ok",
+          "none",
+          "none",
+          "ok",
+          "none"
+        ]
+      ],
+      "declared": "inconsistent",
+      "solutions": 0,
+      "core_size": 2,
+      "unusable_lines": [],
+      "outcome": "answered",
+      "category": "ok"
+    },
+    {
+      "id": "B2-047",
+      "policy": "trigger",
+      "calls": 1,
+      "call_errors": [],
+      "raw_outputs": [
+        {
+          "sample": 0,
+          "text": "L1: none\nL2: none\nL3: none\nL4: not_at(Priya, 07:00)\nL5: not_at(Nadia, 09:00)\nL6: next(Lukas, Meera)\nL7: at(Nadia, 13:00)\nL8: later(Tomas, Priya)\nL9: none\nL10: none\nL11: none\nL12: next(Nadia, Tomas)\nL13: none\nL14: none\nL15: not_station(Priya, intake)\nL16: station(Meera, packing)\nL17: none\nL18: not_station(Priya, intake)",
+          "error": null,
+          "finish_reason": "stop",
+          "model": "ibm-granite/granite-4.2-8b",
+          "latency_s": 1.82
+        }
+      ],
+      "failed_calls": 0,
+      "line_status_counts": {
+        "none": 9,
+        "ok": 9
+      },
+      "line_statuses": [
+        [
+          "none",
+          "none",
+          "none",
+          "ok",
+          "ok",
+          "ok",
+          "ok",
+          "ok",
+          "none",
+          "none",
+          "none",
+          "ok",
+          "none",
+          "none",
+          "ok",
+          "ok",
+          "none",
+          "ok"
+        ]
+      ],
+      "declared": "unique",
+      "solutions": 1,
+      "core_size": null,
+      "unusable_lines": [],
+      "outcome": "answered",
+      "category": "ok"
+    },
+    {
+      "id": "B2-048",
+      "policy": "trigger",
+      "calls": 2,
+      "call_errors": [],
+      "raw_outputs": [
+        {
+          "sample": 0,
+          "text": "L1: unclear\nL2: none\nL3: none\nL4: none\nL5: not_at(Lukas, 13:00)\nL6: later(Rohan, Priya)\nL7: station(Priya, intake)\nL8: none\nL9: before(calibration, Ayesha)\nL10: not_at(Lukas, 13:00)\nL11: none\nL12: none\nL13: between(Lukas, Samuel, Rohan)\nL14: not_at(Lukas, 11:00)\nL15: station(Lukas, packing)\nL16: none\nL17: none\nL18: between(Lukas, Rohan, Samuel)\nL19: none\nL20: none\nL21: not_at(Samuel, 15:00)",
+          "error": null,
+          "finish_reason": "stop",
+          "model": "ibm-granite/granite-4.2-8b",
+          "latency_s": 2.7
+        },
+        {
+          "sample": 1,
+          "text": "L1: between(Rohan, Samuel, Ayesha)\nL2: none\nL3: none\nL4: none\nL5: not_at(Lukas, 13:00)\nL6: later(Rohan, Priya)\nL7: station(Priya, intake)\nL8: none\nL9: before(calibration, Ayesha)\nL10: not_at(Lukas, 13:00)\nL11: none\nL12: none\nL13: between(Lukas, Samuel, Rohan)\nL14: not_at(Lukas, 11:00)\nL15: station(Lukas, packing)\nL16: none\nL17: none\nL18: between(Lukas, Rohan, Samuel)\nL19: none\nL20: none\nL21: not_at(Samuel, 15:00)",
+          "error": null,
+          "finish_reason": "stop",
+          "model": "ibm-granite/granite-4.2-8b",
+          "latency_s": 2.11
+        }
+      ],
+      "failed_calls": 0,
+      "line_status_counts": {
+        "unclear": 1,
+        "none": 20,
+        "ok": 21
+      },
+      "line_statuses": [
+        [
+          "unclear",
+          "none",
+          "none",
+          "none",
+          "ok",
+          "ok",
+          "ok",
+          "none",
+          "ok",
+          "ok",
+          "none",
+          "none",
+          "ok",
+          "ok",
+          "ok",
+          "none",
+          "none",
+          "ok",
+          "none",
+          "none",
+          "ok"
+        ],
+        [
+          "ok",
+          "none",
+          "none",
+          "none",
+          "ok",
+          "ok",
+          "ok",
+          "none",
+          "ok",
+          "ok",
+          "none",
+          "none",
+          "ok",
+          "ok",
+          "ok",
+          "none",
+          "none",
+          "ok",
+          "none",
+          "none",
+          "ok"
+        ]
+      ],
+      "declared": "inconsistent",
+      "solutions": 0,
+      "core_size": 3,
+      "unusable_lines": [],
+      "outcome": "answered",
+      "category": "ok"
+    },
+    {
+      "id": "B2-049",
+      "policy": "trigger",
+      "calls": 1,
+      "call_errors": [],
+      "raw_outputs": [
+        {
+          "sample": 0,
+          "text": "L1: none\nL2: not_at(Tomas, 09:00)\nL3: none\nL4: between(Ingrid, Rohan, Samuel)\nL5: none\nL6: none\nL7: none\nL8: not_station(Tomas, intake)\nL9: none\nL10: none\nL11: at(Tomas, 07:00)\nL12: not_station(Samuel, packing)\nL13: later(Samuel, packing)\nL14: not_station(Tomas, packing)\nL15: none\nL16: at(Tomas, intake)\nL17: between(Rohan, Ingrid, Ayesha)\nL18: between(Ayesha, Samuel, Ingrid)\nL19: before(packing, Samuel)\nL20: none",
+          "error": null,
+          "finish_reason": "stop",
+          "model": "ibm-granite/granite-4.2-8b",
+          "latency_s": 2.13
+        }
+      ],
+      "failed_calls": 0,
+      "line_status_counts": {
+        "none": 9,
+        "ok": 11
+      },
+      "line_statuses": [
+        [
+          "none",
+          "ok",
+          "none",
+          "ok",
+          "none",
+          "none",
+          "none",
+          "ok",
+          "none",
+          "none",
+          "ok",
+          "ok",
+          "ok",
+          "ok",
+          "none",
+          "ok",
+          "ok",
+          "ok",
+          "ok",
+          "none"
+        ]
+      ],
+      "declared": "inconsistent",
+      "solutions": 0,
+      "core_size": 2,
+      "unusable_lines": [],
+      "outcome": "answered",
+      "category": "ok"
+    },
+    {
+      "id": "B2-050",
+      "policy": "trigger",
+      "calls": 1,
+      "call_errors": [],
+      "raw_outputs": [
+        {
+          "sample": 0,
+          "text": "L1: none\nL2: none\nL3: between(Tomas, Rohan, Meera)\nL4: none\nL5: none\nL6: later(Ingrid, Rohan)\nL7: station(Rohan, calibration)\nL8: none\nL9: none\nL10: before(Tomas, calibration)\nL11: none\nL12: none\nL13: none\nL14: between(Meera, Ingrid, Tomas)\nL15: not_at(Rohan, 13:00)\nL16: between(Nadia, Tomas, Rohan)\nL17: none\nL18: between(Tomas, Rohan, Meera)\nL19: none\nL20: none",
+          "error": null,
+          "finish_reason": "stop",
+          "model": "ibm-granite/granite-4.2-8b",
+          "latency_s": 1.84
+        }
+      ],
+      "failed_calls": 0,
+      "line_status_counts": {
+        "none": 12,
+        "ok": 8
+      },
+      "line_statuses": [
+        [
+          "none",
+          "none",
+          "ok",
+          "none",
+          "none",
+          "ok",
+          "ok",
+          "none",
+          "none",
+          "ok",
+          "none",
+          "none",
+          "none",
+          "ok",
+          "ok",
+          "ok",
+          "none",
+          "ok",
+          "none",
+          "none"
+        ]
+      ],
+      "declared": "inconsistent",
+      "solutions": 0,
+      "core_size": 5,
+      "unusable_lines": [],
+      "outcome": "answered",
+      "category": "ok"
+    },
+    {
+      "id": "B2-051",
+      "policy": "trigger",
+      "calls": 1,
+      "call_errors": [],
+      "raw_outputs": [
+        {
+          "sample": 0,
+          "text": "L1: none\nL2: none\nL3: later(Lukas, calibration)\nL4: between(Daniel, Meera, Lukas)\nL5: none\nL6: none\nL7: none\nL8: none\nL9: none\nL10: not_at(Daniel, 07:00)\nL11: between(Priya, Meera, Daniel)\nL12: between(Ayesha, Priya, Meera)\nL13: not_station(Daniel, intake)\nL14: between(Daniel, Lukas, Meera)\nL15: between(Priya, Ayesha, Daniel)\nL16: before(intake, Priya)\nL17: none\nL18: none\nL19: between(Ayesha, Priya, Meera)",
+          "error": null,
+          "finish_reason": "stop",
+          "model": "ibm-granite/granite-4.2-8b",
+          "latency_s": 1.97
+        }
+      ],
+      "failed_calls": 0,
+      "line_status_counts": {
+        "none": 9,
+        "ok": 10
+      },
+      "line_statuses": [
+        [
+          "none",
+          "none",
+          "ok",
+          "ok",
+          "none",
+          "none",
+          "none",
+          "none",
+          "none",
+          "ok",
+          "ok",
+          "ok",
+          "ok",
+          "ok",
+          "ok",
+          "ok",
+          "none",
+          "none",
+          "ok"
+        ]
+      ],
+      "declared": "ambiguous",
+      "solutions": 2,
+      "core_size": null,
+      "unusable_lines": [],
+      "outcome": "answered",
+      "category": "ok"
+    },
+    {
+      "id": "B2-052",
+      "policy": "trigger",
+      "calls": 3,
+      "call_errors": [],
+      "raw_outputs": [
+        {
+          "sample": 0,
+          "text": "L1: none\nL2: not_station(Daniel, calibration)\nL3: none\nL4: next(Daniel, Meera)\nL5: none\nL6: none\nL7: unclear\nL8: later(Rohan, Daniel)\nL9: not_station(Ingrid, intake)\nL10: none\nL11: not_station(Ingrid, packing)\nL12: before(Ingrid, Daniel)\nL13: none\nL14: before(packing, Priya)\nL15: none\nL16: before(Ingrid, Daniel)\nL17: before(calibration, Daniel)\nL18: none\nL19: none",
+          "error": null,
+          "finish_reason": "stop",
+          "model": "ibm-granite/granite-4.2-8b",
+          "latency_s": 1.71
+        },
+        {
+          "sample": 1,
+          "text": "L1: none\nL2: not_station(Daniel, calibration)\nL3: none\nL4: station(Meera, intake) ; station(Daniel, intake) ; station(Rohan, intake) ; station(Ingrid, intake) ; station(Priya, intake)   [Note: This is invalid as per rules: cannot assign multiple stations; but rule says \"Copy names, stations and times exactly as they appear in the input lists.\" Actually \"Daniel hands straight over to Meera\" likely means Meera is the receiver; station assignment? The line does not state who holds which station; it says \"hands straight over to Meera\" which may imply Meera is next after Daniel, but no station mention. So correct output: none? Let's follow rules: only translate what line states. \"Daniel hands straight over to Meera.\" No station or time block mentioned. So none.]\n\nBut need to parse carefully: \"Daniel hands straight over to Meera.\" Could mean Meera takes over Daniel's task/station? Possibly indicates that Meera works immediately after Daniel (next). But the line says \"hands straight over\" which may imply immediate handover. However \"straight over\" might mean no gap, i.e., next block. But we must not add facts; only translate what is stated. The phrase \"hands straight over to Meera\" might indicate Meera follows Daniel with no gap? It says \"hands straight over\" could be interpreted as immediate handover, but the line does not explicitly say \"next\" or \"immediately after\". So safest is none.\n\nHowever example similar lines: \"Alice comes on the moment Carla's slot ends.\" was translated to next(Carla, Alice). Because \"on the moment\" implies immediate after. Similarly \"Meera keeps the sign-in sheet\" etc none.\n\nLet's read each line and decide per rules.\n\nWe must output exactly L1: ... L19: ... with relations or none/unclear.\n\nLet's list all lines with possible relations:\n\nL1: \"Meera is the point of contact for the fire drill.\" No station or block mentioned. none.\n\nL2: \"As far as I know, calibration is covered by someone other than Daniel.\" -> not_station(Daniel, calibration). (since someone other than Daniel holds calibration). However note \"As far as I know\" is a hedge; but rule: \"Hedges such as 'I think' or 'as far as I know', and lead-ins such as 'To repeat:', do not weaken a statement.\" Means we should still treat the statement as given? The rule says do not weaken a statement. But \"As far as I know\" might indicate uncertainty. However example L2: \"Dev can't do the 08:00 slot.\" was translated to not_at(Dev, 08:00). That line had no hedge and was clear. In example, they had \"Dev can't do the 08:00 slot.\" clear. For hedges like \"as far as I know\", they might still be considered factual? The rule: \"Hedges such as 'I think' or 'as far as I know', and lead-ins such as 'To repeat:', do not weaken a statement.\" Means we should not interpret as less certain; treat as statement. But also \"Only statements about the current rota count.\" Hypotheticals etc are none. \"As far as I know\" is not hypothetical; it's a belief. However example had \"I'm fairly sure\" etc translated to something? In example L14: \"To repeat: I think 16:00 belongs to Dev.\" was translated to at(Dev, 16:00). So they translated \"I think\" as at. So hedges are okay; they don't make it unclear. So we can translate.\n\nThus L2: not_station(Daniel, calibration). Note: calibration station must be held by one of Ingrid, Daniel, Rohan. So someone other than Daniel could be Ingrid or Rohan. So not_station(Daniel, calibration) is valid.\n\nL3: \"Meera, Daniel, Rohan, Ingrid and Priya completed the fire-safety refresher last quarter.\" No rota info; none.\n\nL4: \"Daniel hands straight over to Meera.\" Likely indicates immediate handover: Meera works the block immediately after Daniel's block. That would be next(Daniel, Meera). But careful: \"hands straight over to Meera\" could mean Meera takes over Daniel's station/task, implying Meera works in the next block after Daniel. Since no mention of station, but could be interpreted as next block. Example: \"Alice comes on the moment Carla's slot ends.\" -> next(Carla, Alice). So \"hands straight over\" similar to \"straight over\" implying immediate handover. So we can translate next(Daniel, Meera). However need to ensure no contradiction with station? The relation about ordering between persons is allowed even if station not mentioned. So L4: next(Daniel, Meera).\n\nL5: \"Ingrid and Rohan appeared on the old emergency contact sheet.\" none (no rota info).\n\nL6: \"Meera, Priya, Rohan and Ingrid joined the site walkaround in March.\" none.\n\nL7: \"There was some disagreement about whether Daniel had 07:00.\" This is a discussion, not settled. So none (since \"whether\" and disagreement). Example L5? Actually example L5 \"Erin starts some time after Bob finishes.\" was translated to later(Erin, Bob) because clear. But \"disagreement about whether\" is uncertain, not settled. So none.\n\nL8: \"Rohan takes over from Daniel later in the day.\" \"later in the day\" vague; could be later block but not necessarily immediate. The line says \"later in the day\", not \"immediately\". Example used \"starts some time after\" -> later(Erin, Bob). So \"takes over from Daniel later in the day\" suggests Rohan works later than Daniel, but not necessarily immediate. So we can use later(Rohan, Daniel). However phrase \"takes over from Daniel later\" could imply after Daniel, but could be later block. So later(Rohan, Daniel). Use later(Rohan, Daniel) because \"later\" appears.\n\nL9: \"Going off the roster, intake is not Ingrid's station.\" -> not_station(Ingrid, intake).\n\nL10: \"The site coordinator noted that the car park resurfacing runs through the end of the month.\" none.\n\nL11: \"I'm fairly sure Ingrid is not assigned to packing.\" -> not_station(Ingrid, packing).\n\nL12: \"My recollection is that by the time Daniel starts, Ingrid has already been on.\" \"by the time Daniel starts, Ingrid has already been on\" means Ingrid starts before Daniel (i.e., Ingrid's block is earlier than Daniel's). So at(Ingrid, some block) and at(Daniel, some block) with Ingrid earlier. That is before(Ingrid, Daniel)?? Wait: \"has already been on\" suggests Ingrid is already working when Daniel starts, so Ingrid's block is earlier (or possibly same? no block times distinct). So Ingrid works earlier than Daniel: before(Ingrid, Daniel). However careful: \"by the time Daniel starts, Ingrid has already been on\" could mean Ingrid has started and possibly finished; but definitely not later. So we can use before(Ingrid, Daniel). (Since Ingrid works an earlier block than Daniel). So relation before(Ingrid, Daniel).\n\nL13: \"Nobody has claimed the jacket left in the break room.\" none.\n\nL14: \"My recollection is that whoever is on packing works earlier in the day than Priya.\" Means the person holding packing works earlier than Priya's block. So we need a relation: whoever holds packing works earlier than Priya. That is: for the station holder P of packing, we have before(P, Priya). But P is unknown (one of Ingrid, Daniel, Rohan). We cannot specify P. However relation must be about specific person/station? The relation between X and Y where X is a person or station? In before(X,Y), X and Y are persons or stations? In definitions: X, Y, A and B are a person or a station. So we can use station(P, packing) and before(packing, Priya)? The definition says before(X, Y) - X works an earlier block than Y, with any gap. X and Y can be persons or stations. Typically you can use station as X if you refer to the person who holds the station? The relation before(X,Y) expects X works earlier than Y. If X is a station, that would mean the person holding that station works earlier than Y (person). That might be ambiguous. In example, they used before(testing, Dev) where testing is a station and Dev is a person: \"Whoever runs testing clocks in ahead of Dev.\" translated to before(testing, Dev). Yes! In example L6: \"Whoever runs testing clocks in ahead of Dev.\" -> before(testing, Dev). So you can use station as X in before/after when referring to whoever holds",
+          "error": null,
+          "finish_reason": "length",
+          "model": "ibm-granite/granite-4.2-8b",
+          "latency_s": 17.24
+        },
+        {
+          "sample": 2,
+          "text": "L1: none\nL2: not_station(Daniel, calibration)\nL3: none\nL4: station(Meera, intake)\nL5: none\nL6: none\nL7: unclear\nL8: later(Rohan, Daniel)\nL9: not_station(Ingrid, intake)\nL10: none\nL11: not_station(Ingrid, packing)\nL12: before(Ingrid, Daniel)\nL13: none\nL14: between(packing, Priya, calibration)\nL15: none\nL16: before(Ingrid, Daniel)\nL17: before(calibration, Daniel)\nL18: none\nL19: none",
+          "error": null,
+          "finish_reason": "stop",
+          "model": "ibm-granite/granite-4.2-8b",
+          "latency_s": 1.71
+        }
+      ],
+      "failed_calls": 0,
+      "line_status_counts": {
+        "none": 20,
+        "ok": 20,
+        "unclear": 2,
+        "invalid": 9,
+        "missing": 5,
+        "contradictory": 1
+      },
+      "line_statuses": [
+        [
+          "none",
+          "ok",
+          "none",
+          "ok",
+          "none",
+          "none",
+          "unclear",
+          "ok",
+          "ok",
+          "none",
+          "ok",
+          "ok",
+          "none",
+          "ok",
+          "none",
+          "ok",
+          "ok",
+          "none",
+          "none"
+        ],
+        [
+          "none",
+          "ok",
+          "none",
+          "invalid",
+          "invalid",
+          "invalid",
+          "invalid",
+          "invalid",
+          "ok",
+          "invalid",
+          "ok",
+          "invalid",
+          "invalid",
+          "invalid",
+          "missing",
+          "missing",
+          "missing",
+          "missing",
+          "missing"
+        ],
+        [
+          "none",
+          "ok",
+          "none",
+          "contradictory",
+          "none",
+          "none",
+          "unclear",
+          "ok",
+          "ok",
+          "none",
+          "ok",
+          "ok",
+          "none",
+          "ok",
+          "none",
+          "ok",
+          "ok",
+          "none",
+          "none"
+        ]
+      ],
+      "declared": "ambiguous",
+      "solutions": 3,
+      "core_size": null,
+      "unusable_lines": [
+        7
+      ],
+      "outcome": "answered",
+      "category": "degraded"
+    },
+    {
+      "id": "B2-053",
+      "policy": "trigger",
+      "calls": 2,
+      "call_errors": [],
+      "raw_outputs": [
+        {
+          "sample": 0,
+          "text": "L1: none\nL2: none\nL3: none\nL4: none\nL5: at(Nadia, 11:00)\nL6: at(Ingrid, 15:00)\nL7: none\nL8: later(Tomas, intake)\nL9: none\nL10: not_station(Nadia, intake)\nL11: not_station(Nadia, packing)\nL12: none\nL13: none\nL14: none\nL15: between(Priya, Samuel, Ingrid)\nL16: earlier(Tomas, Priya)\nL17: before(intake, Ingrid)\nL18: before(intake, Tomas)\nL19: none",
+          "error": null,
+          "finish_reason": "stop",
+          "model": "ibm-granite/granite-4.2-8b",
+          "latency_s": 1.75
+        },
+        {
+          "sample": 1,
+          "text": "L1: none\nL2: none\nL3: none\nL4: none\nL5: at(Nadia, 11:00)\nL6: at(Ingrid, 15:00)\nL7: none\nL8: later(Tomas, intake)\nL9: none\nL10: not_station(Nadia, intake)\nL11: not_station(Nadia, packing)\nL12: none\nL13: none\nL14: none\nL15: between(Priya, Samuel, Ingrid)\nL16: before(Tomas, Priya)\nL17: later(intake, Ingrid)\nL18: later(intake, Tomas)\nL19: none",
+          "error": null,
+          "finish_reason": "stop",
+          "model": "ibm-granite/granite-4.2-8b",
+          "latency_s": 2.23
+        }
+      ],
+      "failed_calls": 0,
+      "line_status_counts": {
+        "none": 20,
+        "ok": 17,
+        "invalid": 1
+      },
+      "line_statuses": [
+        [
+          "none",
+          "none",
+          "none",
+          "none",
+          "ok",
+          "ok",
+          "none",
+          "ok",
+          "none",
+          "ok",
+          "ok",
+          "none",
+          "none",
+          "none",
+          "ok",
+          "invalid",
+          "ok",
+          "ok",
+          "none"
+        ],
+        [
+          "none",
+          "none",
+          "none",
+          "none",
+          "ok",
+          "ok",
+          "none",
+          "ok",
+          "none",
+          "ok",
+          "ok",
+          "none",
+          "none",
+          "none",
+          "ok",
+          "ok",
+          "ok",
+          "ok",
+          "none"
+        ]
+      ],
+      "declared": "unique",
+      "solutions": 1,
+      "core_size": null,
+      "unusable_lines": [],
+      "outcome": "answered",
+      "category": "ok"
+    },
+    {
+      "id": "B2-054",
+      "policy": "trigger",
+      "calls": 1,
+      "call_errors": [],
+      "raw_outputs": [
+        {
+          "sample": 0,
+          "text": "L1: between(Samuel, Nadia, Ingrid)\nL2: none\nL3: none\nL4: none\nL5: between(Nadia, Tomas, Ayesha)\nL6: none\nL7: none\nL8: none\nL9: between(Nadia, Tomas, Samuel)\nL10: later(Tomas, packing)\nL11: none\nL12: between(Samuel, Tomas, Ingrid)\nL13: not_at(intake, later_than_Samuel)  # But must use only allowed relations; \"works earlier\" means at(intake_person, T) with T before Samuel's block. However we don't know Samuel's block; we only know \"Samuel sits between...\" etc. So we cannot deduce exact relation of intake relative to Samuel without more info. But \"whoever is on intake works earlier than Samuel\" translates to: if P is the person at intake, then at(P, T_intake) and at(Samuel, T_Samuel) with T_intake before T_Samuel. That is a relation between persons? We need to express using allowed relations with persons and stations? We have relation at(X,T) etc. But we don't know who holds intake yet. We can only say: for the person who holds intake, they work earlier than Samuel. But we don't know who that is. So we cannot write a specific at relation because we don't know person. However we can write: before(intake, Samuel)? But relation names require X,Y,A,B are persons or stations. station(P,S) etc. between(X,A,B) requires X is a person. \"Whoever is on intake works earlier than Samuel\" means: if P holds intake, then P works earlier than Samuel. That is not a specific relation we can write without identifying P. The allowed relations are about specific persons or stations. We cannot write a relation with unknown person. So it's unclear? But we can try to infer: we have station(intake) holder among Nadia, Ayesha, Tomas. So we could say: not_at(Samuel, intake) obviously, but not necessarily. Actually \"whoever is on intake works earlier\" means the station holder works earlier than Samuel. So we could say: before(intake, Samuel) but \"intake\" is a station, and relation before expects two persons? In definitions: X, Y, A and B are a person or a station. So we can use station names in relations? Yes, examples used before(testing, Dev) where testing is a station. So we can use station names in before/later/next? In example: before(testing, Dev) and later(Dev, loading). So yes, stations can appear. So \"intake\" is a station. So we can say: before(intake, Samuel). That would mean the station intake works earlier than Samuel. That matches \"whoever is on intake works earlier than Samuel\". So we can write before(intake, Samuel). However careful: \"works earlier\" refers to the person who holds intake works earlier than Samuel works. Since intake station's holder works earlier, that station as an entity works at some block earlier than Samuel's block. So before(intake, Samuel) is appropriate. Similarly later(intake, Samuel) would mean intake works later, but we have earlier. So L13 should be before(intake, Samuel). But check: \"whoever is on intake works earlier in the day than Samuel.\" Yes, so before(intake, Samuel). That is a valid relation. So L13: before(intake, Samuel).\n\nBut we must ensure we don't conflict with other interpretations. Let's list all allowed relations and ensure we don't use ambiguous. We'll output accordingly.\n\nL13: before(intake, Samuel)\n\nL14: between(Ingrid, Ayesha, Tomas)\n\nL15: none\n\nL16: none (wish, not settled)\n\nL17: none\n\nL18: between(Ingrid, Ayesha, Tomas)  (same as L5? Actually L5: Nadia sits between Tomas and Ayesha; L18: Ingrid sits between Ayesha and Tomas. So L18: between(Ingrid, Ayesha, Tomas))\n\nBut careful: L5 says \"Nadia sits between Tomas and Ayesha on the rota.\" That means Nadia works between Tomas and Ayesha. So between(Nadia, Tomas, Ayesha). Order: between(X, A, B) where X is between A and B in either order. So we used between(Nadia, Tomas, Ayesha). That's fine.\n\nL1: Samuel sits between Nadia and Ingrid -> between(Samuel, Nadia, Ingrid)\n\nL9: \"put Nadia between Tomas and Samuel\" -> between(Nadia, Tomas, Samuel)\n\nL12: \"Whichever way round Tomas and Ingrid are, Samuel is between them.\" That means regardless of order, Samuel is between Tomas and Ingrid. So between(Samuel, Tomas, Ingrid)\n\nL18: \"Ingrid sits between Ayesha and Tomas\" -> between(Ingrid, Ayesha, Tomas)\n\nNow check for duplicates/conflicts not needed; we just translate as per line.\n\nNow we must ensure we don't output relations that contradict the rules? The instructions: translate only what the line itself states. No adding facts from other lines. So each line independently may state a relation that might be consistent or not; we just output the relation as per line.\n\nBut we must ensure we don't output a relation that uses a station with a person incorrectly. For L10: \"Tomas is on later than whoever has packing.\" \"whoever has packing\" refers to the station holder of packing. So \"Tomas is on later than whoever has packing\" means Tomas works later than the person who holds packing. So later(Tomas, packing). That seems correct.\n\nNow L13: \"Whoever is on intake works earlier in the day than Samuel.\" That is earlier than Samuel, not necessarily immediate. So before(intake, Samuel). Good.\n\nNow L14: \"Put Ingrid between Ayesha and Tomas\" -> between(Ingrid, Ayesha, Tomas)\n\nNow check L2-L4 etc: none.\n\nL6: \"I'm fairly sure putting Samuel on the 13:00 block would have solved the parking problem.\" This is hypothetical \"would have solved\", so it's about what could have happened, not current rota. So none.\n\nL7: \"Catering is unchanged from last week.\" Not about schedule, none.\n\nL8: \"Ingrid sat on the interview panel in February.\" Not schedule, none.\n\nL11: \"Ayesha filled in the equipment survey.\" none.\n\nL15: \"Tomas and Ayesha car-share when their shifts allow.\" none.\n\nL16: \"Ayesha wanted 11:00 and did not get it.\" wish, none.\n\nL17: \"Nadia joined the site walkaround in March.\" none.\n\nL18: \"Ingrid sits between Ayesha and Tomas on the rota.\" between.\n\nNow also L3, L4, etc may contain references but they are about other things not rota assignments? L3: \"Going off the roster, Nadia and the 09:00 block came up, but nothing was minuted.\" That is about discussion, not settled assignment; so none.\n\nL4: \"Ayesha is the point of contact for the fire drill.\" none.\n\nL11 etc none.\n\nNow we must output exactly 18 lines.\n\nLet's write them:\n\nL1: between(Samuel, Nadia, Ingrid)\nL2: none\nL3: none\nL4: none\nL5: between(Nadia, Tomas, Ayesha)\nL6: none\nL7: none\nL8: none\nL9: between(Nadia, Tomas, Samuel)\nL10: later(Tomas, packing)\nL11: none\nL12: between(Samuel, Tomas, Ingrid)\nL13: before(intake, Samuel)\nL14: between(Ingrid, Ayesha, Tomas)\nL15: none\nL16: none\nL17: none\nL18: between(Ingrid, Ayesha, Tomas)\n\nBut check L10: \"Tomas is on later than whoever has packing.\" Should we write later(Tomas, packing) or later(whoever, Tomas)? The phrase \"Tomas is on later than whoever has packing\" means Tomas's block is later than the block of whoever has packing. So Tomas works later than the packing station holder. So later(Tomas, packing). Yes.\n\nNow check L13: \"Whoever is on intake works earlier in the day than Samuel.\" So intake works earlier than Samuel. So before(intake, Samuel). That seems correct.\n\nNow check L14: \"Put Ingrid between Ayesha and Tomas,",
+          "error": null,
+          "finish_reason": "length",
+          "model": "ibm-granite/granite-4.2-8b",
+          "latency_s": 17.25
+        }
+      ],
+      "failed_calls": 0,
+      "line_status_counts": {
+        "ok": 8,
+        "none": 10
+      },
+      "line_statuses": [
+        [
+          "ok",
+          "none",
+          "none",
+          "none",
+          "ok",
+          "none",
+          "none",
+          "none",
+          "ok",
+          "ok",
+          "none",
+          "ok",
+          "ok",
+          "ok",
+          "none",
+          "none",
+          "none",
+          "ok"
+        ]
+      ],
+      "declared": "unique",
+      "solutions": 1,
+      "core_size": null,
+      "unusable_lines": [],
+      "outcome": "answered",
+      "category": "ok"
+    },
+    {
+      "id": "B2-055",
+      "policy": "trigger",
+      "calls": 1,
+      "call_errors": [],
+      "raw_outputs": [
+        {
+          "sample": 0,
+          "text": "L1: none\nL2: not_station(Ingrid, calibration)\nL3: next(Ayesha, Ingrid)\nL4: none\nL5: none\nL6: none\nL7: between(Samuel, Lukas, Ingrid)\nL8: not_at(Samuel, 07:00)\nL9: not_station(Ingrid, packing)\nL10: none\nL11: none\nL12: next(Lukas, Ayesha)\nL13: none\nL14: none\nL15: none\nL16: none\nL17: next(Meera, Lukas)\nL18: before(packing, Meera)\nL19: next(Ingrid, Samuel)",
+          "error": null,
+          "finish_reason": "stop",
+          "model": "ibm-granite/granite-4.2-8b",
+          "latency_s": 2.43
+        }
+      ],
+      "failed_calls": 0,
+      "line_status_counts": {
+        "none": 10,
+        "ok": 9
+      },
+      "line_statuses": [
+        [
+          "none",
+          "ok",
+          "ok",
+          "none",
+          "none",
+          "none",
+          "ok",
+          "ok",
+          "ok",
+          "none",
+          "none",
+          "ok",
+          "none",
+          "none",
+          "none",
+          "none",
+          "ok",
+          "ok",
+          "ok"
+        ]
+      ],
+      "declared": "inconsistent",
+      "solutions": 0,
+      "core_size": 3,
+      "unusable_lines": [],
+      "outcome": "answered",
+      "category": "ok"
+    },
+    {
+      "id": "B2-056",
+      "policy": "trigger",
+      "calls": 1,
+      "call_errors": [],
+      "raw_outputs": [
+        {
+          "sample": 0,
+          "text": "L1: not_station(Tomas, packing)\nL2: none\nL3: none\nL4: none\nL5: between(Daniel, Priya, Nadia)\nL6: between(Priya, Tomas, Ayesha)\nL7: between(Nadia, Ayesha, Daniel)\nL8: none\nL9: later(Nadia, Daniel)\nL10: none\nL11: between(Daniel, Tomas, Priya)\nL12: none\nL13: none\nL14: none\nL15: not_station(Tomas, packing)\nL16: none\nL17: at(Ayesha, 07:00)\nL18: station(Ayesha, calibration)\nL19: none",
+          "error": null,
+          "finish_reason": "stop",
+          "model": "ibm-granite/granite-4.2-8b",
+          "latency_s": 1.87
+        }
+      ],
+      "failed_calls": 0,
+      "line_status_counts": {
+        "ok": 9,
+        "none": 10
+      },
+      "line_statuses": [
+        [
+          "ok",
+          "none",
+          "none",
+          "none",
+          "ok",
+          "ok",
+          "ok",
+          "none",
+          "ok",
+          "none",
+          "ok",
+          "none",
+          "none",
+          "none",
+          "ok",
+          "none",
+          "ok",
+          "ok",
+          "none"
+        ]
+      ],
+      "declared": "inconsistent",
+      "solutions": 0,
+      "core_size": 3,
+      "unusable_lines": [],
+      "outcome": "answered",
+      "category": "ok"
+    },
+    {
+      "id": "B2-057",
+      "policy": "trigger",
+      "calls": 1,
+      "call_errors": [],
+      "raw_outputs": [
+        {
+          "sample": 0,
+          "text": "L1: none\nL2: before(Lukas, Ingrid)\nL3: next(Lukas, Ayesha)\nL4: none\nL5: between(Rohan, Ingrid, Priya)\nL6: none\nL7: none\nL8: later(Lukas, Priya)\nL9: before(Ingrid, Ayesha)\nL10: none\nL11: none\nL12: not_station(Rohan, intake)\nL13: before(Ingrid, Ayesha)\nL14: none\nL15: none\nL16: none\nL17: none\nL18: station(Ingrid, calibration)\nL19: not_at(Ingrid, 13:00)\nL20: none",
+          "error": null,
+          "finish_reason": "stop",
+          "model": "ibm-granite/granite-4.2-8b",
+          "latency_s": 1.85
+        }
+      ],
+      "failed_calls": 0,
+      "line_status_counts": {
+        "none": 11,
+        "ok": 9
+      },
+      "line_statuses": [
+        [
+          "none",
+          "ok",
+          "ok",
+          "none",
+          "ok",
+          "none",
+          "none",
+          "ok",
+          "ok",
+          "none",
+          "none",
+          "ok",
+          "ok",
+          "none",
+          "none",
+          "none",
+          "none",
+          "ok",
+          "ok",
+          "none"
+        ]
+      ],
+      "declared": "inconsistent",
+      "solutions": 0,
+      "core_size": 3,
+      "unusable_lines": [],
+      "outcome": "answered",
+      "category": "ok"
+    },
+    {
+      "id": "B2-058",
+      "policy": "trigger",
+      "calls": 1,
+      "call_errors": [],
+      "raw_outputs": [
+        {
+          "sample": 0,
+          "text": "L1: between(Ingrid, Ayesha, Meera)\nL2: none\nL3: none\nL4: none\nL5: next(Ingrid, Meera)\nL6: between(Ayesha, Nadia, Rohan)\nL7: none\nL8: none\nL9: not_at(Ayesha, 09:00)\nL10: none\nL11: none\nL12: station(Nadia, calibration)\nL13: none\nL14: later(Ayesha, Meera)\nL15: none\nL16: station(Ingrid, intake)\nL17: none\nL18: later(Ayesha, Meera)",
+          "error": null,
+          "finish_reason": "stop",
+          "model": "ibm-granite/granite-4.2-8b",
+          "latency_s": 1.78
+        }
+      ],
+      "failed_calls": 0,
+      "line_status_counts": {
+        "ok": 8,
+        "none": 10
+      },
+      "line_statuses": [
+        [
+          "ok",
+          "none",
+          "none",
+          "none",
+          "ok",
+          "ok",
+          "none",
+          "none",
+          "ok",
+          "none",
+          "none",
+          "ok",
+          "none",
+          "ok",
+          "none",
+          "ok",
+          "none",
+          "ok"
+        ]
+      ],
+      "declared": "inconsistent",
+      "solutions": 0,
+      "core_size": 3,
+      "unusable_lines": [],
+      "outcome": "answered",
+      "category": "ok"
+    },
+    {
+      "id": "B2-059",
+      "policy": "trigger",
+      "calls": 1,
+      "call_errors": [],
+      "raw_outputs": [
+        {
+          "sample": 0,
+          "text": "L1: none\nL2: none\nL3: at(Meera, 09:00)\nL4: none\nL5: not_station(Daniel, packing)\nL6: at(Daniel, 13:00)\nL7: none\nL8: at(Ingrid, 11:00)\nL9: none\nL10: next(Lukas, Nadia)\nL11: none\nL12: next(Nadia, Meera)\nL13: none\nL14: later(Daniel, calibration)\nL15: none\nL16: none\nL17: before(intake, Ingrid)\nL18: none\nL19: next(Lukas, Nadia)",
+          "error": null,
+          "finish_reason": "stop",
+          "model": "ibm-granite/granite-4.2-8b",
+          "latency_s": 1.81
+        }
+      ],
+      "failed_calls": 0,
+      "line_status_counts": {
+        "none": 10,
+        "ok": 9
+      },
+      "line_statuses": [
+        [
+          "none",
+          "none",
+          "ok",
+          "none",
+          "ok",
+          "ok",
+          "none",
+          "ok",
+          "none",
+          "ok",
+          "none",
+          "ok",
+          "none",
+          "ok",
+          "none",
+          "none",
+          "ok",
+          "none",
+          "ok"
+        ]
+      ],
+      "declared": "inconsistent",
+      "solutions": 0,
+      "core_size": 3,
+      "unusable_lines": [],
+      "outcome": "answered",
+      "category": "ok"
+    }
+  ]
+}

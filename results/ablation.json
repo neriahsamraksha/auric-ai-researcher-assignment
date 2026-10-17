@@ -1,4 +1,9 @@
 {
+  "shipped": {
+    "1x": "single",
+    "3x": "trigger",
+    "10x": "trigger"
+  },
   "selected": {
     "1x": "single",
     "3x": "trigger",
@@ -255,7 +260,7 @@
   "rows": [
     {
       "condition": "full",
-      "label": "Full system (selected policy)",
+      "label": "Full system (shipped policy)",
       "arm": "E",
       "budget": "1x",
       "policy": "single",
@@ -606,7 +611,7 @@
     },
     {
       "condition": "full",
-      "label": "Full system (selected policy)",
+      "label": "Full system (shipped policy)",
       "arm": "E",
       "budget": "3x",
       "policy": "trigger",
@@ -957,7 +962,7 @@
     },
     {
       "condition": "full",
-      "label": "Full system (selected policy)",
+      "label": "Full system (shipped policy)",
       "arm": "E",
       "budget": "10x",
       "policy": "trigger",
