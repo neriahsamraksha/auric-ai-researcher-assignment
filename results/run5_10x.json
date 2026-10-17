@@ -299,8 +299,11 @@
   "B2-013": {
     "case": "inconsistent",
     "conflicts": [
+      "The 11:00 block is Nadia's.",
+      "My recollection is that put Nadia between Ayesha and Daniel, though not necessarily next to either.",
       "There is no block between Nadia's and Rohan's, in that order.",
-      "This came up more than once, so: Nadia then Rohan, back to back."
+      "Daniel is on the 15:00 block.",
+      "Rohan sits between Daniel and Tomas on the rota."
     ]
   },
   "B2-014": {
@@ -408,15 +411,18 @@
   "B2-017": {
     "case": "inconsistent",
     "conflicts": [
-      "Nadia is on after one of Samuel and Ingrid and before the other.",
-      "As far as I know, Ingrid is on after one of Samuel and Meera and before the other."
+      "My recollection is that Priya's block falls between Nadia's and Meera's, in one order or the other.",
+      "The calibration station is covered earlier in the day than Nadia's block.",
+      "Going off the roster, Ingrid's block falls between Priya's and Nadia's, in one order or the other.",
+      "Nadia is on after one of Samuel and Ingrid and before the other."
     ]
   },
   "B2-018": {
     "case": "inconsistent",
     "conflicts": [
+      "My recollection is that the 13:00 block is Nadia's.",
       "My recollection is that the 09:00 block is Tomas's.",
-      "Tomas wanted 09:00 and did not get it."
+      "As far as I know, there is no block between Ayesha's and Daniel's, in that order."
     ]
   },
   "B2-019": {
@@ -467,8 +473,10 @@
   "B2-020": {
     "case": "inconsistent",
     "conflicts": [
-      "Last month Daniel was on calibration.",
-      "Calibration is covered by Nadia."
+      "Rohan is on later than whoever has intake.",
+      "Calibration is covered by Nadia.",
+      "The 15:00 block is Meera's.",
+      "My recollection is that Daniel is on packing."
     ]
   },
   "B2-021": {
@@ -1400,7 +1408,9 @@
   "B2-046": {
     "case": "inconsistent",
     "conflicts": [
-      "Speaking from memory, whoever drew the 07:00 block, it was Samuel.",
+      "Whichever way round Daniel and Lukas are, Nadia is between them.",
+      "Ayesha takes over from Daniel later in the day.",
+      "Whichever way round Samuel and Nadia are, Daniel is between them.",
       "My recollection is that Samuel lobbied for 09:00 without success."
     ]
   },
@@ -1438,8 +1448,9 @@
   "B2-049": {
     "case": "inconsistent",
     "conflicts": [
-      "I'm fairly sure intake is not Tomas's station.",
-      "Last month Tomas was on intake."
+      "Whichever way round Rohan and Samuel are, Ingrid is between them.",
+      "Put Rohan between Ingrid and Ayesha, though not necessarily next to either.",
+      "Ayesha works at some point between Samuel and Ingrid, not necessarily adjacent to either."
     ]
   },
   "B2-050": {
@@ -1805,7 +1816,10 @@
   "B2-053": {
     "case": "inconsistent",
     "conflicts": [
-      "Ingrid is on the 15:00 block.",
+      "Nadia takes 11:00, as things stand.",
+      "Tomas is on later than whoever has intake.",
+      "I'm fairly sure Priya sits between Samuel and Ingrid on the rota.",
+      "As far as I know, Tomas's block falls somewhere earlier than Priya's.",
       "The intake station is covered earlier in the day than Ingrid's block."
     ]
   },

@@ -9,7 +9,7 @@ venv/
 
 # Private assignment materials
 CANDIDATE_BRIEF.md
-q
+
 # Local experiment outputs
 results/*.status.json
 results/one_item*.json

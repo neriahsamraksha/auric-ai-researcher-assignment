@@ -58,7 +58,8 @@
       "core_size": 3,
       "unusable_lines": [],
       "outcome": "answered",
-      "category": "ok"
+      "category": "ok",
+      "short_conflict": false
     },
     {
       "id": "B2-001",
@@ -107,7 +108,8 @@
       "core_size": null,
       "unusable_lines": [],
       "outcome": "answered",
-      "category": "ok"
+      "category": "ok",
+      "short_conflict": false
     },
     {
       "id": "B2-002",
@@ -158,7 +160,8 @@
       "core_size": null,
       "unusable_lines": [],
       "outcome": "answered",
-      "category": "ok"
+      "category": "ok",
+      "short_conflict": false
     },
     {
       "id": "B2-003",
@@ -208,7 +211,8 @@
       "core_size": null,
       "unusable_lines": [],
       "outcome": "answered",
-      "category": "ok"
+      "category": "ok",
+      "short_conflict": false
     },
     {
       "id": "B2-004",
@@ -256,7 +260,8 @@
       "core_size": 4,
       "unusable_lines": [],
       "outcome": "answered",
-      "category": "ok"
+      "category": "ok",
+      "short_conflict": false
     },
     {
       "id": "B2-005",
@@ -306,7 +311,8 @@
       "core_size": 3,
       "unusable_lines": [],
       "outcome": "answered",
-      "category": "ok"
+      "category": "ok",
+      "short_conflict": false
     },
     {
       "id": "B2-006",
@@ -387,7 +393,8 @@
       "core_size": null,
       "unusable_lines": [],
       "outcome": "answered",
-      "category": "ok"
+      "category": "ok",
+      "short_conflict": false
     },
     {
       "id": "B2-007",
@@ -496,7 +503,8 @@
       "core_size": null,
       "unusable_lines": [],
       "outcome": "answered",
-      "category": "ok"
+      "category": "ok",
+      "short_conflict": false
     },
     {
       "id": "B2-008",
@@ -576,7 +584,8 @@
       "core_size": 5,
       "unusable_lines": [],
       "outcome": "answered",
-      "category": "ok"
+      "category": "ok",
+      "short_conflict": false
     },
     {
       "id": "B2-009",
@@ -712,7 +721,8 @@
       "core_size": null,
       "unusable_lines": [],
       "outcome": "answered",
-      "category": "ok"
+      "category": "ok",
+      "short_conflict": false
     },
     {
       "id": "B2-010",
@@ -762,7 +772,8 @@
       "core_size": 3,
       "unusable_lines": [],
       "outcome": "answered",
-      "category": "ok"
+      "category": "ok",
+      "short_conflict": false
     },
     {
       "id": "B2-011",
@@ -812,7 +823,8 @@
       "core_size": 2,
       "unusable_lines": [],
       "outcome": "answered",
-      "category": "ok"
+      "category": "ok",
+      "short_conflict": true
     },
     {
       "id": "B2-012",
@@ -861,7 +873,8 @@
       "core_size": null,
       "unusable_lines": [],
       "outcome": "answered",
-      "category": "ok"
+      "category": "ok",
+      "short_conflict": false
     },
     {
       "id": "B2-013",
@@ -908,10 +921,11 @@
       ],
       "declared": "inconsistent",
       "solutions": 0,
-      "core_size": 2,
+      "core_size": 5,
       "unusable_lines": [],
       "outcome": "answered",
-      "category": "ok"
+      "category": "ok",
+      "short_conflict": false
     },
     {
       "id": "B2-014",
@@ -991,7 +1005,8 @@
       "core_size": 4,
       "unusable_lines": [],
       "outcome": "answered",
-      "category": "ok"
+      "category": "ok",
+      "short_conflict": false
     },
     {
       "id": "B2-015",
@@ -1041,7 +1056,8 @@
       "core_size": null,
       "unusable_lines": [],
       "outcome": "answered",
-      "category": "ok"
+      "category": "ok",
+      "short_conflict": false
     },
     {
       "id": "B2-016",
@@ -1090,7 +1106,8 @@
       "core_size": 3,
       "unusable_lines": [],
       "outcome": "answered",
-      "category": "ok"
+      "category": "ok",
+      "short_conflict": false
     },
     {
       "id": "B2-017",
@@ -1170,10 +1187,11 @@
       ],
       "declared": "inconsistent",
       "solutions": 0,
-      "core_size": 2,
+      "core_size": 4,
       "unusable_lines": [],
       "outcome": "answered",
-      "category": "ok"
+      "category": "ok",
+      "short_conflict": false
     },
     {
       "id": "B2-018",
@@ -1221,10 +1239,11 @@
       ],
       "declared": "inconsistent",
       "solutions": 0,
-      "core_size": 2,
+      "core_size": 3,
       "unusable_lines": [],
       "outcome": "answered",
-      "category": "ok"
+      "category": "ok",
+      "short_conflict": false
     },
     {
       "id": "B2-019",
@@ -1273,7 +1292,8 @@
       "core_size": null,
       "unusable_lines": [],
       "outcome": "answered",
-      "category": "ok"
+      "category": "ok",
+      "short_conflict": false
     },
     {
       "id": "B2-020",
@@ -1319,10 +1339,11 @@
       ],
       "declared": "inconsistent",
       "solutions": 0,
-      "core_size": 2,
+      "core_size": 4,
       "unusable_lines": [],
       "outcome": "answered",
-      "category": "ok"
+      "category": "ok",
+      "short_conflict": false
     },
     {
       "id": "B2-021",
@@ -1637,7 +1658,8 @@
         14
       ],
       "outcome": "answered",
-      "category": "degraded"
+      "category": "degraded",
+      "short_conflict": false
     },
     {
       "id": "B2-022",
@@ -1719,7 +1741,8 @@
       "core_size": null,
       "unusable_lines": [],
       "outcome": "answered",
-      "category": "ok"
+      "category": "ok",
+      "short_conflict": false
     },
     {
       "id": "B2-023",
@@ -1770,7 +1793,8 @@
       "core_size": 4,
       "unusable_lines": [],
       "outcome": "answered",
-      "category": "ok"
+      "category": "ok",
+      "short_conflict": false
     },
     {
       "id": "B2-024",
@@ -2104,7 +2128,8 @@
         9
       ],
       "outcome": "answered",
-      "category": "degraded"
+      "category": "degraded",
+      "short_conflict": true
     },
     {
       "id": "B2-025",
@@ -2154,7 +2179,8 @@
       "core_size": null,
       "unusable_lines": [],
       "outcome": "answered",
-      "category": "ok"
+      "category": "ok",
+      "short_conflict": false
     },
     {
       "id": "B2-026",
@@ -2203,7 +2229,8 @@
       "core_size": null,
       "unusable_lines": [],
       "outcome": "answered",
-      "category": "ok"
+      "category": "ok",
+      "short_conflict": false
     },
     {
       "id": "B2-027",
@@ -2252,7 +2279,8 @@
       "core_size": null,
       "unusable_lines": [],
       "outcome": "answered",
-      "category": "ok"
+      "category": "ok",
+      "short_conflict": false
     },
     {
       "id": "B2-028",
@@ -2301,7 +2329,8 @@
       "core_size": null,
       "unusable_lines": [],
       "outcome": "answered",
-      "category": "ok"
+      "category": "ok",
+      "short_conflict": false
     },
     {
       "id": "B2-029",
@@ -2350,7 +2379,8 @@
       "core_size": null,
       "unusable_lines": [],
       "outcome": "answered",
-      "category": "ok"
+      "category": "ok",
+      "short_conflict": false
     },
     {
       "id": "B2-030",
@@ -2400,7 +2430,8 @@
       "core_size": null,
       "unusable_lines": [],
       "outcome": "answered",
-      "category": "ok"
+      "category": "ok",
+      "short_conflict": false
     },
     {
       "id": "B2-031",
@@ -2452,7 +2483,8 @@
       "core_size": null,
       "unusable_lines": [],
       "outcome": "answered",
-      "category": "ok"
+      "category": "ok",
+      "short_conflict": false
     },
     {
       "id": "B2-032",
@@ -2500,7 +2532,8 @@
       "core_size": null,
       "unusable_lines": [],
       "outcome": "answered",
-      "category": "ok"
+      "category": "ok",
+      "short_conflict": false
     },
     {
       "id": "B2-033",
@@ -2611,7 +2644,8 @@
       "core_size": null,
       "unusable_lines": [],
       "outcome": "answered",
-      "category": "ok"
+      "category": "ok",
+      "short_conflict": false
     },
     {
       "id": "B2-034",
@@ -2660,7 +2694,8 @@
       "core_size": null,
       "unusable_lines": [],
       "outcome": "answered",
-      "category": "ok"
+      "category": "ok",
+      "short_conflict": false
     },
     {
       "id": "B2-035",
@@ -2711,7 +2746,8 @@
       "core_size": null,
       "unusable_lines": [],
       "outcome": "answered",
-      "category": "ok"
+      "category": "ok",
+      "short_conflict": false
     },
     {
       "id": "B2-036",
@@ -2761,7 +2797,8 @@
       "core_size": null,
       "unusable_lines": [],
       "outcome": "answered",
-      "category": "ok"
+      "category": "ok",
+      "short_conflict": false
     },
     {
       "id": "B2-037",
@@ -2810,7 +2847,8 @@
       "core_size": 3,
       "unusable_lines": [],
       "outcome": "answered",
-      "category": "ok"
+      "category": "ok",
+      "short_conflict": false
     },
     {
       "id": "B2-038",
@@ -2860,7 +2898,8 @@
       "core_size": null,
       "unusable_lines": [],
       "outcome": "answered",
-      "category": "ok"
+      "category": "ok",
+      "short_conflict": false
     },
     {
       "id": "B2-039",
@@ -2942,7 +2981,8 @@
       "core_size": null,
       "unusable_lines": [],
       "outcome": "answered",
-      "category": "ok"
+      "category": "ok",
+      "short_conflict": false
     },
     {
       "id": "B2-040",
@@ -2993,7 +3033,8 @@
       "core_size": null,
       "unusable_lines": [],
       "outcome": "answered",
-      "category": "ok"
+      "category": "ok",
+      "short_conflict": false
     },
     {
       "id": "B2-041",
@@ -3075,7 +3116,8 @@
       "core_size": null,
       "unusable_lines": [],
       "outcome": "answered",
-      "category": "ok"
+      "category": "ok",
+      "short_conflict": false
     },
     {
       "id": "B2-042",
@@ -3125,7 +3167,8 @@
       "core_size": 3,
       "unusable_lines": [],
       "outcome": "answered",
-      "category": "ok"
+      "category": "ok",
+      "short_conflict": false
     },
     {
       "id": "B2-043",
@@ -3205,7 +3248,8 @@
       "core_size": null,
       "unusable_lines": [],
       "outcome": "answered",
-      "category": "ok"
+      "category": "ok",
+      "short_conflict": false
     },
     {
       "id": "B2-044",
@@ -3256,7 +3300,8 @@
       "core_size": 3,
       "unusable_lines": [],
       "outcome": "answered",
-      "category": "ok"
+      "category": "ok",
+      "short_conflict": false
     },
     {
       "id": "B2-045",
@@ -3305,7 +3350,8 @@
       "core_size": null,
       "unusable_lines": [],
       "outcome": "answered",
-      "category": "ok"
+      "category": "ok",
+      "short_conflict": false
     },
     {
       "id": "B2-046",
@@ -3378,10 +3424,11 @@
       ],
       "declared": "inconsistent",
       "solutions": 0,
-      "core_size": 2,
+      "core_size": 4,
       "unusable_lines": [],
       "outcome": "answered",
-      "category": "ok"
+      "category": "ok",
+      "short_conflict": false
     },
     {
       "id": "B2-047",
@@ -3430,7 +3477,8 @@
       "core_size": null,
       "unusable_lines": [],
       "outcome": "answered",
-      "category": "ok"
+      "category": "ok",
+      "short_conflict": false
     },
     {
       "id": "B2-048",
@@ -3576,7 +3624,8 @@
       "core_size": 3,
       "unusable_lines": [],
       "outcome": "answered",
-      "category": "ok"
+      "category": "ok",
+      "short_conflict": false
     },
     {
       "id": "B2-049",
@@ -3624,10 +3673,11 @@
       ],
       "declared": "inconsistent",
       "solutions": 0,
-      "core_size": 2,
+      "core_size": 3,
       "unusable_lines": [],
       "outcome": "answered",
-      "category": "ok"
+      "category": "ok",
+      "short_conflict": false
     },
     {
       "id": "B2-050",
@@ -3710,7 +3760,8 @@
       "core_size": 5,
       "unusable_lines": [],
       "outcome": "answered",
-      "category": "ok"
+      "category": "ok",
+      "short_conflict": false
     },
     {
       "id": "B2-051",
@@ -3760,7 +3811,8 @@
       "core_size": null,
       "unusable_lines": [],
       "outcome": "answered",
-      "category": "ok"
+      "category": "ok",
+      "short_conflict": false
     },
     {
       "id": "B2-052",
@@ -4077,7 +4129,8 @@
         4
       ],
       "outcome": "answered",
-      "category": "degraded"
+      "category": "degraded",
+      "short_conflict": false
     },
     {
       "id": "B2-053",
@@ -4124,10 +4177,11 @@
       ],
       "declared": "inconsistent",
       "solutions": 0,
-      "core_size": 2,
+      "core_size": 5,
       "unusable_lines": [],
       "outcome": "answered",
-      "category": "ok"
+      "category": "ok",
+      "short_conflict": false
     },
     {
       "id": "B2-054",
@@ -4205,7 +4259,8 @@
       "core_size": null,
       "unusable_lines": [],
       "outcome": "answered",
-      "category": "ok"
+      "category": "ok",
+      "short_conflict": false
     },
     {
       "id": "B2-055",
@@ -4255,7 +4310,8 @@
       "core_size": 3,
       "unusable_lines": [],
       "outcome": "answered",
-      "category": "ok"
+      "category": "ok",
+      "short_conflict": false
     },
     {
       "id": "B2-056",
@@ -4305,7 +4361,8 @@
       "core_size": 3,
       "unusable_lines": [],
       "outcome": "answered",
-      "category": "ok"
+      "category": "ok",
+      "short_conflict": false
     },
     {
       "id": "B2-057",
@@ -4417,7 +4474,8 @@
       "core_size": 3,
       "unusable_lines": [],
       "outcome": "answered",
-      "category": "ok"
+      "category": "ok",
+      "short_conflict": false
     },
     {
       "id": "B2-058",
@@ -4466,7 +4524,8 @@
       "core_size": 3,
       "unusable_lines": [],
       "outcome": "answered",
-      "category": "ok"
+      "category": "ok",
+      "short_conflict": false
     },
     {
       "id": "B2-059",
@@ -4546,7 +4605,9 @@
       "core_size": 3,
       "unusable_lines": [],
       "outcome": "answered",
-      "category": "ok"
+      "category": "ok",
+      "short_conflict": false
     }
-  ]
+  ],
+  "citation_rule": "preferred, replayed offline from the recorded replies"
 }

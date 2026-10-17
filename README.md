@@ -16,7 +16,7 @@ Python validates the model's formal output against the names and values availabl
 - More than one means `ambiguous`, and every surviving assignment is returned.
 - No surviving assignments means `inconsistent`.
 
-For inconsistent items, the program searches for a smallest unsatisfiable subset of note lines. It verifies that the selected subset is inconsistent and that removing any one of its lines makes it satisfiable. The output cites the original note text, not a reconstructed paraphrase.
+For inconsistent items, the program cites an inclusion-minimal unsatisfiable subset of note lines. The brief states that every valid conflict set on the visible benchmark has at least three statements, so a two-line contradiction signals a misread line: the program prefers a minimal set of three or more lines whenever one exists, and otherwise cites the smallest set and flags it as `short_conflict` in the status file. It verifies that the selected subset is inconsistent and that removing any one of its lines makes it satisfiable. The output cites the original note text, not a reconstructed paraphrase.
 
 ## Working within the call budget
 
@@ -32,7 +32,7 @@ I built `ablation.py` to separate the cost of collecting model outputs from the 
 
 The experiments compare the multi-call policies, line-level and answer-level voting, conflict-set methods, parser normalisation, distractor guidance and a direct-answer baseline without the solver. The policy-selection rule was fixed before measurement: a higher-call policy would replace a cheaper one only if it scored better on the first 30 items in every recorded run.
 
-The final runs and ablation summary are in `results/`. The accompanying report gives the measured scores, comparisons and limitations. The results should be read as evidence from the supplied visible benchmark, not as a held-out performance estimate.
+The final runs and ablation summary are in `results/`. The accompanying report gives the measured scores, comparisons and limitations. The results should be read as evidence from the supplied visible benchmark, not as a held-out performance estimate. The answer and status files of the three live runs were regenerated offline from their recorded model replies when the conflict-citation rule changed; the model calls and replies themselves are unchanged. A variant that also re-samples contradictory results at 3x and 10x (`trigger_conflict`) is evaluated in the ablation but not shipped.
 
 ## Running the pipeline
 
@@ -100,8 +100,8 @@ The recorded samples behind the reported ablation table (`results/samples_*.json
 - `ablation.py` records model outputs and evaluates the ablation conditions.
 - `test_main.py` contains the offline tests.
 - `run` is the command-line entry point.
-- - `results/` contains the answers and per-call status files of the reported live runs (`run3_1x`, `run4_3x`, `run5_10x`), the recorded ablation samples, and the ablation summary.
-- - `items.json`, `example_answers.json` and `score.py` are supplied assignment files; the assignment brief is not redistributed.
+- `results/` contains the answers and per-call status files of the reported live runs (`run3_1x`, `run4_3x`, `run5_10x`), the recorded ablation samples, and the ablation summary.
+- `items.json`, `example_answers.json` and `score.py` are supplied assignment files; the assignment brief is not redistributed.
 
 The API key and `visible_key.json` are intentionally excluded from version control.
 

@@ -27,16 +27,18 @@ Decide which case applies and answer with one JSON object and nothing else:
 Name every person on the rota and give "station" only for station holders. Copy names, times, stations and statements exactly."""
 
 CONDITIONS = (
-    ("full", "Full system (shipped policy)", "E", "selected", "smallest", True),
-    ("single", "Multi-call off: one call", "E", "single", "smallest", True),
-    ("fixed_vote", "Line vote over all calls", "E", "fixed_vote", "smallest", True),
-    ("answer_vote", "Answer vote over all calls", "E", "answer_vote", "smallest", True),
-    ("agreement", "Stop when two answers agree", "E", "agreement", "smallest", True),
-    ("trigger", "Stop when extraction is clean", "E", "trigger", "smallest", True),
+    ("full", "Full system (shipped policy)", "E", "selected", "preferred", True),
+    ("single", "Multi-call off: one call", "E", "single", "preferred", True),
+    ("fixed_vote", "Line vote over all calls", "E", "fixed_vote", "preferred", True),
+    ("answer_vote", "Answer vote over all calls", "E", "answer_vote", "preferred", True),
+    ("agreement", "Stop when two answers agree", "E", "agreement", "preferred", True),
+    ("trigger", "Stop when extraction is clean", "E", "trigger", "preferred", True),
+    ("trigger_conflict", "Also re-sample contradictions (not shipped)", "E", "trigger_conflict", "preferred", True),
+    ("core_smallest", "Conflict set: smallest first (previous rule)", "E", "selected", "smallest", True),
     ("core_deletion", "Conflict set by deletion order", "E", "selected", "deletion", True),
     ("core_all", "Conflict minimisation off", "E", "selected", "all", True),
-    ("strict_parse", "Parser normalisation off", "E", "selected", "smallest", False),
-    ("no_guidance", "Distractor guidance removed (arm N)", "N", "selected", "smallest", True),
+    ("strict_parse", "Parser normalisation off", "E", "selected", "preferred", False),
+    ("no_guidance", "Distractor guidance removed (arm N)", "N", "selected", "preferred", True),
     ("direct", "Solver removed: direct answer, answer vote (arm D)", "D", None, None, None),
 )
 
@@ -244,7 +246,7 @@ def evaluate(args):
              "Budget k replays the first k recorded samples of each item. Each cell: mean macro exact match on all "
              "items [value per run], mean model calls per item.",
              f"Shipped policy: 3x = {main.SHIPPED_POLICY['3x']}, 10x = {main.SHIPPED_POLICY['10x']}. Rule selects: 3x = {selected['3x']}, 10x = {selected['10x']} ({SELECTION_RULE}; dev half = first "
-             f"{len(halves['dev'])} items of items.json).", "",
+             f"{len(halves['dev'])} items of items.json; selection scored with the smallest-first conflict rule in force when it was fixed).", "",
              "| Condition | 1x | 3x | 10x |", "|---|---|---|---|"]
     for name, label, *_ in CONDITIONS:
         cells = [cell(row) for row in rows if row["condition"] == name]

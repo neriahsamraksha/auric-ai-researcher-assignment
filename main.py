@@ -16,9 +16,10 @@ TOP_P = 0.95
 MAX_TOKENS = 2000
 TIMEOUT_SECONDS = 120
 BUDGETS = {"1x": 1, "3x": 3, "10x": 10}
-POLICIES = ("single", "fixed_vote", "agreement", "trigger", "answer_vote")
+POLICIES = ("single", "fixed_vote", "agreement", "trigger", "answer_vote", "trigger_conflict")
 SHIPPED_POLICY = {"1x": "single", "3x": "trigger", "10x": "trigger"}  # selected by the pre-registered rule in ablation.py
 MAX_PLAUSIBLE_SOLUTIONS = 4
+MIN_EXPECTED_CONFLICT = 3
 ROOT = Path(__file__).resolve().parent
 
 
@@ -420,7 +421,7 @@ def is_minimal_conflict(masks, core, full):
     return all(and_all(masks, [k for k in core if k != j], full) for j in core)
 
 
-def find_core(masks, full, support=None, rule="smallest"):
+def find_core(masks, full, support=None, rule="preferred"):
     active = [j for j, mask in enumerate(masks) if mask != full]
     if any(masks[j] == 0 for j in active):
         raise RuntimeError("a single line is unsatisfiable on its own and should have been rejected")
@@ -434,13 +435,17 @@ def find_core(masks, full, support=None, rule="smallest"):
             trial = [k for k in core if k != j]
             if not and_all(masks, trial, full):
                 core = trial
-    elif rule == "smallest":
+    elif rule in ("smallest", "preferred"):
         weight = support or [1] * len(masks)
         core = None
-        for size in range(1, len(active) + 1):
-            found = [combo for combo in itertools.combinations(active, size) if not and_all(masks, combo, full)]
-            if found:
-                core = list(min(found, key=lambda combo: (-min(weight[j] for j in combo), combo)))
+        for floor in ((MIN_EXPECTED_CONFLICT, 1) if rule == "preferred" else (1,)):
+            for size in range(floor, len(active) + 1):
+                found = [combo for combo in itertools.combinations(active, size)
+                         if not and_all(masks, combo, full) and is_minimal_conflict(masks, combo, full)]
+                if found:
+                    core = list(min(found, key=lambda combo: (-min(weight[j] for j in combo), combo)))
+                    break
+            if core:
                 break
     else:
         raise ValueError(f"unknown core rule {rule}")
@@ -463,7 +468,7 @@ def format_assignment(ctx, assignment):
     return result
 
 
-def decide(ctx, masks, support=None, core_rule="smallest"):
+def decide(ctx, masks, support=None, core_rule="preferred"):
     full = ctx["full"]
     combined = and_all(masks, range(len(masks)), full)
     if combined:
@@ -479,10 +484,13 @@ def decide(ctx, masks, support=None, core_rule="smallest"):
 
 def describe(answer):
     if answer["case"] == "unique":
-        return {"declared": "unique", "solutions": 1, "core_size": None}
+        return {"declared": "unique", "solutions": 1, "core_size": None, "short_conflict": False}
     if answer["case"] == "ambiguous":
-        return {"declared": "ambiguous", "solutions": len(answer["assignments"]), "core_size": None}
-    return {"declared": "inconsistent", "solutions": 0, "core_size": len(answer["conflicts"])}
+        return {"declared": "ambiguous", "solutions": len(answer["assignments"]), "core_size": None,
+                "short_conflict": False}
+    size = len(answer["conflicts"])
+    return {"declared": "inconsistent", "solutions": 0, "core_size": size,
+            "short_conflict": size < MIN_EXPECTED_CONFLICT}
 
 
 def canonical(answer):
@@ -506,7 +514,7 @@ def line_vote(analyses, ctx):
     return masks, support
 
 
-def sample_answer(ctx, analysis, core_rule="smallest"):
+def sample_answer(ctx, analysis, core_rule="preferred"):
     masks, support = line_vote([analysis], ctx)
     return decide(ctx, masks, support, core_rule)
 
@@ -518,7 +526,7 @@ def majority(answers):
     return answers[next(i for i, key in enumerate(keys) if counts[key] == best)]
 
 
-def run_policy(policy, cap, draw, ctx, normalise=True, core_rule="smallest"):
+def run_policy(policy, cap, draw, ctx, normalise=True, core_rule="preferred"):
     if policy not in POLICIES:
         raise ValueError(f"unknown policy {policy}")
     analyses, failed, agreed = [], 0, None
@@ -553,7 +561,9 @@ def run_policy(policy, cap, draw, ctx, normalise=True, core_rule="smallest"):
             usable = [a for a in analyses if a["usable"]]
             if usable:
                 masks, support = line_vote(usable, ctx)
-                if all(s > 0 for s in support) and solution_count(ctx, masks) <= MAX_PLAUSIBLE_SOLUTIONS:
+                count = solution_count(ctx, masks)
+                settled = count <= MAX_PLAUSIBLE_SOLUTIONS and (count > 0 or policy == "trigger")
+                if all(s > 0 for s in support) and settled:
                     break
 
     result = {"calls": len(analyses) + failed, "failed_calls": failed,

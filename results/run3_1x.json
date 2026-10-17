@@ -1039,8 +1039,9 @@
   "B2-018": {
     "case": "inconsistent",
     "conflicts": [
+      "My recollection is that the 13:00 block is Nadia's.",
       "My recollection is that the 09:00 block is Tomas's.",
-      "Tomas wanted 09:00 and did not get it."
+      "As far as I know, there is no block between Ayesha's and Daniel's, in that order."
     ]
   },
   "B2-019": {
@@ -1297,7 +1298,9 @@
   "B2-024": {
     "case": "inconsistent",
     "conflicts": [
-      "Ingrid is on after one of Meera and Rohan and before the other.",
+      "Rohan comes later in the day than Ingrid.",
+      "As far as I know, whichever way round Ingrid and Rohan are, Nadia is between them.",
+      "Meera is done before Nadia starts.",
       "Noted twice in the handover: Rohan sits between Meera and Priya on the rota."
     ]
   },
@@ -2173,7 +2176,9 @@
   "B2-046": {
     "case": "inconsistent",
     "conflicts": [
-      "Speaking from memory, whoever drew the 07:00 block, it was Samuel.",
+      "Whichever way round Daniel and Lukas are, Nadia is between them.",
+      "Ayesha takes over from Daniel later in the day.",
+      "Whichever way round Samuel and Nadia are, Daniel is between them.",
       "My recollection is that Samuel lobbied for 09:00 without success."
     ]
   },
